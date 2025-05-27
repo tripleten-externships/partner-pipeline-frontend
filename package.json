@@ -33,6 +33,7 @@
     "@keystone-6/document-renderer": "^1.1.2",
     "@radix-ui/react-slot": "^1.2.2",
     "@tailwindcss/vite": "^4.1.6",
+    "all": "^0.0.0",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
