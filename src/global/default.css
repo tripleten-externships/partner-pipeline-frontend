@@ -125,3 +125,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    160deg,
+    rgba(63, 63, 70, 0.2) 0%,
+    rgba(113, 113, 122, 0.2) 0%,
+    rgba(63, 63, 70, 0.2) 50%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite linear;
+}
