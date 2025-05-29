@@ -1,5 +1,5 @@
 import { processServerRequest, baseUrl, headers } from "./api";
-import { setToken } from "./token";
+//import { setToken } from "./token";
 
 const login = ({ email, password }: { email: string; password: string}) => {
   return fetch(`${baseUrl}/signin`, {
@@ -28,3 +28,5 @@ const login = ({ email, password }: { email: string; password: string}) => {
 //     makeRequest;
 //   };
 // ^Function pre built to place into app. Logs in user and sets token 
+
+export { login };
