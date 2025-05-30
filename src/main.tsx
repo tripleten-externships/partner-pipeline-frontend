@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./global/default.css";
 import { client } from "./store";
 import { ThemeProvider } from "./components/theme-provider";
-import Sidebar from "./components/Sidebar/Sidebar";
 import Dashboard from "./components/Dashboard/Dashboard";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -64,7 +64,7 @@ const ProjectSelector: React.FC = () => {
   {/* Button content */}
   <div className="relative z-10 flex items-center justify-between">
     <div className="flex items-center gap-2">
-      <span className="bg-blue-500 p-2 rounded-md text-white">{selectedProject.icon}</span>
+      <span className="bg-blue-500 p-2 rounded-md text-white m-2 mr-0 ml-1">{selectedProject.icon}</span>
       <div>
         <p className="text-sm font-medium text-white">{selectedProject.name}</p>
         <p className="text-xs text-zinc-400">Enterprise</p>
