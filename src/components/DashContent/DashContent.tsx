@@ -8,7 +8,7 @@ const DashContent: React.FC<DashContentProps> = ({ children }) => {
   const isLoading = !children;
 
   return (
-    <div className="bg-zinc-1000 rounded-lg w-full h-[550px] overflow-hidden">
+    <div className="bg-zinc-1000 rounded-lg w-full h-[635px] overflow-hidden">
       {isLoading ? (
         <div className="w-full h-full animate-shimmer rounded-lg" />
       ) : (

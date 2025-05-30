@@ -13,6 +13,7 @@ import {
     User,
   } from 'lucide-react';
 import ProjectSelector from '../ProjectSelector/ProjectSelector';
+import UserMenu from '../UserMenu/UserMenu';
 
 const Sidebar = () => {
   const [openMenus, setOpenMenus] = useState<string[]>([]);
@@ -110,11 +111,8 @@ const Sidebar = () => {
       </div>
 
       {/* User Context */}
-      <div className="pt-4 text-sm flex items-center gap-2">
-      <span className="p-1 border border-zinc-700 rounded-md text-zinc-400">
-        <User size={18} />
-        </span>
-        <span className="text-zinc-300">shadcn@example.com</span>
+      <div className="pt-4">
+      <UserMenu />
       </div>
     </aside>
   );
