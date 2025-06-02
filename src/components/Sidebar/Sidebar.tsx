@@ -10,7 +10,6 @@ import {
     PieChart,
     Map,
     MoreHorizontal,
-    User,
   } from 'lucide-react';
 import ProjectSelector from '../ProjectSelector/ProjectSelector';
 import UserMenu from '../UserMenu/UserMenu';
