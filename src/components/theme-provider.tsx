@@ -2,9 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { ThemeProviderContext, Theme, ThemeProviderState } from "@/contexts/theme-context";
 
-import React, { useEffect, useState } from "react";
-import { Theme, ThemeProviderContext } from "./theme-context";
-        
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
@@ -49,5 +46,4 @@ export function ThemeProvider({
       {children}
     </ThemeProviderContext.Provider>
   );
-
 }
