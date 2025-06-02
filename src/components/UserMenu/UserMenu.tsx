@@ -1,17 +1,24 @@
 import React, { useRef, useState } from 'react';
 import { Bell, LogOut, ChevronsUpDown, Settings } from 'lucide-react';
+import useClickOutside from '../../hooks/useClickOutside';
 
 //TODO: Replace with auth context, useRefs for avatar and name, clicking outside of box should close
 
 const UserMenu: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const toggle = () => setOpen(!open);
+  useClickOutside(dropdownRef, () => setOpen(false));
 
-  const avatarSrc = "https://github.com/shadcn.png"; // later replace with prop or auth context
+  const toggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpen(!open);
+  };
+
+  const avatarSrc = "https://github.com/shadcn.png";  
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       {/* User Button */}
       <button
         onClick={toggle}

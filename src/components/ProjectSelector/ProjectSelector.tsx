@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   SquareStack,
   AudioWaveform,
@@ -6,9 +6,9 @@ import {
   ChevronsUpDown,
   Plus,
   Check,
-  PanelLeft
 } from 'lucide-react';
 import classNames from 'classnames';
+import useClickOutside from '../../hooks/useClickOutside';
 
 type Project = {
   id: number;
@@ -41,10 +41,16 @@ const projectList: Project[] = [
 const ProjectSelector: React.FC = () => {
   const [selectedId, setSelectedId] = useState<number>(1);
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(dropdownRef, () => setOpen(false));
 
   const selectedProject = projectList.find((p) => p.id === selectedId)!;
 
-  const toggleDropdown = () => setOpen(!open);
+  const toggleDropdown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpen(!open);
+  };
 
   const handleSelect = (id: number) => {
     setSelectedId(id);
@@ -52,7 +58,7 @@ const ProjectSelector: React.FC = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       {/*Project Selector */}
       <button
   onClick={toggleDropdown}
