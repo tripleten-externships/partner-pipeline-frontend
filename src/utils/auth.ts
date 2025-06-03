@@ -1,4 +1,4 @@
-import { processServerRequest, baseUrl, headers } from "./api";
+import { baseUrl, headers, processServerRequest } from "./api";
 //import { setToken } from "./token";
 
 const login = ({ email, password }: { email: string; password: string}) => {

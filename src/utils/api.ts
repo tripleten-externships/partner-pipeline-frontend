@@ -1,7 +1,7 @@
-function processServerRequest(res: unknown) {
+function processServerRequest(res: Response) {
   return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
 }
-//helpful function for shorthand on requests to check for errors 
+//helpful function pair for shorthand on requests to check for errors 
 
 const baseUrl = process.env.NODE_ENV === "production"
     ? ""
