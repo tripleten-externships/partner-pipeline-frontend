@@ -298,7 +298,7 @@ export type User = {
   email?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
   isAdmin?: Maybe<Scalars["Boolean"]["output"]>;
-  lastLoginDate?: Maybe<Scalars["DateTime"]["output"]>;
+  lastLoginDateDate?: Maybe<Scalars["DateTime"]["output"]>;
   name?: Maybe<Scalars["String"]["output"]>;
   password?: Maybe<PasswordState>;
 };
@@ -322,7 +322,7 @@ export type UserCreateInput = {
   createdAt?: InputMaybe<Scalars["DateTime"]["input"]>;
   email?: InputMaybe<Scalars["String"]["input"]>;
   isAdmin?: InputMaybe<Scalars["Boolean"]["input"]>;
-  lastLoginDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  lastLoginDateDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   name?: InputMaybe<Scalars["String"]["input"]>;
   password?: InputMaybe<Scalars["String"]["input"]>;
 };
@@ -332,7 +332,7 @@ export type UserOrderByInput = {
   email?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
   isAdmin?: InputMaybe<OrderDirection>;
-  lastLoginDate?: InputMaybe<OrderDirection>;
+  lastLoginDateDate?: InputMaybe<OrderDirection>;
   name?: InputMaybe<OrderDirection>;
 };
 
@@ -345,7 +345,7 @@ export type UserUpdateInput = {
   createdAt?: InputMaybe<Scalars["DateTime"]["input"]>;
   email?: InputMaybe<Scalars["String"]["input"]>;
   isAdmin?: InputMaybe<Scalars["Boolean"]["input"]>;
-  lastLoginDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  lastLoginDateDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   name?: InputMaybe<Scalars["String"]["input"]>;
   password?: InputMaybe<Scalars["String"]["input"]>;
 };
@@ -358,7 +358,7 @@ export type UserWhereInput = {
   email?: InputMaybe<StringFilter>;
   id?: InputMaybe<IdFilter>;
   isAdmin?: InputMaybe<BooleanFilter>;
-  lastLoginDate?: InputMaybe<DateTimeNullableFilter>;
+  lastLoginDateDate?: InputMaybe<DateTimeNullableFilter>;
   name?: InputMaybe<StringFilter>;
 };
 

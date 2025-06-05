@@ -5,16 +5,18 @@ import { Select, SelectItem, SelectTrigger, SelectContent } from '@/components/u
 import { Table, TableHeader, TableRow, TableCell, TableBody } from '@/components/ui/table'; // shadcn table
 
 type UserRole = 'Partner' | 'Mentor' | 'Lead Mentor' | 'Designer' | 'Coordinator' | 'Student';
-type UserStatus = 'Active' | 'Inactive';
 
 interface User {
   id: string;
   name: string;
   email: string;
+  password: string;
   role: UserRole;
+  isAdmin: boolean; // Optional field for admin users
   project: string;
-  status: UserStatus;
-  lastLogin: string;
+  isActive: boolean;
+  createdAt: string; // ISO date string
+  lastLoginDate: string;
 }
 
 // --- Mock data ---
@@ -23,10 +25,13 @@ const mockUsers: User[] = [
     id: '1',
     name: 'Jane Doe',
     email: 'jane@example.com',
+    password: 'password123',
     role: 'Lead Mentor',
+    isAdmin: true,
     project: 'Project Alpha',
-    status: 'Active',
-    lastLogin: '06-10-2023'
+    isActive: true,
+    createdAt: '2023-01-15T10:00:00Z',
+    lastLoginDate: '06-10-2023'
   }
 ];
 
@@ -34,7 +39,7 @@ const UserManagement: React.FC = () => {
   
 const [searchTerm, setSearchTerm] = useState('');
 const [roleFilter, setRoleFilter] = useState<UserRole | ''>('');
-const [statusFilter, setStatusFilter] = useState<UserStatus | ''>('');
+const [statusFilter, setStatusFilter] = useState<'all' | 'Active' | 'Inactive'>('all');
 const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
 
@@ -42,7 +47,9 @@ const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
     return (
       (searchTerm === '' || user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.project.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase())) &&
       (roleFilter === '' || user.role === roleFilter) &&
-      (statusFilter === '' || user.status === statusFilter)
+      (statusFilter === 'all' ||
+        (statusFilter === 'Active' && user.isActive) ||
+        (statusFilter === 'Inactive' && !user.isActive))
     );
   });
 
@@ -88,10 +95,10 @@ const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
     <SelectItem value="Coordinator">Coordinator</SelectItem>
   </SelectContent>
 </Select>
-         <Select value={statusFilter} onValueChange={val => setStatusFilter(val === 'all' ? '' : (val as UserStatus))}>
-  <SelectTrigger>
-    {statusFilter || "All Statuses"}
-  </SelectTrigger>
+        <Select value={statusFilter} onValueChange={val => setStatusFilter(val as 'all' | 'Active' | 'Inactive')}>
+          <SelectTrigger>
+            {statusFilter === 'all' ? "All Statuses" : statusFilter}
+          </SelectTrigger>
   <SelectContent>
     <SelectItem value="all">All Statuses</SelectItem>
     <SelectItem value="Active">Active</SelectItem>
@@ -134,12 +141,12 @@ const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
         <TableCell>{user.email}</TableCell>
         <TableCell>{user.role}</TableCell>
         <TableCell>{user.project}</TableCell>
-        <TableCell>
-          <span className={user.status === 'Active' ? 'text-green-600 font-medium' : ''}>
-            {user.status}
+       <TableCell>
+          <span className={user.isActive ? 'text-green-600 font-medium' : ''}>
+            {user.isActive ? 'Active' : 'Inactive'}
           </span>
         </TableCell>
-        <TableCell>{user.lastLogin}</TableCell>
+        <TableCell>{user.lastLoginDate}</TableCell>
         <TableCell>
           <Button>Edit</Button>
           <Button className="ml-2">Delete</Button>
