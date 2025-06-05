@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input'; // shadcn input
-import { Select, SelectItem } from '@/components/ui/select'; // shadcn select
-import { Table, TableHeader, TableRow, TableCell, TableBody } from '@/components/ui/table'; // shadcn table
+import { Input } from '@/components/ui/input'; 
+import { Select, SelectItem } from '@/components/ui/select'; 
+import { Table, TableHeader, TableRow, TableCell, TableBody } from '@/components/ui/table'; 
 
 type UserRole = 'Partner' | 'Mentor' | 'Lead Mentor' | 'Designer' | 'Coordinator' | 'Student';
 
@@ -12,10 +12,10 @@ interface User {
   email: string;
   password: string;
   role: UserRole;
-  isAdmin: boolean; // Optional field for admin users
+  isAdmin: boolean; 
   project: string;
   isActive: boolean;
-  createdAt: string; // ISO date string
+  createdAt: string; 
   lastLoginDate: string;
 }
 
@@ -82,10 +82,6 @@ const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
           placeholder="Search users..." 
           className="w-64 border"/>
        <Select value={roleFilter} onValueChange={val => setRoleFilter(val === 'all' ? '' : (val as UserRole))}>
-  {/* <SelectTrigger>
-    {roleFilter || "All Roles"}
-  </SelectTrigger> */}
-  {/* <SelectContent> */}
     <SelectItem value="all">All Roles</SelectItem>
     <SelectItem value="Lead Mentor">Lead Mentor</SelectItem>
     <SelectItem value="Mentor">Mentor</SelectItem>
@@ -93,17 +89,11 @@ const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
     <SelectItem value="Partner">Partner</SelectItem>
     <SelectItem value="Designer">Designer</SelectItem>
     <SelectItem value="Coordinator">Coordinator</SelectItem>
-  {/* </SelectContent> */}
 </Select>
         <Select value={statusFilter} onValueChange={val => setStatusFilter(val as 'all' | 'Active' | 'Inactive')}>
-          {/* <SelectTrigger>
-            {statusFilter === 'all' ? "All Statuses" : statusFilter}
-          </SelectTrigger> */}
-  {/* <SelectContent> */}
     <SelectItem value="all">All Statuses</SelectItem>
     <SelectItem value="Active">Active</SelectItem>
     <SelectItem value="Inactive">Inactive</SelectItem>
-  {/* </SelectContent> */}
 </Select>
       </div>
       <Table>
