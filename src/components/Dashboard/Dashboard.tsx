@@ -1,9 +1,8 @@
-import React from 'react';
-import Sidebar from '../Sidebar/Sidebar';
-import DashCard from '../DashCard/DashCard';
-import DashContent from '../DashContent/DashContent';
-import BreadcrumbHeader from '../BreadcrumbHeader/BreadcrumbHeader';
-
+import React from "react";
+import Sidebar from "../Sidebar/Sidebar";
+import DashCard from "../DashCard/DashCard";
+import DashContent from "../DashContent/DashContent";
+import BreadcrumbHeader from "../BreadcrumbHeader/BreadcrumbHeader";
 
 const Dashboard: React.FC = () => {
   return (

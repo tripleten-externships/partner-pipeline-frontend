@@ -1,5 +1,5 @@
-import React from 'react';
-import { PanelLeft, ChevronRight } from 'lucide-react';
+import React from "react";
+import { PanelLeft, ChevronRight } from "lucide-react";
 
 type BreadcrumbHeaderProps = {
   section: string;

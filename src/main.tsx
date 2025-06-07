@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./global/default.css";
 import { client } from "./store";
 import { ThemeProvider } from "./components/theme-provider";
-import UserManagement from './routes/user-management/user-management';
+import UserManagement from "./routes/user-management/user-management";
 import Dashboard from "./components/Dashboard/Dashboard";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -24,7 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 </div>
               }
             />
-             <Route path="/user-management" element={<UserManagement />} />
+            <Route path="/user-management" element={<UserManagement />} />
           </Routes>
         </BrowserRouter>
       </ApolloProvider>
