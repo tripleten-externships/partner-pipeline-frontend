@@ -18,27 +18,10 @@ import {
 import { Input } from "./ui/input";
 
 // class lists that are used across identical elements
-const formInputClasses = "mb-2 border rounded-[3px] p-[5px] box-border text-[14px]";
-const formLabelClasses = "mb-1 font text-[14px]";
-const formMessageClasses = "text-xs italic text-[#ff1100]";
-
-/* 
-  SCREEN SIZES (px) as defined in tailwind.config.js
-  >small< 799 and smaller
-  Title:      18       -
-  Subtext:    12 -
-  Label:      14   -
-  Error:      12 -
-  PlHolder:   14   -
-  ForgotPW:   12 -
-  BtnTxt:     14   -
-  OrContWith: 14   -
-
-  >medium< 800 to 1199 +4px
-  
-  
-  >large< 1200+
-*/
+const formInputClasses =
+  "mb-2 border rounded-[3px] p-[5px] box-border text-[14px] md:text-[18px] lg:text-[20px]";
+const formLabelClasses = "mb-1 font text-[14px] md:text-[18px] lg:text-[20px]";
+const formMessageClasses = "text-xs italic text-[#ff1100] md:text-[16px] lg:text-[20px]";
 
 // add schemas as necessary
 const formSchema = z.object({
@@ -72,9 +55,10 @@ export function ProfileForm() {
 
   return (
     <div className="font-text flex flex-col items-center justify-center h-screen p-[30px]">
-      <div className="flex flex-col w-full max-w-80 items-center">
-        <h2 className="font-bold text-lg">Login to your account</h2>
-        <p className="text-gray-400 text-caption-text">
+      {/* Removed styles from inner wrapper: max-w-80 */}
+      <div className="flex flex-col w-80 max-w-[660px] items-center md:w-[480px] lg:w-[620px]">
+        <h2 className="font-bold text-lg md:text-[22px] lg:text-[24px]">Login to your account</h2>
+        <p className="text-gray-400 text-caption-text md:text-[14px] lg:text-[18px]">
           Enter your email below to login to your account
         </p>
         <Form {...form}>
@@ -113,15 +97,15 @@ export function ProfileForm() {
               )}
             />
             <Button
-              className="border rounded-[3px] !bg-[#FF8F60] text-black w-full my-4"
+              className="border rounded-[3px] box-border !bg-[#FF8F60] text-black w-full my-4 md:text-[18px] md:h-[40px] lg:text-[20px] lg:h-[44px]"
               type="submit"
             >
               Login
             </Button>
           </form>
         </Form>
-        <p className="text-gray-400 text-[14px]">Or continue with</p>
-        <Button className="w-full my-4 border rounded-[3px] bg-transparent text-white">
+        <p className="text-gray-400 text-[14px] md:text-[16px]">Or continue with</p>
+        <Button className="w-full my-4 border rounded-[3px] bg-transparent text-white md:text-[18px] md:h-[40px] lg:text-[20px] lg:h-[44px]">
           Login with Google
         </Button>
       </div>

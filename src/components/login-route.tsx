@@ -1,21 +1,7 @@
 import React from "react";
-// import { Button } from "./ui/button";
 import { ProfileForm } from "./loginForm";
 
 function Login() {
-  /*
-  The following table was taken from https://tailwindcss.com/docs/responsive-design and refers to
-    Breakpoints as defined in Tailwind 4.1
-
-    |Breakpoint prefix | Minimum width 	  | CSS                     |
-    |------------------|------------------|-------------------------|
-    |sm	               |  40rem (640px)	  | @media (width >= 40rem) |
-    |md	               |  48rem (768px)	  | @media (width >= 48rem) |
-    |lg	               |  64rem (1024px)	| @media (width >= 64rem) |
-    |xl	               |  80rem (1280px)	| @media (width >= 80rem) |
-    |2xl	             |  96rem (1536px)	| @media (width >= 96rem) |
-  */
-
   return (
     <>
       <ProfileForm />
