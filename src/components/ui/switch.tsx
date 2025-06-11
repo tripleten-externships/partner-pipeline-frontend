@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement> {
   checked: boolean;
@@ -9,7 +9,7 @@ export const Switch: React.FC<SwitchProps> = ({ checked, onCheckedChange, ...pro
   <input
     type="checkbox"
     checked={checked}
-    onChange={e => onCheckedChange(e.target.checked)}
+    onChange={(e) => onCheckedChange(e.target.checked)}
     {...props}
   />
 );

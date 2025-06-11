@@ -1,7 +1,7 @@
 import { baseUrl, headers, processServerRequest } from "./api";
 //import { setToken } from "./token";
 
-const login = ({ email, password }: { email: string; password: string}) => {
+const login = ({ email, password }: { email: string; password: string }) => {
   return fetch(`${baseUrl}/signin`, {
     method: "POST",
     headers: headers,
@@ -10,7 +10,6 @@ const login = ({ email, password }: { email: string; password: string}) => {
 };
 
 //could be further refined by creating validation through typescript for email type, but I'm expecting we'll address that with user entry and backend validation
-
 
 //  const onLogin = ({ email, password }: { email: string; password: string}) => {
 //     const makeRequest = () => {
@@ -26,6 +25,6 @@ const login = ({ email, password }: { email: string; password: string}) => {
 //     };
 //     makeRequest;
 //   };
-// ^Function pre built to place into app. Logs in user and sets token 
+// ^Function pre built to place into app. Logs in user and sets token
 
 export { login };
