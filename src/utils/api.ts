@@ -1,11 +1,9 @@
 function processServerRequest(res: Response) {
   return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
 }
-//helpful function pair for shorthand on requests to check for errors 
+//helpful function pair for shorthand on requests to check for errors
 
-const baseUrl = process.env.NODE_ENV === "production"
-    ? ""
-    : "http://localhost:3000";
+const baseUrl = process.env.NODE_ENV === "production" ? "" : "http://localhost:3000";
 
 const headers = {
   Accept: "application/json",
@@ -13,4 +11,10 @@ const headers = {
 };
 //making an assumption for headers
 
-export { processServerRequest, baseUrl, headers}
+// forgot password
+
+// login with email
+
+// login with Google
+
+export { processServerRequest, baseUrl, headers };

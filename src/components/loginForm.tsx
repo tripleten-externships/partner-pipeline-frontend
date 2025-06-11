@@ -27,12 +27,9 @@ const btnClasses =
 
 // add schemas as necessary
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
   email: z
     .string()
-    // .min(1, { message: "Email is required" })
+    .min(1, { message: "Email is required." })
     .email({ message: "Email address must be valid." }),
   password: z.string().min(8, { message: "Password must be at least 8 characters long." }),
 });
@@ -42,7 +39,6 @@ export function ProfileForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
       email: "",
       password: "",
     },
@@ -57,7 +53,6 @@ export function ProfileForm() {
 
   return (
     <div className="font-text flex flex-col items-center justify-center h-screen p-[30px]">
-      {/* Removed styles from inner wrapper: max-w-80 */}
       <div className="flex flex-col w-80 max-w-[660px] items-center md:w-[480px] lg:w-[620px]">
         <h2 className="font-bold text-lg md:text-[22px] lg:text-[24px]">Login to your account</h2>
         <p className="text-gray-400 text-caption-text md:text-[14px] lg:text-[18px]">
@@ -95,7 +90,12 @@ export function ProfileForm() {
                   </div>
                   <FormMessage className={formMessageClasses} />
                   <FormControl>
-                    <Input placeholder="...here" className={formInputClasses} {...field} />
+                    <Input
+                      placeholder="...here"
+                      type="password"
+                      className={formInputClasses}
+                      {...field}
+                    />
                   </FormControl>
                 </FormItem>
               )}
