@@ -13,7 +13,6 @@ const initialState: ThemeProviderState = {
 };
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
-
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
 
