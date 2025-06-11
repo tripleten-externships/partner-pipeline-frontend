@@ -21,12 +21,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <div className="flex h-screen">
                   <main className="flex-1 bg-zinc-950 ">
                     <Dashboard />
-                    <Login />
                   </main>
                 </div>
               }
             />
             <Route path="/user-management" element={<UserManagement />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </BrowserRouter>
       </ApolloProvider>
