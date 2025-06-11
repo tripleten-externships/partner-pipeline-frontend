@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   onValueChange?: (value: string) => void;
@@ -7,7 +7,7 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 export const Select: React.FC<SelectProps> = ({ children, onValueChange, ...props }) => (
   <select
     {...props}
-    onChange={e => {
+    onChange={(e) => {
       props.onChange?.(e);
       onValueChange?.(e.target.value);
     }}
