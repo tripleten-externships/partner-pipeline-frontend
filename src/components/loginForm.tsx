@@ -22,6 +22,8 @@ const formInputClasses =
   "mb-2 border rounded-[3px] p-[5px] box-border text-[14px] md:text-[18px] lg:text-[20px]";
 const formLabelClasses = "mb-1 font text-[14px] md:text-[18px] lg:text-[20px]";
 const formMessageClasses = "text-xs italic text-[#ff1100] md:text-[16px] lg:text-[20px]";
+const btnClasses =
+  "cursor-pointer border rounded-[3px] w-full my-4 md:text-[18px] md:h-[40px] lg:text-[20px] lg:h-[44px]";
 
 // add schemas as necessary
 const formSchema = z.object({
@@ -84,7 +86,9 @@ export function ProfileForm() {
                   <div className="relative flex flex-row justify-between">
                     <FormLabel className={formLabelClasses}>Password</FormLabel>
                     <div className="w-auto">
-                      <Button className="text-xs font-thin text-white absolute top-2 right-0 p-0 m-0 h-0">
+                      <Button
+                        className={`cursor-help text-xs font-thin text-white absolute top-2 right-0 p-0 m-0 h-0`}
+                      >
                         Forgot your Password?
                       </Button>
                     </div>
@@ -96,18 +100,13 @@ export function ProfileForm() {
                 </FormItem>
               )}
             />
-            <Button
-              className="border rounded-[3px] box-border !bg-[#FF8F60] text-black w-full my-4 md:text-[18px] md:h-[40px] lg:text-[20px] lg:h-[44px]"
-              type="submit"
-            >
+            <Button className={`${btnClasses} box-border !bg-[#FF8F60] text-black`} type="submit">
               Login
             </Button>
           </form>
         </Form>
         <p className="text-gray-400 text-[14px] md:text-[16px]">Or continue with</p>
-        <Button className="w-full my-4 border rounded-[3px] bg-transparent text-white md:text-[18px] md:h-[40px] lg:text-[20px] lg:h-[44px]">
-          Login with Google
-        </Button>
+        <Button className={`${btnClasses} bg-transparent text-white `}>Login with Google</Button>
       </div>
     </div>
   );
