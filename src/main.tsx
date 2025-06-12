@@ -6,6 +6,7 @@ import "./global/default.css";
 import { client } from "./store";
 import { ThemeProvider } from "./components/theme-provider";
 import Login from "./components/login-route";
+import Dashboard from "./components/Dashboard/Dashboard";
 import UserManagement from "./routes/user-management/user-management";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -24,7 +25,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 </div>
               }
             />
-             <Route path="/user-management" element={<UserManagement />} />
+            <Route path="/user-management" element={<UserManagement />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </BrowserRouter>
       </ApolloProvider>
