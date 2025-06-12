@@ -4,8 +4,10 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./global/default.css";
 import { client } from "./store";
-import { Button } from "./components/ui/button";
 import { ThemeProvider } from "./components/theme-provider";
+import Login from "./components/login-route";
+import Dashboard from "./components/Dashboard/Dashboard";
+import UserManagement from "./routes/user-management/user-management";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -16,11 +18,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route
               path="/"
               element={
-                <div className="flex flex-col items-center justify-center min-h-svh">
-                  <Button>Click me</Button>
+                <div className="flex h-screen">
+                  <main className="flex-1 bg-zinc-950 ">
+                    <Dashboard />
+                  </main>
                 </div>
               }
             />
+            <Route path="/user-management" element={<UserManagement />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </BrowserRouter>
       </ApolloProvider>
