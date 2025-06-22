@@ -52,6 +52,15 @@ export type DashProps = {
   handleChange: (field: string, value: string) => void;
 };
 
+export type DashCardProps = {
+  children?: React.ReactNode;
+};
+
+export type BreadcrumbHeaderProps = {
+  section: string;
+  page: string;
+};
+
 export type SelectorProps = {
   projectList: Project[];
   selectedProjectId: number;

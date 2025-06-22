@@ -1,8 +1,5 @@
 import React from "react";
-
-type DashCardProps = {
-  children?: React.ReactNode;
-};
+import { DashCardProps } from "@/utils/types";
 
 const DashCard: React.FC<DashCardProps> = ({ children }) => {
   const isLoading = !children;
