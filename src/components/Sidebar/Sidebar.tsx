@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import ProjectSelector from "../ProjectSelector/ProjectSelector";
 import UserMenu from "../UserMenu/UserMenu";
+import ProjectSwitcher from "../ProjectSwitcher/ProjectSwitcher";
 
 const Sidebar = () => {
   const [openMenus, setOpenMenus] = useState<string[]>([]);
@@ -29,7 +30,8 @@ const Sidebar = () => {
     <aside className="w-64 bg-zinc-900 text-white h-screen flex flex-col justify-between p-4 shadow-lg border-r border-zinc-800">
       <div>
         <div className="mb-6">
-          <ProjectSelector />
+          <ProjectSwitcher />
+          {/* <ProjectSelector /> */}
         </div>
 
         {/* Platform Section */}
