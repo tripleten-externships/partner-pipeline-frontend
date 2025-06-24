@@ -13,40 +13,53 @@ import { Button } from '../ui/button';
 
 interface ProjectIconProps {
     color?: string;
+    className?: string;
 }
 
 interface Project {
     name: string;
+    subtitle?: string;
     icon: React.ComponentType<ProjectIconProps>;
 }
 
 export default function ProjectSwitcher() {
-    const [projects, setProjects] = useState<Project[]>([]);
+    //Replace with higher state controlling open Project
+    const [openProject, setOpenedProject] = useState<Project>({name: "Project Name", subtitle: "Project Subtitle", icon: GalleryVerticalEnd});
+
+    const [projects, setProjects] = useState<Project[]>([{name: "Project Name", subtitle: "Project Subtitle", icon: GalleryVerticalEnd}]);
     //Use Temporary Projects
-    useEffect(() => {setProjects([{name: "Drops Diabetes App", icon: GalleryVerticalEnd}, {name: "Drops Marketing Page", icon: AudioWaveform}, {name: "Drops Analytics", icon: Command}]);}, []);
+    useEffect(() => {setProjects([{name: "Drops Diabetes App", subtitle: "Enterprise", icon: GalleryVerticalEnd}, {name: "Drops Marketing Page", subtitle: "Internal", icon: AudioWaveform}, {name: "Drops Analytics", icon: Command}]);}, []);
+
+    useEffect(() => {setOpenedProject(projects[0])}, [projects])
+    
+
+    const handleSwitchProject = (project: Project) => {
+        setOpenedProject(project);
+    };
     
 return (
     <DropdownMenu >
         <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="p-2 size-max cursor-pointer"><div className="flex items-center justify-center rounded-lg bg-blue-600 size-8">
-                <GalleryVerticalEnd className="size-5" />
+            <Button variant="ghost" className="p-2 size-full  cursor-pointer"><div className="flex items-center justify-center rounded-lg bg-blue-600 size-8">
+                <openProject.icon className="size-5" />
                 </div>
-                <div className="flex flex-col"><h3>Drops.care</h3><p className="text-xs text-zinc-400 text-left">Enterprise</p>
+                <div className="flex flex-col"><h3>{openProject.name}</h3><p className="text-xs text-neutral-400 text-left">{openProject.subtitle || ""}</p>
                 </div>
-                <ChevronsUpDown className="ml-20"/>
+                <ChevronsUpDown className="ml-auto"/>
                 </Button>
 
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="right">
+        <DropdownMenuContent side="right" className="min-w-60">
             <DropdownMenuLabel className='text-xs text-neutral-400'>Projects</DropdownMenuLabel>
             <DropdownMenuGroup>
                 {projects.map((project : Project, index : number) => (
-                    <DropdownMenuItem key={project.name}>
+                    <DropdownMenuItem key={project.name}
+                    onSelect={() => handleSwitchProject(project)}>
                 <div className="flex items-center justify-center rounded size-6 border border-neutral-700">
                 <project.icon color="#fff"  />
                 </div>
                 {project.name}
-                <DropdownMenuShortcut >⌘{index + 1}</DropdownMenuShortcut>
+                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
             </DropdownMenuItem>
                 ))}
             

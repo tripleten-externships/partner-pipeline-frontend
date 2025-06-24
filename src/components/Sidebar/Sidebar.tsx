@@ -11,7 +11,6 @@ import {
   Map,
   MoreHorizontal,
 } from "lucide-react";
-import ProjectSelector from "../ProjectSelector/ProjectSelector";
 import UserMenu from "../UserMenu/UserMenu";
 import ProjectSwitcher from "../ProjectSwitcher/ProjectSwitcher";
 
@@ -31,9 +30,7 @@ const Sidebar = () => {
       <div>
         <div className="mb-6">
           <ProjectSwitcher />
-          {/* <ProjectSelector /> */}
         </div>
-
         {/* Platform Section */}
         <h2 className="text-xs  text-zinc-400 mb-3 tracking-wide ">Platform</h2>
         <div>
