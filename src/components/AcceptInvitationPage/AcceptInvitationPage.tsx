@@ -9,25 +9,9 @@ import {
 // import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Project } from '@/utils/types';
+import { AcceptInvitationPageProps } from '@/utils/types';
 
-export interface Invitation {
-  id: number;
-  projectName: string;
-  inviterName: string;
-  role: string;
-  projectLogo: string;
-  projectIcon: React.ReactNode;
-}
 
-interface AcceptInvitationPageProps {
-  projectList: Project[];
-  setSelectedProjectId: (id: number) => void;
-  invitation: Invitation | null;
-  isLoggedIn: boolean;
-  userEmail: string;
-  handleAcceptInvite: () => void;
-}
 
 const AcceptInvitationPage: React.FC<AcceptInvitationPageProps> = ({
   projectList,

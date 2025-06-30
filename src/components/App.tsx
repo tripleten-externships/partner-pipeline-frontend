@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Project } from "@/utils/types";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
-import { Invitation } from "./AcceptInvitationPage/AcceptInvitationPage";
+import { Invitation } from "@/utils/types";
 
 function App() {
   const navigate = useNavigate()
@@ -76,6 +76,7 @@ function App() {
     }
   }, [currentProject, isSheetOpen]);
 
+  //Simulate invitation 
   useEffect(() => {
     setIsLoading(true);
     setTimeout(() => {
@@ -115,6 +116,15 @@ function App() {
     );
   };
 
+  const handleSubmit = () => {
+  setIsLoading(true);
+  setTimeout(() => {
+    handleSave(formData); // assuming this is the current form
+    setIsLoading(false);
+    setIsSheetOpen(false); // closes the modal/sheet
+  }, 1000);
+};
+
   const handleAcceptInvite = () => {
     if (!isLoggedIn) {
       toast.error("You must be logged in to accept this invitation.");
@@ -132,6 +142,12 @@ function App() {
   const toggleUserMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsUserMenuOpen((open) => !open);
+  };
+
+  const toggleMenu = (menu: string) => {
+    setOpenMenus((prev) =>
+      prev.includes(menu) ? prev.filter((m) => m !== menu) : [...prev, menu]
+    );
   };
 
 
@@ -152,6 +168,7 @@ function App() {
               setIsLoading={setIsLoading}
               handleChange={handleChange}
               handleSave={handleSave}
+              onSubmit={handleSubmit}
               currentProject={currentProject}
               handleProjectSelect={handleProjectSelect}
               openMenus={openMenus}
@@ -166,6 +183,7 @@ function App() {
               toggleUserMenu={toggleUserMenu}
               userMenuRef={userMenuRef}
               userEmail={userEmail}
+              toggleMenu={toggleMenu}
             />
           }
         />

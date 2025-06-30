@@ -23,17 +23,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   projectDropdownRef,
   handleProjectSelect,
   openMenus,
-  setOpenMenus,
   isUserMenuOpen,
   toggleUserMenu,
   userMenuRef,
   userEmail,
+  toggleMenu,
 }) => {
-  const toggleMenu = (menu: string) => {
-    setOpenMenus((prev) =>
-      prev.includes(menu) ? prev.filter((m) => m !== menu) : [...prev, menu]
-    );
-  };
+  
 
   const isOpen = (menu: string) => openMenus.includes(menu);
 

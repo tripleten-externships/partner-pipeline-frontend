@@ -21,6 +21,7 @@ export type EditProjectFormProps = {
   onChange: (field: keyof FormFields, value: string) => void;
   onSave: (updatedFields: FormFields) => void;
   onCancel: () => void;
+  onSubmit: () => void;
 };
 
 export type DashProps = {
@@ -30,10 +31,12 @@ export type DashProps = {
   setSelectedProjectId: React.Dispatch<React.SetStateAction<number>>;
   currentProject?: Project;
   handleSave: (updatedFields: Partial<Project>) => void;
+  onSubmit: () => void;
   isSheetOpen: boolean;
   setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
   openMenus: string[];
   setOpenMenus: React.Dispatch<React.SetStateAction<string[]>>;
+  toggleMenu: (menu: string) => void;
   isProjectDropdownOpen: boolean;
   setIsProjectDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleProjectSelect: (id: number) => void;
@@ -85,6 +88,7 @@ export interface SidebarProps {
   selectedProjectId: number;
   isProjectDropdownOpen: boolean;
   toggleProjectDropdown: (e: React.MouseEvent) => void;
+  toggleMenu: (menu: string) => void;
   projectDropdownRef: React.RefObject<HTMLDivElement>;
   handleProjectSelect: (id: number) => void;
 
@@ -102,4 +106,22 @@ export interface UserMenuProps {
   toggleMenu: (e: React.MouseEvent) => void;
   menuRef: React.RefObject<HTMLDivElement>;
   userEmail: string;
+}
+
+export interface Invitation {
+  id: number;
+  projectName: string;
+  inviterName: string;
+  role: string;
+  projectLogo: string;
+  projectIcon: React.ReactNode;
+}
+
+export interface AcceptInvitationPageProps {
+  projectList: Project[];
+  setSelectedProjectId: (id: number) => void;
+  invitation: Invitation | null;
+  isLoggedIn: boolean;
+  userEmail: string;
+  handleAcceptInvite: () => void;
 }

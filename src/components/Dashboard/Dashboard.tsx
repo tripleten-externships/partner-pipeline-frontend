@@ -13,12 +13,12 @@ const Dashboard: React.FC<DashProps> = ({
   currentProject,
   formData, setFormData,
   isLoading, setIsLoading,
-  handleChange, handleSave,
+  handleChange, handleSave, onSubmit, 
   isSheetOpen, setIsSheetOpen,
   openMenus, setOpenMenus,
   isProjectDropdownOpen, toggleProjectDropdown, projectDropdownRef,
   handleProjectSelect,
-  isUserMenuOpen, toggleUserMenu, userMenuRef, userEmail,
+  isUserMenuOpen, toggleUserMenu, toggleMenu, userMenuRef, userEmail,
 }) => (
   <div className="flex h-screen">
     <Sidebar
@@ -34,6 +34,7 @@ const Dashboard: React.FC<DashProps> = ({
       toggleUserMenu={toggleUserMenu}
       userMenuRef={userMenuRef}
       userEmail={userEmail}
+      toggleMenu={toggleMenu}
     />
 
     <main className="flex-1 p-6 overflow-y-auto bg-zinc-950">
@@ -57,6 +58,7 @@ const Dashboard: React.FC<DashProps> = ({
                 onChange={handleChange}
                 onSave={handleSave}
                 onCancel={() => setIsSheetOpen(false)}
+                onSubmit={onSubmit}
               />
             )}
           </SheetContent>
