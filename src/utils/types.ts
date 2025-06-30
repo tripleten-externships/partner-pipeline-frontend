@@ -50,9 +50,19 @@ export type DashProps = {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   handleChange: (field: string, value: string) => void;
+    toggleProjectDropdown: (e: React.MouseEvent) => void;
+  projectDropdownRef: React.RefObject<HTMLDivElement>;
+  isUserMenuOpen: boolean;
+  toggleUserMenu: (e: React.MouseEvent) => void;
+  userMenuRef: React.RefObject<HTMLDivElement>;
+  userEmail: string;
 };
 
 export type DashCardProps = {
+  children?: React.ReactNode;
+};
+
+export type DashContentProps = {
   children?: React.ReactNode;
 };
 
@@ -65,17 +75,31 @@ export type SelectorProps = {
   projectList: Project[];
   selectedProjectId: number;
   isProjectDropdownOpen: boolean;
-  setIsProjectDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleProjectDropdown: (e: React.MouseEvent) => void;
+  dropdownRef: React.RefObject<HTMLDivElement>;
   handleProjectSelect: (id: number) => void;
 };
 
-export type SidebarProps = {
+export interface SidebarProps {
   projectList: Project[];
   selectedProjectId: number;
-  setSelectedProjectId: React.Dispatch<React.SetStateAction<number>>;
+  isProjectDropdownOpen: boolean;
+  toggleProjectDropdown: (e: React.MouseEvent) => void;
+  projectDropdownRef: React.RefObject<HTMLDivElement>;
+  handleProjectSelect: (id: number) => void;
+
   openMenus: string[];
   setOpenMenus: React.Dispatch<React.SetStateAction<string[]>>;
-  isProjectDropdownOpen: boolean;
-  setIsProjectDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleProjectSelect: (id: number) => void;
-};
+
+  isUserMenuOpen: boolean;
+  toggleUserMenu: (e: React.MouseEvent) => void;
+  userMenuRef: React.RefObject<HTMLDivElement>;
+  userEmail: string;
+}
+
+export interface UserMenuProps {
+  isOpen: boolean;
+  toggleMenu: (e: React.MouseEvent) => void;
+  menuRef: React.RefObject<HTMLDivElement>;
+  userEmail: string;
+}

@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router";
+import React, { useState, useEffect, useRef } from "react";
+import { Routes, Route, useNavigate } from "react-router";
+import { toast, Toaster } from "sonner";
+import useClickOutside from "@/hooks/useClickOutside";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./login-route";
 import UserManagement from "../routes/user-management/user-management";
@@ -9,8 +11,11 @@ import {
   BarChart4,
 } from "lucide-react";
 import { Project } from "@/utils/types";
+import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
+import { Invitation } from "./AcceptInvitationPage/AcceptInvitationPage";
 
 function App() {
+  const navigate = useNavigate()
   const [projectList, setProjectList] = useState<Project[]>([
     {
       id: 1,
@@ -48,18 +53,48 @@ function App() {
   const [openMenus, setOpenMenus] = useState<string[]>([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
-
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const projectDropdownRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const currentProject = projectList.find((p) => p.id === selectedProjectId);
+  const [invitation, setInvitation] = useState<Invitation | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [userEmail, setUserEmail] = useState("andrew@example.com"); // use real session/user context in production --comments for lint to ignore for dev
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Replace with real logic
+
+  useClickOutside(projectDropdownRef, () => setIsProjectDropdownOpen(false));
+  useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
 
   useEffect(() => {
-  if (currentProject && isSheetOpen) {
-    setFormData({
-      name: currentProject.name || "",
-      description: currentProject.description || "",
-      status: currentProject.status || "",
-    });
-  }
-}, [currentProject, isSheetOpen]);
+    if (currentProject && isSheetOpen) {
+      setFormData({
+        name: currentProject.name || "",
+        description: currentProject.description || "",
+        status: currentProject.status || "",
+      });
+    }
+  }, [currentProject, isSheetOpen]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const sampleId = projectList[0]?.id; // pick the first project for dev
+      const existing = projectList.find(p => p.id === sampleId);
+      if (existing) {
+        setInvitation({
+          id: existing.id,
+          projectName: existing.name,
+          inviterName: "Dev Tester",
+          role: "Collaborator",
+          projectLogo: "/logo.png", 
+          projectIcon: existing.icon,
+        });
+      }
+      setIsLoading(false);
+    }, 300);
+  }, [projectList]);
+
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -79,6 +114,26 @@ function App() {
       )
     );
   };
+
+  const handleAcceptInvite = () => {
+    if (!isLoggedIn) {
+      toast.error("You must be logged in to accept this invitation.");
+      return;
+    }
+    toast.success(`Successfully joined ${invitation?.projectName} as ${invitation?.role}`);
+    setTimeout(() => navigate("/"), 1500);
+  };
+
+  const toggleProjectDropdown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsProjectDropdownOpen((open) => !open);
+  };
+
+  const toggleUserMenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsUserMenuOpen((open) => !open);
+  };
+
 
   return (
     <main className="flex-1 bg-zinc-950">
@@ -105,12 +160,32 @@ function App() {
               setIsSheetOpen={setIsSheetOpen}
               setIsProjectDropdownOpen={setIsProjectDropdownOpen}
               isProjectDropdownOpen={isProjectDropdownOpen}
+              toggleProjectDropdown={toggleProjectDropdown}
+              projectDropdownRef={projectDropdownRef}
+              isUserMenuOpen={isUserMenuOpen}
+              toggleUserMenu={toggleUserMenu}
+              userMenuRef={userMenuRef}
+              userEmail={userEmail}
             />
           }
         />
         <Route path="/user-management" element={<UserManagement />} />
         <Route path="/login" element={<Login />} />
+        <Route
+          path="/invitation"
+          element={
+            <AcceptInvitationPage
+              projectList={projectList}
+              setSelectedProjectId={setSelectedProjectId}
+              invitation={invitation}
+              isLoggedIn={isLoggedIn}
+              userEmail={userEmail}
+              handleAcceptInvite={handleAcceptInvite}
+            />
+          }
+        />
       </Routes>
+      <Toaster position="bottom-center" />
     </main>
   );
 }

@@ -1,28 +1,20 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Bell, LogOut, ChevronsUpDown, Settings } from "lucide-react";
-import useClickOutside from "../../hooks/useClickOutside";
+import { UserMenuProps } from "@/utils/types";
 
-//TODO: Replace with auth context, useRefs for avatar and name, clicking outside of box should close
-
-const UserMenu: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useClickOutside(dropdownRef, () => setOpen(false));
-
-  const toggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setOpen(!open);
-  };
-
+const UserMenu: React.FC<UserMenuProps> = ({
+  isOpen,
+  toggleMenu,
+  menuRef,
+  userEmail,
+}) => {
   const avatarSrc = "https://github.com/shadcn.png";
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      {/* User Button */}
+    <div className="relative" ref={menuRef}>
       <button
-        onClick={toggle}
-        className="w-full flex items-center justify-between text-sm text-left p-2 rounded-md hover:bg-zinc-800 transition group"
+        onClick={toggleMenu}
+        className="w-full flex items-center justify-between text-sm p-2 rounded-md hover:bg-zinc-800 transition"
       >
         <div className="flex items-center gap-2">
           <img
@@ -31,26 +23,22 @@ const UserMenu: React.FC = () => {
             className="w-8 h-8 rounded-md border border-zinc-700"
           />
           <div className="flex flex-col text-xs leading-tight text-zinc-300">
-            <span className="font-medium text-white">shadcn</span>
-            <span className="text-zinc-400">m@example.com</span>
+            <span className="font-medium text-white">{userEmail.split("@")[0]}</span>
+            <span className="text-zinc-400">{userEmail}</span>
           </div>
         </div>
         <ChevronsUpDown size={16} className="text-zinc-400" />
       </button>
 
-      {/* Dropdown */}
-      {open && (
-        <div className="absolute left-full top-[calc(100%-10rem)] ml-2 w-64 z-50 bg-black border border-zinc-700 rounded-md shadow-lg overflow-hidden">
-          <div className="p-3 border-b border-zinc-700">
-            <div className="flex items-center gap-2">
-              <img src={avatarSrc} alt="avatar" className="w-8 h-8 rounded-md" />
-              <div className="text-sm">
-                <p className="font-semibold text-white">shadcn</p>
-                <p className="text-zinc-400 text-xs">m@example.com</p>
-              </div>
+      {isOpen && (
+        <div className="absolute left-full top-[-110px] ml-2 w-64 z-50 bg-black border border-zinc-700 rounded-md shadow-lg">
+          <div className="p-3 border-b border-zinc-700 flex items-center gap-2">
+            <img src={avatarSrc} alt="avatar" className="w-8 h-8 rounded-md" />
+            <div className="text-sm">
+              <p className="font-semibold text-white">{userEmail.split("@")[0]}</p>
+              <p className="text-zinc-400 text-xs">{userEmail}</p>
             </div>
           </div>
-
           <ul className="text-sm text-white">
             <li className="px-4 py-2 hover:bg-zinc-800 flex items-center gap-2 cursor-pointer">
               <Settings size={16} /> Account

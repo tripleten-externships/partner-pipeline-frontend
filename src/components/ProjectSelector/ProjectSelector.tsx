@@ -1,30 +1,22 @@
-import React, { useRef } from "react";
+import React from "react";
 import { ChevronsUpDown, Plus, Check } from "lucide-react";
 import classNames from "classnames";
-import useClickOutside from "../../hooks/useClickOutside";
 import { SelectorProps } from "@/utils/types";
 
 const ProjectSelector: React.FC<SelectorProps> = ({
   projectList,
   selectedProjectId,
   isProjectDropdownOpen,
-  setIsProjectDropdownOpen,
+  toggleProjectDropdown,
   handleProjectSelect,
+  dropdownRef,
 }) => {
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  useClickOutside(dropdownRef, () => setIsProjectDropdownOpen(false));
-
   const selectedProject = projectList.find((p) => p.id === selectedProjectId)!;
-
-  const toggleDropdown = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsProjectDropdownOpen(!isProjectDropdownOpen);
-  };
 
   return (
     <div className="relative" ref={dropdownRef}>
       <button
-        onClick={toggleDropdown}
+        onClick={toggleProjectDropdown}
         className="group relative w-full text-left rounded-md overflow-hidden"
       >
         <div className="absolute inset-[-4px] bg-zinc-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-md z-0" />
@@ -89,4 +81,3 @@ const ProjectSelector: React.FC<SelectorProps> = ({
 };
 
 export default ProjectSelector;
-

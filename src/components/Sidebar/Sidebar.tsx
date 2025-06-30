@@ -18,11 +18,16 @@ import { SidebarProps } from "@/utils/types";
 const Sidebar: React.FC<SidebarProps> = ({
   projectList,
   selectedProjectId,
+  isProjectDropdownOpen,
+  toggleProjectDropdown,
+  projectDropdownRef,
+  handleProjectSelect,
   openMenus,
   setOpenMenus,
-  isProjectDropdownOpen,
-  setIsProjectDropdownOpen,
-  handleProjectSelect,
+  isUserMenuOpen,
+  toggleUserMenu,
+  userMenuRef,
+  userEmail,
 }) => {
   const toggleMenu = (menu: string) => {
     setOpenMenus((prev) =>
@@ -40,10 +45,13 @@ const Sidebar: React.FC<SidebarProps> = ({
             projectList={projectList}
             selectedProjectId={selectedProjectId}
             isProjectDropdownOpen={isProjectDropdownOpen}
-            setIsProjectDropdownOpen={setIsProjectDropdownOpen}
+            toggleProjectDropdown={toggleProjectDropdown} //error here
+            dropdownRef={projectDropdownRef}
             handleProjectSelect={handleProjectSelect}
           />
+
         </div>
+
 
         {/* Platform Section */}
         <h2 className="text-xs text-zinc-400 mb-3 tracking-wide">Platform</h2>
@@ -139,7 +147,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* User Context */}
       <div className="pt-4">
-        <UserMenu />
+        <UserMenu
+          isOpen={isUserMenuOpen} //error here
+          toggleMenu={toggleUserMenu}
+          menuRef={userMenuRef}
+          userEmail={userEmail}
+        />
       </div>
     </aside>
   );
