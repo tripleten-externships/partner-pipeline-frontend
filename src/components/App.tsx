@@ -8,46 +8,45 @@ import {
   AudioWaveform,
   BarChart4,
 } from "lucide-react";
-import { Project } from "@/utils/types";
+import { FormFields, Project, ProjectStatus } from "@/utils/types";
 
 function App() {
   const [projectList, setProjectList] = useState<Project[]>([
     {
-      id: 1,
+      id: "1Ab4",
       name: "Drops Diabetes App",
-      icon: <SquareStack size={16} />,
-      shortcut: "⌘1",
-      description: "Manage diabetes treatment app",
+      imgUrl: "",
+      fallBackIcon: <SquareStack size={16} />,
+      subtitle: "Manage diabetes treatment app",
       status: "Active",
     },
     {
-      id: 2,
+      id: "2tGh",
       name: "Drops Marketing Page",
-      icon: <AudioWaveform size={16} />,
-      shortcut: "⌘2",
-      description: "Drops Marketing Page App",
+      imgUrl: "",
+      fallBackIcon: <AudioWaveform size={16} />,
+      subtitle: "Drops Marketing Page App",
       status: "Completed",
     },
     {
-      id: 3,
+      id: "7hId",
       name: "Drops Analytics",
-      icon: <BarChart4 size={16} />,
-      shortcut: "⌘3",
-      description: "Drops Analytics App",
+      imgUrl: "",
+      fallBackIcon: <BarChart4 size={16} />,
+      subtitle: "Drops Analytics App",
       status: "Paused",
     },
   ]);
 
-  const [selectedProjectId, setSelectedProjectId] = useState<number>(1);
-  const [formData, setFormData] = useState({
+  const [selectedProjectId, setSelectedProjectId] = useState<string>(projectList[0].id);
+  const [formData, setFormData] = useState<FormFields>({
     name: "",
     description: "",
-    status: "",
+    status: "Active"
   });
   const [isLoading, setIsLoading] = useState(false);
   const [openMenus, setOpenMenus] = useState<string[]>([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
 
   const currentProject = projectList.find((p) => p.id === selectedProjectId);
 
@@ -55,19 +54,18 @@ function App() {
   if (currentProject && isSheetOpen) {
     setFormData({
       name: currentProject.name || "",
-      description: currentProject.description || "",
+      description: currentProject.subtitle || "",
       status: currentProject.status || "",
     });
   }
 }, [currentProject, isSheetOpen]);
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = <K extends keyof FormFields>(field: K, value: FormFields[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleProjectSelect = (id: number) => {
+  const handleProjectSelect = (id: string) => {
     setSelectedProjectId(id);
-    setIsProjectDropdownOpen(false);
   };
 
   const handleSave = (updatedFields: Partial<Project>) => {
@@ -103,8 +101,6 @@ function App() {
               setOpenMenus={setOpenMenus}
               isSheetOpen={isSheetOpen}
               setIsSheetOpen={setIsSheetOpen}
-              setIsProjectDropdownOpen={setIsProjectDropdownOpen}
-              isProjectDropdownOpen={isProjectDropdownOpen}
             />
           }
         />

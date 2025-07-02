@@ -19,9 +19,9 @@ return (
     <DropdownMenu>
         <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="p-2 size-full truncate cursor-pointer"><div className="flex items-center justify-center rounded-lg bg-blue-600 size-8">
-                {selectedProject.icon}
+                {selectedProject.fallBackIcon}
                 </div>
-                <div className="flex flex-col truncate text-left max-w-full"><h3>{selectedProject.name}</h3><p className="text-xs text-neutral-400 truncate">{selectedProject.description || ""}</p>
+                <div className="flex flex-col truncate text-left max-w-full"><h3>{selectedProject.name}</h3><p className="text-xs text-neutral-400 truncate">{selectedProject.subtitle || ""}</p>
                 </div>
                 <ChevronsUpDown className="ml-auto"/>
                 </Button>
@@ -34,7 +34,7 @@ return (
                     <DropdownMenuItem key={project.id}
                     onSelect={() => handleProjectSelect(project.id)}>
                 <div className="flex items-center justify-center rounded size-6 border border-neutral-700">
-                {project.icon}
+                {project.fallBackIcon}
                 </div>
                 {project.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
