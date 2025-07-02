@@ -8,7 +8,7 @@ import {
   AudioWaveform,
   BarChart4,
 } from "lucide-react";
-import { FormFields, Project, ProjectStatus } from "@/utils/types";
+import { FormFields, Project } from "@/utils/types";
 
 function App() {
   const [projectList, setProjectList] = useState<Project[]>([
