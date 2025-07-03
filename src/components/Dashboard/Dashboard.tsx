@@ -25,8 +25,6 @@ const Dashboard: React.FC<DashProps> = ({
   setIsSheetOpen,
   openMenus,
   setOpenMenus,
-  isProjectDropdownOpen,
-  setIsProjectDropdownOpen,
   handleProjectSelect,
   formData,
   setFormData,
@@ -40,8 +38,6 @@ const Dashboard: React.FC<DashProps> = ({
         projectList={projectList}
         selectedProjectId={selectedProjectId}
         setSelectedProjectId={setSelectedProjectId}
-        isProjectDropdownOpen={isProjectDropdownOpen}
-        setIsProjectDropdownOpen={setIsProjectDropdownOpen}
         handleProjectSelect={handleProjectSelect}
         openMenus={openMenus}
         setOpenMenus={setOpenMenus}
