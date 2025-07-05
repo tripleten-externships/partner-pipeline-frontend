@@ -1,16 +1,18 @@
+export type ProjectStatus = "Active" | "Completed" | "Paused" | "Archived";
+
 export type Project = {
-  id: number;
+  id: string;
   name: string;
-  icon: React.ReactNode;
-  shortcut: string;
-  description: string;
-  status: string;
+  imgUrl: string,
+  fallBackIcon: React.ReactNode;
+  subtitle?: string;
+  status: ProjectStatus;
 };
 
 export type FormFields = {
   name: string;
   description: string;
-  status: string;
+  status: "Active" | "Completed" | "Paused" | "Archived";
 };
 
 export type EditProjectFormProps = {
@@ -26,30 +28,25 @@ export type EditProjectFormProps = {
 export type DashProps = {
   projectList: Project[];
   setProjectList: React.Dispatch<React.SetStateAction<Project[]>>;
-  selectedProjectId: number;
-  setSelectedProjectId: React.Dispatch<React.SetStateAction<number>>;
+  selectedProjectId: string;
+  setSelectedProjectId: React.Dispatch<React.SetStateAction<string>>;
   currentProject?: Project;
   handleSave: (updatedFields: Partial<Project>) => void;
   isSheetOpen: boolean;
   setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
   openMenus: string[];
   setOpenMenus: React.Dispatch<React.SetStateAction<string[]>>;
-  isProjectDropdownOpen: boolean;
-  setIsProjectDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleProjectSelect: (id: number) => void;
-  formData: {
-    name: string;
-    description: string;
-    status: string;
-  };
+  handleProjectSelect: (id: string) => void;
+  formData: FormFields;
+
   setFormData: React.Dispatch<React.SetStateAction<{
     name: string;
     description: string;
-    status: string;
+    status: ProjectStatus;
   }>>;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  handleChange: (field: string, value: string) => void;
+  handleChange: <K extends keyof FormFields>(field: K, value: FormFields[K]) => void;
 };
 
 export type DashCardProps = {
@@ -61,21 +58,17 @@ export type BreadcrumbHeaderProps = {
   page: string;
 };
 
-export type SelectorProps = {
-  projectList: Project[];
-  selectedProjectId: number;
-  isProjectDropdownOpen: boolean;
-  setIsProjectDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleProjectSelect: (id: number) => void;
-};
-
 export type SidebarProps = {
   projectList: Project[];
-  selectedProjectId: number;
-  setSelectedProjectId: React.Dispatch<React.SetStateAction<number>>;
+  selectedProjectId: string;
+  setSelectedProjectId: React.Dispatch<React.SetStateAction<string>>;
   openMenus: string[];
   setOpenMenus: React.Dispatch<React.SetStateAction<string[]>>;
-  isProjectDropdownOpen: boolean;
-  setIsProjectDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleProjectSelect: (id: number) => void;
+  handleProjectSelect: (id: string) => void;
+};
+
+export type ProjectSwitcherProps = {
+  projectList: Project[];
+  selectedProjectId: string;
+  handleProjectSelect: (id: string) => void;
 };

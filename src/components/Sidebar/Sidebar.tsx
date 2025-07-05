@@ -11,17 +11,15 @@ import {
   Map,
   MoreHorizontal,
 } from "lucide-react";
-import ProjectSelector from "../ProjectSelector/ProjectSelector";
 import UserMenu from "../UserMenu/UserMenu";
 import { SidebarProps } from "@/utils/types";
+import ProjectSwitcher from "../ProjectSwitcher/ProjectSwitcher";
 
 const Sidebar: React.FC<SidebarProps> = ({
   projectList,
   selectedProjectId,
   openMenus,
   setOpenMenus,
-  isProjectDropdownOpen,
-  setIsProjectDropdownOpen,
   handleProjectSelect,
 }) => {
   const toggleMenu = (menu: string) => {
@@ -36,15 +34,11 @@ const Sidebar: React.FC<SidebarProps> = ({
     <aside className="w-64 bg-zinc-900 text-white h-screen flex flex-col justify-between p-4 shadow-lg border-r border-zinc-800">
       <div>
         <div className="mb-6">
-          <ProjectSelector
-            projectList={projectList}
-            selectedProjectId={selectedProjectId}
-            isProjectDropdownOpen={isProjectDropdownOpen}
-            setIsProjectDropdownOpen={setIsProjectDropdownOpen}
-            handleProjectSelect={handleProjectSelect}
-          />
+          <ProjectSwitcher  
+           projectList={projectList}
+           selectedProjectId={selectedProjectId}
+           handleProjectSelect={handleProjectSelect}/>
         </div>
-
         {/* Platform Section */}
         <h2 className="text-xs text-zinc-400 mb-3 tracking-wide">Platform</h2>
         <div>
