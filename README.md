@@ -1,8 +1,8 @@
-# Apiary Project: project_name
+# Apiary Project: partner-pipeline
 
 ## Creating a new project (Delete this section)
 
-- Replace instances of `project_name` with your project's title
+- Replace instances of `partner-pipeline` with your project's title
 - Update `index.html` with your project's title, favicon, etc
 - Update the logo file in `/public`
 - Update `tailwind.config.js` with your project's theme configuration (colors, fonts, etc)
