@@ -88,7 +88,7 @@ function App() {
           projectName: existing.name,
           inviterName: "Dev Tester",
           role: "Collaborator",
-          projectLogo: "/logo.png", 
+          projectLogo: "/logo.png",
           projectIcon: existing.icon,
         });
       }
@@ -117,13 +117,13 @@ function App() {
   };
 
   const handleSubmit = () => {
-  setIsLoading(true);
-  setTimeout(() => {
-    handleSave(formData); // assuming this is the current form
-    setIsLoading(false);
-    setIsSheetOpen(false); // closes the modal/sheet
-  }, 1000);
-};
+    setIsLoading(true);
+    setTimeout(() => {
+      handleSave(formData); // assuming this is the current form
+      setIsLoading(false);
+      setIsSheetOpen(false); // closes the modal/sheet
+    }, 1000);
+  };
 
   const handleAcceptInvite = () => {
     if (!isLoggedIn) {
