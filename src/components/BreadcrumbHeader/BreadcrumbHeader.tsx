@@ -1,10 +1,6 @@
 import React from "react";
 import { PanelLeft, ChevronRight } from "lucide-react";
-
-type BreadcrumbHeaderProps = {
-  section: string;
-  page: string;
-};
+import { BreadcrumbHeaderProps } from "@/utils/types";
 
 const BreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ section, page }) => {
   return (
