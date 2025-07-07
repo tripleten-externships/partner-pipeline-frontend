@@ -26,16 +26,12 @@ const AcceptInvitationPage: React.FC<AcceptInvitationPageProps> = ({
   }
 
   const project = projectList.find((p) => p.id === invitation.id);
-  const icon = project?.icon;
+  const icon = project?.fallBackIcon;
 
   return (
     <Card className="max-w-md w-full mx-auto mt-60 p-6">
       <CardHeader className="flex flex-col items-center">
         {icon && <div className="mb-4 text-3xl">{icon}</div>}
-        {/* <Avatar className="mb-4 h-16 w-16">
-          <AvatarImage src={invitation.projectLogo} />
-          <AvatarFallback>{invitation.projectName[0]}</AvatarFallback>
-        </Avatar> */}
         <CardTitle className="text-center text-2xl font-bold">
           You’ve been invited to join {invitation.projectName}
         </CardTitle>
