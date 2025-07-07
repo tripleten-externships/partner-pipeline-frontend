@@ -11,7 +11,7 @@ import {
   SelectContent,
 } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
-import { EditProjectFormProps } from '@/utils/types';
+import { EditProjectFormProps, ProjectStatus } from '@/utils/types';
 
 const EditProjectForm = forwardRef<HTMLDivElement, EditProjectFormProps>(
   (
@@ -51,7 +51,7 @@ const EditProjectForm = forwardRef<HTMLDivElement, EditProjectFormProps>(
         <Label htmlFor="status">Status</Label>
         <Select
           value={formData.status}
-          onValueChange={(value) => onChange('status', value)}
+          onValueChange={(value) => onChange('status', value as ProjectStatus)}
         >
           <SelectTrigger id="status">
             <SelectValue placeholder="Select status" />

@@ -23,7 +23,7 @@ const ProjectSelector: React.FC<SelectorProps> = ({
         <div className="relative z-10 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="bg-blue-500 p-2 rounded-md text-white m-2 mr-0 ml-1">
-              {selectedProject.icon}
+              {selectedProject.fallBackIcon}
             </span>
             <div>
               <p className="text-sm font-medium text-white">
@@ -59,13 +59,13 @@ const ProjectSelector: React.FC<SelectorProps> = ({
                       project.id !== selectedProjectId,
                   })}
                 >
-                  {project.icon}
+                  {project.fallBackIcon}
                 </span>
                 <span className="text-white">{project.name}</span>
               </div>
               <div className="flex items-center gap-2 text-zinc-500 text-xs">
                 {project.id === selectedProjectId && <Check size={14} />}
-                <span>{project.shortcut}</span>
+                <span>{project.imgUrl}</span>
               </div>
             </button>
           ))}
