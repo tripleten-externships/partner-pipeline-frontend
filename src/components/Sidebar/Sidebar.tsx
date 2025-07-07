@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   ChevronDown,
   ChevronUp,
@@ -11,12 +11,17 @@ import {
   Map,
   MoreHorizontal,
 } from "lucide-react";
-import ProjectSelector from "../ProjectSelector/ProjectSelector";
 import UserMenu from "../UserMenu/UserMenu";
+import { SidebarProps } from "@/utils/types";
+import ProjectSwitcher from "../ProjectSwitcher/ProjectSwitcher";
 
-const Sidebar = () => {
-  const [openMenus, setOpenMenus] = useState<string[]>([]);
-
+const Sidebar: React.FC<SidebarProps> = ({
+  projectList,
+  selectedProjectId,
+  openMenus,
+  setOpenMenus,
+  handleProjectSelect,
+}) => {
   const toggleMenu = (menu: string) => {
     setOpenMenus((prev) =>
       prev.includes(menu) ? prev.filter((m) => m !== menu) : [...prev, menu]
@@ -29,11 +34,13 @@ const Sidebar = () => {
     <aside className="w-64 bg-zinc-900 text-white h-screen flex flex-col justify-between p-4 shadow-lg border-r border-zinc-800">
       <div>
         <div className="mb-6">
-          <ProjectSelector />
+          <ProjectSwitcher  
+           projectList={projectList}
+           selectedProjectId={selectedProjectId}
+           handleProjectSelect={handleProjectSelect}/>
         </div>
-
         {/* Platform Section */}
-        <h2 className="text-xs  text-zinc-400 mb-3 tracking-wide ">Platform</h2>
+        <h2 className="text-xs text-zinc-400 mb-3 tracking-wide">Platform</h2>
         <div>
           <button
             className="w-full flex items-center justify-between text-sm font-sm mb-2"
@@ -105,7 +112,7 @@ const Sidebar = () => {
         </div>
 
         {/* Important Links */}
-        <div className="mt-6  pt-4">
+        <div className="mt-6 pt-4">
           <h2 className="text-sm font-semibold text-zinc-400 mb-2">Important Links</h2>
           <ul className="text-sm text-zinc-300 space-y-1">
             <li className="flex items-center gap-2">
@@ -133,3 +140,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
