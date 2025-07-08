@@ -18,15 +18,18 @@ import ProjectSwitcher from "../ProjectSwitcher/ProjectSwitcher";
 const Sidebar: React.FC<SidebarProps> = ({
   projectList,
   selectedProjectId,
-  openMenus,
-  setOpenMenus,
+  isProjectDropdownOpen,
+  toggleProjectDropdown,
+  projectDropdownRef,
   handleProjectSelect,
+  openMenus,
+  isUserMenuOpen,
+  toggleUserMenu,
+  userMenuRef,
+  userEmail,
+  toggleMenu,
 }) => {
-  const toggleMenu = (menu: string) => {
-    setOpenMenus((prev) =>
-      prev.includes(menu) ? prev.filter((m) => m !== menu) : [...prev, menu]
-    );
-  };
+  
 
   const isOpen = (menu: string) => openMenus.includes(menu);
 
@@ -34,11 +37,18 @@ const Sidebar: React.FC<SidebarProps> = ({
     <aside className="w-64 bg-zinc-900 text-white h-screen flex flex-col justify-between p-4 shadow-lg border-r border-zinc-800">
       <div>
         <div className="mb-6">
-          <ProjectSwitcher  
-           projectList={projectList}
-           selectedProjectId={selectedProjectId}
-           handleProjectSelect={handleProjectSelect}/>
+          <ProjectSwitcher
+            projectList={projectList}
+            selectedProjectId={selectedProjectId}
+            isProjectDropdownOpen={isProjectDropdownOpen}
+            toggleProjectDropdown={toggleProjectDropdown} //error here
+            dropdownRef={projectDropdownRef}
+            handleProjectSelect={handleProjectSelect}
+          />
+
         </div>
+
+
         {/* Platform Section */}
         <h2 className="text-xs text-zinc-400 mb-3 tracking-wide">Platform</h2>
         <div>
@@ -133,7 +143,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* User Context */}
       <div className="pt-4">
-        <UserMenu />
+        <UserMenu
+          isOpen={isUserMenuOpen} //error here
+          toggleMenu={toggleUserMenu}
+          menuRef={userMenuRef}
+          userEmail={userEmail}
+        />
       </div>
     </aside>
   );
