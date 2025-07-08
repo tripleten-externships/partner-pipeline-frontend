@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sheet";
 import { buttonVariants } from "@/components/ui/button.variants";
 import { DashProps } from "@/utils/types";
+import ActivityLog from "../ActivityLog/ActivityLog";
 
 const Dashboard: React.FC<DashProps> = ({
   projectList,
@@ -79,6 +80,7 @@ const Dashboard: React.FC<DashProps> = ({
           <DashCard />
           <DashCard />
         </div>
+        <ActivityLog />
         <DashContent />
       </main>
     </div>
