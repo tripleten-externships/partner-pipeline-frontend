@@ -1,5 +1,3 @@
-// # TODO replace avatar with user initials
-
 import React from "react";
 
 type Props = Record<string, never>;
@@ -66,31 +64,29 @@ const ActivityLog: React.FC<Props> = () => {
             <div className="flex items-start">
               {/* Circle icon */}
               <div className="flex items-center justify-center">
-                {/* Outer circle */}
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-900">
+                {/* Outer circle (anchor) */}
+                <a
+                  href="#"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-900 group overflow-hidden"
+                >
                   {/* Inner circle */}
-                  {/* TODO: Update href with real user profile route when available */}
-                  <a
-                    href="#"
-                    className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-800 dark:text-blue-300 overflow-hidden"
-                  >
-                    {activity.img ? (
-                      <img
-                        src={activity.img}
-                        alt={activity.user}
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    ) : activity.user ? (
-                      activity.user[0].toUpperCase()
-                    ) : (
-                      "?"
-                    )}
-                  </a>
-                </div>
+                  {activity.img ? (
+                    <img
+                      src={activity.img}
+                      alt={activity.user}
+                      className="w-6 h-6 rounded-full object-cover transition-all duration-300 group-hover:w-10 group-hover:h-10"
+                    />
+                  ) : (
+                    <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-800 dark:text-blue-300 transition-all duration-300 group-hover:w-10 group-hover:h-10">
+                      {activity.user ? activity.user[0].toUpperCase() : "?"}
+                    </div>
+                  )}
+                </a>
               </div>
 
               {/* Card content */}
-              <div className="ml-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex-1">
+              {/* <div className="ml-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex-1"> */}
+              <div className="ml-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex-1 transform transition-transform duration-200 hover:-translate-y-1">
                 <div className="flex justify-between">
                   <div className="text-sm font-normal text-gray-500 dark:text-gray-300">
                     <strong>{activity.user}</strong> updated{" "}
