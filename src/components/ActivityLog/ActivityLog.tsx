@@ -1,15 +1,19 @@
-import React from 'react';
+// # TODO replace avatar with user initials
+
+import React from "react";
 
 type Props = Record<string, never>;
 
+// TODO: Replace manual ordering with timestamp-based sorting when real data is available
 const dummyActivities = [
   {
-    id: 1,
-    milestone: "Pricing page",
-    oldStatus: "In Progress",
-    newStatus: "Finished",
-    user: "Jese Leos",
-    timestamp: "1 day ago",
+    id: 3,
+    milestone: "Funny Group",
+    oldStatus: "Unassigned",
+    newStatus: "Assigned",
+    user: "Bonnie",
+    timestamp: "just now",
+    img: "https://i.pravatar.cc/40",
   },
   {
     id: 2,
@@ -18,45 +22,90 @@ const dummyActivities = [
     newStatus: "Reviewed",
     user: "Thomas Lean",
     timestamp: "2 hours ago",
+    img: "",
   },
   {
-    id: 3,
-    milestone: "Funny Group",
-    oldStatus: "Unassigned",
-    newStatus: "Assigned",
-    user: "Bonnie",
-    timestamp: "just now",
+    id: 1,
+    milestone: "Pricing page",
+    oldStatus: "In Progress",
+    newStatus: "Finished",
+    user: "Jese Leos",
+    timestamp: "1 day ago",
+    img: "",
+  },
+  {
+    id: 5,
+    milestone: "Enrollemnt",
+    oldStatus: "Closed",
+    newStatus: "Open",
+    user: "Thomas Leos",
+    timestamp: "1 week ago",
+    img: "https://i.pravatar.cc/250",
+  },
+  {
+    id: 4,
+    milestone: "Thermostat",
+    oldStatus: "Warm",
+    newStatus: "Cool",
+    user: "Jese Lean",
+    timestamp: "2 months ago",
+    img: "",
   },
 ];
 
 const ActivityLog: React.FC<Props> = () => {
   return (
-    <section className="pl-4 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow">
-      <ol className="relative border-s border-gray-200 dark:border-gray-700">
-        {dummyActivities.map((activity) => (
-          <li key={activity.id} className="mb-4 ms-6">
-            <span className="absolute mt-6 flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-              <svg
-                className="w-2.5 h-2.5 text-blue-800 dark:text-blue-300"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-              </svg>
-            </span>
+    <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow">
+      {/* Vertical line */}
 
-            <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex justify-between items-center">
-              <div className="text-sm text-gray-500 dark:text-gray-300">
-                <strong>{activity.user}</strong> updated{" "}
-                <strong className="text-blue-600 dark:text-blue-400">{activity.milestone}</strong>{" "}
-                from {activity.oldStatus} to {activity.newStatus}
+      <div className="absolute top-4 bottom-4 left-5 w-px bg-gray-200 dark:bg-gray-700"></div>
+
+      <ol className="relative space-y-4">
+        {dummyActivities.map((activity) => (
+          <li key={activity.id} className="ms-0 relative">
+            <div className="flex items-start">
+              {/* Circle icon */}
+              <div className="flex items-center justify-center">
+                {/* Outer circle */}
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-900">
+                  {/* Inner circle */}
+                  {/* TODO: Update href with real user profile route when available */}
+                  <a
+                    href="#"
+                    className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-800 dark:text-blue-300 overflow-hidden"
+                  >
+                    {activity.img ? (
+                      <img
+                        src={activity.img}
+                        alt={activity.user}
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : activity.user ? (
+                      activity.user[0].toUpperCase()
+                    ) : (
+                      "?"
+                    )}
+                  </a>
+                </div>
               </div>
 
-              <time className="text-xs font-normal text-gray-400 ml-4">
-                {activity.timestamp}
-              </time>
+              {/* Card content */}
+              <div className="ml-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex-1">
+                <div className="flex justify-between">
+                  <div className="text-sm font-normal text-gray-500 dark:text-gray-300">
+                    <strong>{activity.user}</strong> updated{" "}
+                    {/* TODO: Update href with real route when milestone routes are available */}
+                    <a
+                      href="#"
+                      className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                    >
+                      {activity.milestone}
+                    </a>{" "}
+                    from <span>{activity.oldStatus}</span> to <span>{activity.newStatus}</span>
+                  </div>
+                  <time className="text-xs text-gray-400">{activity.timestamp}</time>
+                </div>
+              </div>
             </div>
           </li>
         ))}
