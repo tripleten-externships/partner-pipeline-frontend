@@ -8,6 +8,7 @@ import EditProjectForm from "../EditProjectForm/EditProjectForm";
 import DashCard from "../DashCard/DashCard";
 import DashContent from "../DashContent/DashContent";
 
+
 const Dashboard: React.FC<DashProps> = ({
   projectList, selectedProjectId, 
   currentProject,
@@ -70,7 +71,7 @@ const Dashboard: React.FC<DashProps> = ({
         <DashCard />
         <DashCard />
       </div>
-      <DashContent />
+      <DashContent/>
     </main>
   </div>
 );
