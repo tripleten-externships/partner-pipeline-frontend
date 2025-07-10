@@ -72,3 +72,9 @@ export type ProjectSwitcherProps = {
   selectedProjectId: string;
   handleProjectSelect: (id: string) => void;
 };
+
+export type AddProjectFormProps = {
+  projectList: Project[];
+  selectedProjectId: string;
+  handleProjectSelect: (id: string) => void;
+};

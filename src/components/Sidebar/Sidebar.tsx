@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import UserMenu from "../UserMenu/UserMenu";
 import { SidebarProps } from "@/utils/types";
-import ProjectSwitcher from "../ProjectSwitcher/ProjectSwitcher";
+import AddProjectForm from "../AddProjectForm/AddProjectForm";
 
 const Sidebar: React.FC<SidebarProps> = ({
   projectList,
@@ -34,10 +34,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     <aside className="w-64 bg-zinc-900 text-white h-screen flex flex-col justify-between p-4 shadow-lg border-r border-zinc-800">
       <div>
         <div className="mb-6">
-          <ProjectSwitcher  
-           projectList={projectList}
-           selectedProjectId={selectedProjectId}
-           handleProjectSelect={handleProjectSelect}/>
+          <AddProjectForm
+          projectList={projectList}
+          selectedProjectId={selectedProjectId}
+          handleProjectSelect={handleProjectSelect} />
         </div>
         {/* Platform Section */}
         <h2 className="text-xs text-zinc-400 mb-3 tracking-wide">Platform</h2>

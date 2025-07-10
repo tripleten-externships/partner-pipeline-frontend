@@ -9,7 +9,9 @@ import { DropdownMenu,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger, } from '../ui/dropdown-menu';
+  import { DialogTrigger } from '../ui/dialog';
 import { Button } from '../ui/button';
+
 
 const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({projectList, selectedProjectId, handleProjectSelect}) => {
 
@@ -43,6 +45,7 @@ return (
             
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
+            <DialogTrigger asChild>
             <DropdownMenuItem>
                 <>
                 <div className="flex items-center justify-center rounded size-6 border border-neutral-700">
@@ -50,8 +53,8 @@ return (
                 </div>
                 <p className='text-neutral-400'>Add Project </p>
                 </>
-                 
             </DropdownMenuItem>
+            </DialogTrigger>
         </DropdownMenuContent>
     </DropdownMenu>
 )
