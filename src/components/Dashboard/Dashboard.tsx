@@ -7,6 +7,7 @@ import BreadcrumbHeader from "../BreadcrumbHeader/BreadcrumbHeader";
 import EditProjectForm from "../EditProjectForm/EditProjectForm";
 import DashCard from "../DashCard/DashCard";
 import DashContent from "../DashContent/DashContent";
+import AddProjectForm from "../AddProjectForm/AddProjectForm";
 
 const Dashboard: React.FC<DashProps> = ({
   projectList, selectedProjectId, 
@@ -14,9 +15,11 @@ const Dashboard: React.FC<DashProps> = ({
   formData, setFormData,
   isLoading, setIsLoading,
   handleChange, handleSave, onSubmit, 
-  isSheetOpen, setIsSheetOpen,
+  isSheetOpen, setIsSheetOpen, handleAddProject,
   openMenus, setOpenMenus,
   isProjectDropdownOpen, toggleProjectDropdown, projectDropdownRef,
+  isAddProjectSheetOpen,
+  setIsAddProjectSheetOpen,
   handleProjectSelect,
   isUserMenuOpen, toggleUserMenu, toggleMenu, userMenuRef, userEmail,
 }) => (
@@ -39,7 +42,7 @@ const Dashboard: React.FC<DashProps> = ({
 
     <main className="flex-1 p-6 overflow-y-auto bg-zinc-950">
       <BreadcrumbHeader section="Overview" page="History" />
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-4 gap-2">
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <button className={buttonVariants({ variant: "default" })}>Edit Project</button>
@@ -61,6 +64,20 @@ const Dashboard: React.FC<DashProps> = ({
                 onSubmit={onSubmit}
               />
             )}
+          </SheetContent>
+        </Sheet>
+        <Sheet open={isAddProjectSheetOpen} onOpenChange={setIsAddProjectSheetOpen}>
+          <SheetTrigger asChild>
+            <button className={buttonVariants({ variant: "default" })}>
+              + Add Project
+            </button>
+          </SheetTrigger>
+          <SheetContent className="sm:max-w-lg overflow-y-auto">
+            <SheetHeader>
+              <SheetTitle>Add New Project</SheetTitle>
+              <SheetDescription>Create a new project for testing.</SheetDescription>
+            </SheetHeader>
+            <AddProjectForm onSubmit={handleAddProject} />
           </SheetContent>
         </Sheet>
       </div>

@@ -11,7 +11,7 @@ import {
   BarChart4,
 } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
-import { FormFields, Project, Invitation } from "@/utils/types";
+import { FormFields, Project, Invitation, ProjectFormValues } from "@/utils/types";
 
 function App() {
   const navigate = useNavigate()
@@ -55,6 +55,8 @@ function App() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const projectDropdownRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
+
   const currentProject = projectList.find((p) => p.id === selectedProjectId);
   const [invitation, setInvitation] = useState<Invitation | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -132,6 +134,23 @@ function App() {
     setTimeout(() => navigate("/"), 1500);
   };
 
+  const handleAddProject = (values: ProjectFormValues) => {
+    const newId = Math.random().toString(36).substring(2, 6); // quick random ID
+    const newProject: Project = {
+      id: newId,
+      name: values.name,
+      subtitle: values.subtitle || "",
+      imgUrl: values.img ? URL.createObjectURL(values.img) : "", // optional preview
+      status: values.status,
+      fallBackIcon: <SquareStack size={16} />, //make dynamic later
+    };
+  
+    setProjectList((prev) => [...prev, newProject]);
+    setSelectedProjectId(newId);
+    toast.success(`Project "${values.name}" created.`);
+    setIsAddProjectSheetOpen(false);
+  };
+
   const toggleProjectDropdown = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsProjectDropdownOpen((open) => !open);
@@ -182,6 +201,9 @@ function App() {
               userMenuRef={userMenuRef}
               userEmail={userEmail}
               toggleMenu={toggleMenu}
+              isAddProjectSheetOpen={isAddProjectSheetOpen}
+              setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+              handleAddProject={handleAddProject}
             />
           }
         />

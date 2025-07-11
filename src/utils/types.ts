@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type ProjectStatus = "Active" | "Completed" | "Paused" | "Archived";
 
 export type Project = {
@@ -42,6 +44,7 @@ export type DashProps = {
   isProjectDropdownOpen: boolean;
   setIsProjectDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleProjectSelect: (id: string) => void;
+  handleAddProject: (values: ProjectFormValues) => void;
   formData: FormFields;
 
   setFormData: React.Dispatch<React.SetStateAction<{
@@ -58,6 +61,8 @@ export type DashProps = {
   userMenuRef: React.RefObject<HTMLDivElement>;
   userEmail: string;
   handleChange: <K extends keyof FormFields>(field: K, value: FormFields[K]) => void;
+  isAddProjectSheetOpen: boolean;
+  setIsAddProjectSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type DashCardProps = {
@@ -141,3 +146,24 @@ export type ProjectSwitcherProps = {
   toggleProjectDropdown: (e: React.MouseEvent) => void;
   dropdownRef: React.RefObject<HTMLDivElement>;
 };
+
+export interface AddProjectFormProps {
+  onSubmit: (values: ProjectFormValues) => void;
+}
+
+export const projectFormSchema = z.object({
+  name: z.string().min(1, "Project Name is required"),
+  subtitle: z.string().optional(),
+  description: z.string().optional(),
+  status: z.enum(["Active", "Paused", "Completed"]),
+  img: z
+    .any()
+    .refine(
+      (file) =>
+        !file || (file instanceof File && ["image/png", "image/jpeg"].includes(file.type)),
+      "Only PNG or JPEG images are allowed"
+    )
+    .optional(),
+});
+
+export type ProjectFormValues = z.infer<typeof projectFormSchema>;
