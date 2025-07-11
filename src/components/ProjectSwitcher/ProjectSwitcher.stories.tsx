@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ProjectSwitcher from "./ProjectSwitcher";
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { SquareStack, AudioWaveform, BarChart4 } from "lucide-react";
@@ -48,6 +48,7 @@ type Story = StoryObj<typeof ProjectSwitcher>;
 
 const DefaultStory = (args: ProjectSwitcherProps) => {
   const [selectedProjectId, setSelectedProjectId] = React.useState(sampleProjects[0].id);
+  const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
 
   return (
     <div className="w-64">
@@ -60,6 +61,8 @@ const DefaultStory = (args: ProjectSwitcherProps) => {
         isProjectDropdownOpen={false}
         toggleProjectDropdown={() => { }}
         dropdownRef={React.createRef<HTMLDivElement>()}
+        isAddProjectSheetOpen={isAddProjectSheetOpen}
+        setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
       />
     </div>)
 }
