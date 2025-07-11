@@ -10,11 +10,11 @@ import DashContent from "../DashContent/DashContent";
 import AddProjectForm from "../AddProjectForm/AddProjectForm";
 
 const Dashboard: React.FC<DashProps> = ({
-  projectList, selectedProjectId, 
+  projectList, selectedProjectId,
   currentProject,
   formData, setFormData,
   isLoading, setIsLoading,
-  handleChange, handleSave, onSubmit, 
+  handleChange, handleSave, onSubmit, onProjectSubmit,
   isSheetOpen, setIsSheetOpen, handleAddProject,
   openMenus, setOpenMenus,
   isProjectDropdownOpen, toggleProjectDropdown, projectDropdownRef,
@@ -38,6 +38,8 @@ const Dashboard: React.FC<DashProps> = ({
       userMenuRef={userMenuRef}
       userEmail={userEmail}
       toggleMenu={toggleMenu}
+      isAddProjectSheetOpen={isAddProjectSheetOpen}
+      setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
     />
 
     <main className="flex-1 p-6 overflow-y-auto bg-zinc-950">
@@ -67,17 +69,17 @@ const Dashboard: React.FC<DashProps> = ({
           </SheetContent>
         </Sheet>
         <Sheet open={isAddProjectSheetOpen} onOpenChange={setIsAddProjectSheetOpen}>
-          <SheetTrigger asChild>
+          {/* <SheetTrigger asChild>
             <button className={buttonVariants({ variant: "default" })}>
               + Add Project
             </button>
-          </SheetTrigger>
+          </SheetTrigger> */}
           <SheetContent className="sm:max-w-lg overflow-y-auto">
             <SheetHeader>
               <SheetTitle>Add New Project</SheetTitle>
               <SheetDescription>Create a new project for testing.</SheetDescription>
             </SheetHeader>
-            <AddProjectForm onSubmit={handleAddProject} />
+            <AddProjectForm onProjectSubmit={handleAddProject} onSubmit={handleAddProject}/>
           </SheetContent>
         </Sheet>
       </div>

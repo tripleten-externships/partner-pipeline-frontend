@@ -134,23 +134,26 @@ function App() {
     setTimeout(() => navigate("/"), 1500);
   };
 
-  const handleAddProject = (values: ProjectFormValues) => {
-    const newId = Math.random().toString(36).substring(2, 6); // quick random ID
-    const newProject: Project = {
-      id: newId,
-      name: values.name,
-      subtitle: values.subtitle || "",
-      imgUrl: values.img ? URL.createObjectURL(values.img) : "", // optional preview
-      status: values.status,
-      fallBackIcon: <SquareStack size={16} />, //make dynamic later
-    };
-  
-    setProjectList((prev) => [...prev, newProject]);
-    setSelectedProjectId(newId);
-    toast.success(`Project "${values.name}" created.`);
-    setIsAddProjectSheetOpen(false);
+const handleAddProject = async (values: ProjectFormValues) => {
+  setIsLoading(true);
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate network delay
+
+  const newId = Math.random().toString(36).substring(2, 6);
+  const newProject: Project = {
+    id: newId,
+    name: values.name,
+    subtitle: values.subtitle || "",
+    imgUrl: values.img ? URL.createObjectURL(values.img) : "",
+    status: values.status,
+    fallBackIcon: <SquareStack size={16} />,
   };
 
+  setProjectList((prev) => [...prev, newProject]);
+  setSelectedProjectId(newId);
+  toast.success(`Project "${values.name}" created.`);
+  setIsAddProjectSheetOpen(false);
+  setIsLoading(false);
+};
   const toggleProjectDropdown = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsProjectDropdownOpen((open) => !open);
@@ -185,6 +188,7 @@ function App() {
               setIsLoading={setIsLoading}
               handleChange={handleChange}
               handleSave={handleSave}
+              onProjectSubmit={handleAddProject}
               onSubmit={handleSubmit}
               currentProject={currentProject}
               handleProjectSelect={handleProjectSelect}

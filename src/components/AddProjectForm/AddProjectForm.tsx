@@ -20,17 +20,18 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { projectFormSchema, ProjectFormValues, AddProjectFormProps } from "@/utils/types";
+import { Loader2 } from "lucide-react";
 
-const AddProjectForm: React.FC<AddProjectFormProps> = ({ onSubmit }) => {
-  const form = useForm<ProjectFormValues, any, ProjectFormValues>({
-  resolver: zodResolver(projectFormSchema),
-  defaultValues: {
-    name: "",
-    subtitle: "",
-    description: "",
-    status: "Active",
-  },
-});
+const AddProjectForm: React.FC<AddProjectFormProps> = ({  isLoading, onProjectSubmit, onSubmit }) => {
+  const form = useForm<ProjectFormValues>({
+    resolver: zodResolver(projectFormSchema),
+    defaultValues: {
+      name: "",
+      subtitle: "",
+      description: "",
+      status: "Active",
+    },
+  });
 
   function handleSubmit(values: ProjectFormValues) {
     onSubmit(values);
@@ -124,11 +125,23 @@ const AddProjectForm: React.FC<AddProjectFormProps> = ({ onSubmit }) => {
             )}
           />
 
-          <div className="flex justify-end space-x-2 pt-6"> {/* match EditProjectForm button styles */}
-            <Button type="button" variant="outline" onClick={() => form.reset()}>
+          <div className="flex justify-end space-x-2 pt-6">
+            <Button type="button" variant="outline" onClick={() => form.reset()} disabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit">Add Project</Button>
+            <Button
+              onClick={form.handleSubmit(onProjectSubmit)}
+              disabled={isLoading}
+              variant="default"
+            >
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="animate-spin h-4 w-4" /> Saving...
+                </span>
+              ) : (
+                "Add Project"
+              )}
+            </Button>
           </div>
         </form>
       </Form>
