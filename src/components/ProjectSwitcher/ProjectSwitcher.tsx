@@ -12,8 +12,6 @@ import {
     DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"; // Add these imports
-import AddProjectForm from "../AddProjectForm/AddProjectForm";
 
 const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({ projectList, selectedProjectId, handleProjectSelect,setIsAddProjectSheetOpen }) => {
 

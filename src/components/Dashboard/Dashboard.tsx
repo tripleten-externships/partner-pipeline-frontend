@@ -14,7 +14,7 @@ const Dashboard: React.FC<DashProps> = ({
   currentProject,
   formData, setFormData,
   isLoading, setIsLoading,
-  handleChange, handleSave, onSubmit, onProjectSubmit,
+  handleChange, handleSave, onSubmit,
   isSheetOpen, setIsSheetOpen, handleAddProject,
   openMenus, setOpenMenus,
   isProjectDropdownOpen, toggleProjectDropdown, projectDropdownRef,
@@ -69,11 +69,6 @@ const Dashboard: React.FC<DashProps> = ({
           </SheetContent>
         </Sheet>
         <Sheet open={isAddProjectSheetOpen} onOpenChange={setIsAddProjectSheetOpen}>
-          {/* <SheetTrigger asChild>
-            <button className={buttonVariants({ variant: "default" })}>
-              + Add Project
-            </button>
-          </SheetTrigger> */}
           <SheetContent className="sm:max-w-lg overflow-y-auto">
             <SheetHeader>
               <SheetTitle>Add New Project</SheetTitle>
