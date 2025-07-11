@@ -60,7 +60,7 @@ function App() {
   const currentProject = projectList.find((p) => p.id === selectedProjectId);
   const [invitation, setInvitation] = useState<Invitation | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [userEmail, setUserEmail] = useState("andrew@example.com"); // use real session/user context in production --comments for lint to ignore for dev
+  const [userEmail, setUserEmail] = useState("morty@example.com"); // use real session/user context in production --comments for lint to ignore for dev
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Replace with real logic
 
