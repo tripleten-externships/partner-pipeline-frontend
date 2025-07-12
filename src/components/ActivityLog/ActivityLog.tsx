@@ -55,7 +55,6 @@ const ActivityLog: React.FC<Props> = () => {
   return (
     <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow">
       {/* Vertical line */}
-
       <div className="absolute top-4 bottom-4 left-5 w-px bg-gray-200 dark:bg-gray-700"></div>
 
       <ol className="relative space-y-4">
@@ -85,7 +84,6 @@ const ActivityLog: React.FC<Props> = () => {
               </div>
 
               {/* Card content */}
-              {/* <div className="ml-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex-1"> */}
               <div className="ml-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex-1 transform transition-transform duration-200 hover:-translate-y-1">
                 <div className="flex justify-between">
                   <div className="text-sm font-normal text-gray-500 dark:text-gray-300">
