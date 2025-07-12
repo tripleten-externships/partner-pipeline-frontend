@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 // import {Timeline as FlowBiteTimeLine} from 'flowbite-react';
 
-
+// interface  to place temporary data
 export interface TimelineItem {
   time: string;
   imageSrc: string;
@@ -9,7 +9,7 @@ export interface TimelineItem {
   content: React.ReactNode;
 }
 
-
+//list of objects with temporary data
 const timelineItems: TimelineItem[] = [
   {
     time: "just now",
@@ -31,7 +31,8 @@ const timelineItems: TimelineItem[] = [
   },
   {
     time: "2 hours ago",
-    imageSrc: "",
+    imageSrc:
+      "https://images.unsplash.com/photo-1515096451051-3e94dfce0487?q=80&w=854&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     alt: "Thomas Lean image",
     content: (
       <>
@@ -56,7 +57,8 @@ const timelineItems: TimelineItem[] = [
   },
   {
     time: "1 day ago",
-    imageSrc: "",
+    imageSrc:
+      "https://images.unsplash.com/photo-1515096451051-3e94dfce0487?q=80&w=854&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     alt: "Jese Leos image",
     content: (
       <div className="text-sm font-normal text-gray-500 dark:text-gray-300">
@@ -70,9 +72,8 @@ const timelineItems: TimelineItem[] = [
   },
 ];
 
-
-
-const Timeline: React.FC = () =>{
+const Timeline: React.FC = () => {
+  //the code below was provided from the flowbite website, It was tested temporarilty by importing it to the dashboard component and passing it as a child to <dashconent/>
   return (
     <div>
       <ol className="relative border-s border-gray-200 dark:border-gray-700">
