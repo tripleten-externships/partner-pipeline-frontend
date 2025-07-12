@@ -11,7 +11,7 @@ import {
   BarChart4,
 } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
-import { FormFields, Project, Invitation } from "@/utils/types";
+import { FormFields, Project, Invitation, ProjectFormValues } from "@/utils/types";
 
 function App() {
   const navigate = useNavigate()
@@ -55,10 +55,12 @@ function App() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const projectDropdownRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
+
   const currentProject = projectList.find((p) => p.id === selectedProjectId);
   const [invitation, setInvitation] = useState<Invitation | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [userEmail, setUserEmail] = useState("andrew@example.com"); // use real session/user context in production --comments for lint to ignore for dev
+  const [userEmail, setUserEmail] = useState("morty@example.com"); // use real session/user context in production --comments for lint to ignore for dev
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Replace with real logic
 
@@ -132,6 +134,26 @@ function App() {
     setTimeout(() => navigate("/"), 1500);
   };
 
+const handleAddProject = async (values: ProjectFormValues) => {
+  setIsLoading(true);
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate network delay
+
+  const newId = Math.random().toString(36).substring(2, 6);
+  const newProject: Project = {
+    id: newId,
+    name: values.name,
+    subtitle: values.subtitle || "",
+    imgUrl: values.img ? URL.createObjectURL(values.img) : "",
+    status: values.status,
+    fallBackIcon: <SquareStack size={16} />,
+  };
+
+  setProjectList((prev) => [...prev, newProject]);
+  setSelectedProjectId(newId);
+  toast.success(`Project "${values.name}" created.`);
+  setIsAddProjectSheetOpen(false);
+  setIsLoading(false);
+};
   const toggleProjectDropdown = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsProjectDropdownOpen((open) => !open);
@@ -166,6 +188,7 @@ function App() {
               setIsLoading={setIsLoading}
               handleChange={handleChange}
               handleSave={handleSave}
+              onProjectSubmit={handleAddProject}
               onSubmit={handleSubmit}
               currentProject={currentProject}
               handleProjectSelect={handleProjectSelect}
@@ -182,6 +205,9 @@ function App() {
               userMenuRef={userMenuRef}
               userEmail={userEmail}
               toggleMenu={toggleMenu}
+              isAddProjectSheetOpen={isAddProjectSheetOpen}
+              setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+              handleAddProject={handleAddProject}
             />
           }
         />

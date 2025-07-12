@@ -18,6 +18,8 @@ import ProjectSwitcher from "../ProjectSwitcher/ProjectSwitcher";
 const Sidebar: React.FC<SidebarProps> = ({
   projectList,
   selectedProjectId,
+  isAddProjectSheetOpen,
+  setIsAddProjectSheetOpen,
   isProjectDropdownOpen,
   toggleProjectDropdown,
   projectDropdownRef,
@@ -29,7 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   userEmail,
   toggleMenu,
 }) => {
-  
+
 
   const isOpen = (menu: string) => openMenus.includes(menu);
 
@@ -44,6 +46,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             toggleProjectDropdown={toggleProjectDropdown} //error here
             dropdownRef={projectDropdownRef}
             handleProjectSelect={handleProjectSelect}
+            isAddProjectSheetOpen={isAddProjectSheetOpen}
+            setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
           />
 
         </div>
