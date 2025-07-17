@@ -102,6 +102,7 @@ This project uses the following key libraries
 - [Storybook JS](https://storybook.js.org/)
 - [Testing Cheatsheet](https://testing-library.com/docs/react-testing-library/cheatsheet)
 - [Testing Cheatsheet #2](https://vitest.dev/api/)
+- [Zuztand](https://zustand.docs.pmnd.rs/getting-started/introduction)
 
 ## Deployment
 
