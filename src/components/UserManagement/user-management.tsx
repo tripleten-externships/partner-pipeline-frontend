@@ -11,7 +11,7 @@ interface User {
   email: string;
   role: "admin" | "mentor" | "student";
   active: boolean;
-  assignedProjectId?: string; //for students
+  assignedProjectId?: string[]; //for students
 }
 
 export default function UserManagementPage() {
@@ -30,7 +30,7 @@ export default function UserManagementPage() {
           email: "charlie@example.com",
           role: "student",
           active: true,
-          assignedProjectId: "1",
+          assignedProjectId: ["1"],
         },
       ];
       setUsers(mockUsers);
@@ -45,7 +45,7 @@ export default function UserManagementPage() {
   );
 
   const handleRoleChange = (id: string, role: User["role"], assignedProjectId: User["assignedProjectId"] ) => {
-    setUsers((prev) => prev.map((user) => (user.id === id ? { ...user, role, assignedProjectId: role === "student" ? assignedProjectId: "" } : user)));
+    setUsers((prev) => prev.map((user) => (user.id === id ? { ...user, role, assignedProjectId: role === "student" ? assignedProjectId: [""] } : user)));
   };
 
   // updated above function to adresses change from student role to prevent hanging assigned projectId 
@@ -84,7 +84,7 @@ export default function UserManagementPage() {
               {currentUser?.role === 'admin' ? (
   <Select
     value={user.role}
-    onValueChange={(role) => handleRoleChange(user.id, role as User["role"], user.assignedProjectId ?? "" )}
+    onValueChange={(role) => handleRoleChange(user.id, role as User["role"], user.assignedProjectId ?? [""] )}
   >
     <SelectItem value="admin">Admin</SelectItem>
     <SelectItem value="mentor">Mentor</SelectItem>

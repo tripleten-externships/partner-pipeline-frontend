@@ -13,7 +13,7 @@ interface User {
   password: string;
   role: UserRole;
   isAdmin: boolean;
-  project: string;
+  project: string[];
   isActive: boolean;
   createdAt: string;
   lastLoginDate: string;
@@ -28,7 +28,7 @@ const mockUsers: User[] = [
     password: "password123",
     role: "Lead Mentor",
     isAdmin: true,
-    project: "Project Alpha",
+    project: ["Project Alpha"],
     isActive: true,
     createdAt: "2023-01-15T10:00:00Z",
     lastLoginDate: "06-10-2023",
@@ -45,7 +45,6 @@ const UserManagement: React.FC = () => {
     return (
       (searchTerm === "" ||
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.project.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())) &&
       (roleFilter === "" || user.role === roleFilter) &&
       (statusFilter === "all" ||
