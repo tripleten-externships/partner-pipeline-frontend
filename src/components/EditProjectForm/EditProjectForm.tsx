@@ -18,21 +18,13 @@ const EditProjectForm = forwardRef<HTMLDivElement, EditProjectFormProps>(
     {
       formData,
       isLoading,
-      setIsLoading,
       onChange,
-      onSave,
       onCancel,
+      onSubmit,
     },
     ref
   ) => {
-    const handleSubmit = () => {
-      setIsLoading(true);
-      setTimeout(() => {
-        onSave(formData);
-        setIsLoading(false);
-        onCancel();
-      }, 1000);
-    };
+    
 
   return (
     <div ref={ref} className="space-y-6 p-3">
@@ -76,7 +68,7 @@ const EditProjectForm = forwardRef<HTMLDivElement, EditProjectFormProps>(
         <Button variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button onClick={handleSubmit} disabled={isLoading}>
+        <Button onClick={onSubmit} disabled={isLoading}>
           {isLoading ? (
             <span className="flex items-center gap-2">
               <Loader2 className="animate-spin h-4 w-4" /> Saving...

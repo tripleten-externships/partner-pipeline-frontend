@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectItem } from "@/components/ui/select";
+import { useAuth } from "@/hooks/use-auth";
 
 interface User {
   id: string;
@@ -10,6 +11,7 @@ interface User {
   email: string;
   role: "admin" | "mentor" | "student";
   active: boolean;
+  assignedProjectId?: string[]; //for students
 }
 
 export default function UserManagementPage() {
@@ -28,6 +30,7 @@ export default function UserManagementPage() {
           email: "charlie@example.com",
           role: "student",
           active: true,
+          assignedProjectId: ["1"],
         },
       ];
       setUsers(mockUsers);
@@ -41,15 +44,19 @@ export default function UserManagementPage() {
       user.email.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleRoleChange = (id: string, role: User["role"]) => {
-    setUsers((prev) => prev.map((user) => (user.id === id ? { ...user, role } : user)));
+  const handleRoleChange = (id: string, role: User["role"], assignedProjectId: User["assignedProjectId"] ) => {
+    setUsers((prev) => prev.map((user) => (user.id === id ? { ...user, role, assignedProjectId: role === "student" ? assignedProjectId: [""] } : user)));
   };
+
+  // updated above function to adresses change from student role to prevent hanging assigned projectId 
 
   const toggleUserStatus = (id: string) => {
     setUsers((prev) =>
       prev.map((user) => (user.id === id ? { ...user, active: !user.active } : user))
     );
   };
+
+  const { currentUser } = useAuth({});
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
@@ -74,15 +81,18 @@ export default function UserManagementPage() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Select
-                value={user.role}
-                onValueChange={(role) => handleRoleChange(user.id, role as User["role"])}
-              >
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="mentor">Mentor</SelectItem>
-                <SelectItem value="student">Student</SelectItem>
-              </Select>
-
+              {currentUser?.role === 'admin' ? (
+  <Select
+    value={user.role}
+    onValueChange={(role) => handleRoleChange(user.id, role as User["role"], user.assignedProjectId ?? [""] )}
+  >
+    <SelectItem value="admin">Admin</SelectItem>
+    <SelectItem value="mentor">Mentor</SelectItem>
+    <SelectItem value="student">Student</SelectItem>
+  </Select>
+) : (
+  <p className="text-sm text-gray-500">{user.role}</p> // just displays the role for non-admins admins can move roles around
+)}
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-gray-700">Active</span>
                 <Switch checked={user.active} onCheckedChange={() => toggleUserStatus(user.id)} />

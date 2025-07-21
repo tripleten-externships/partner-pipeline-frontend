@@ -4,6 +4,8 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import * as auth from "../utils/auth";
+import { setToken } from "@/utils/token";
 
 import { Button } from "./ui/button";
 import {
@@ -45,9 +47,21 @@ export function ProfileForm() {
   });
 
   // 2. Define a submit handler.
+  // --- added from the prebuilt one in auth.ts. Minorly corrected to fit the new schema. - Alex
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+     const makeRequest = () => {
+      if (!values) {
+        return;
+      }
+      return auth.login({ email: values.email, password: values.password }).then((data) => {
+        if (data.token) {
+          setToken(data.token);
+          //room for other functionality (set user, navigate, etc)
+        }
+      });
+    };
+    makeRequest();
+    // token sets, other functionality needs to be set
     console.log(values);
   }
 
