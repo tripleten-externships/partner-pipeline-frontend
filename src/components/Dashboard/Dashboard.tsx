@@ -106,6 +106,7 @@ const Dashboard: React.FC<DashProps> = ({
         <DashCard />
         <DashCard />
       </div>
+
       <ActivityLog />
       <DashContent />
     </main>
