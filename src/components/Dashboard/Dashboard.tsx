@@ -1,28 +1,49 @@
 import React from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { DashProps } from "@/utils/types";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import { buttonVariants } from "@/components/ui/button.variants";
 import BreadcrumbHeader from "../BreadcrumbHeader/BreadcrumbHeader";
 import EditProjectForm from "../EditProjectForm/EditProjectForm";
 import DashCard from "../DashCard/DashCard";
 import DashContent from "../DashContent/DashContent";
 import AddProjectForm from "../AddProjectForm/AddProjectForm";
-
+import ActivityLog from "../ActivityLog/ActivityLog";
 
 const Dashboard: React.FC<DashProps> = ({
-  projectList, selectedProjectId,
+  projectList,
+  selectedProjectId,
   currentProject,
-  formData, setFormData,
-  isLoading, setIsLoading,
-  handleChange, handleSave, onSubmit,
-  isSheetOpen, setIsSheetOpen, handleAddProject,
-  openMenus, setOpenMenus,
-  isProjectDropdownOpen, toggleProjectDropdown, projectDropdownRef,
+  formData,
+  setFormData,
+  isLoading,
+  setIsLoading,
+  handleChange,
+  handleSave,
+  onSubmit,
+  isSheetOpen,
+  setIsSheetOpen,
+  handleAddProject,
+  openMenus,
+  setOpenMenus,
+  isProjectDropdownOpen,
+  toggleProjectDropdown,
+  projectDropdownRef,
   isAddProjectSheetOpen,
   setIsAddProjectSheetOpen,
   handleProjectSelect,
-  isUserMenuOpen, toggleUserMenu, toggleMenu, userMenuRef, userEmail,
+  isUserMenuOpen,
+  toggleUserMenu,
+  toggleMenu,
+  userMenuRef,
+  userEmail,
 }) => (
   <div className="flex h-screen">
     <Sidebar
@@ -75,7 +96,7 @@ const Dashboard: React.FC<DashProps> = ({
               <SheetTitle>Add New Project</SheetTitle>
               <SheetDescription>Create a new project for testing.</SheetDescription>
             </SheetHeader>
-            <AddProjectForm onProjectSubmit={handleAddProject} onSubmit={handleAddProject}/>
+            <AddProjectForm onProjectSubmit={handleAddProject} onSubmit={handleAddProject} />
           </SheetContent>
         </Sheet>
       </div>
@@ -85,7 +106,9 @@ const Dashboard: React.FC<DashProps> = ({
         <DashCard />
         <DashCard />
       </div>
-      <DashContent/>
+
+      <ActivityLog />
+      <DashContent />
     </main>
   </div>
 );

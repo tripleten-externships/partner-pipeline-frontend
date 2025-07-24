@@ -5,16 +5,12 @@ import useClickOutside from "@/hooks/useClickOutside";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./login-route";
 import UserManagement from "../routes/user-management/user-management";
-import {
-  SquareStack,
-  AudioWaveform,
-  BarChart4,
-} from "lucide-react";
+import { SquareStack, AudioWaveform, BarChart4 } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import { FormFields, Project, Invitation, ProjectFormValues } from "@/utils/types";
 
 function App() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [projectList, setProjectList] = useState<Project[]>([
     {
       id: "1Ab4",
@@ -46,7 +42,7 @@ function App() {
   const [formData, setFormData] = useState<FormFields>({
     name: "",
     description: "",
-    status: "Active"
+    status: "Active",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [openMenus, setOpenMenus] = useState<string[]>([]);
@@ -77,12 +73,12 @@ function App() {
     }
   }, [currentProject, isSheetOpen]);
 
-  //Simulate invitation 
+  //Simulate invitation
   useEffect(() => {
     setIsLoading(true);
     setTimeout(() => {
       const sampleId = projectList[0]?.id; // pick the first project for dev
-      const existing = projectList.find(p => p.id === sampleId);
+      const existing = projectList.find((p) => p.id === sampleId);
       if (existing) {
         setInvitation({
           id: existing.id,
@@ -97,7 +93,6 @@ function App() {
     }, 300);
   }, [projectList]);
 
-
   const handleChange = <K extends keyof FormFields>(field: K, value: FormFields[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -109,9 +104,7 @@ function App() {
   const handleSave = (updatedFields: Partial<Project>) => {
     setProjectList((prev) =>
       prev.map((project) =>
-        project.id === selectedProjectId
-          ? { ...project, ...updatedFields }
-          : project
+        project.id === selectedProjectId ? { ...project, ...updatedFields } : project
       )
     );
   };
@@ -134,26 +127,26 @@ function App() {
     setTimeout(() => navigate("/"), 1500);
   };
 
-const handleAddProject = async (values: ProjectFormValues) => {
-  setIsLoading(true);
-  await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate network delay
+  const handleAddProject = async (values: ProjectFormValues) => {
+    setIsLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate network delay
 
-  const newId = Math.random().toString(36).substring(2, 6);
-  const newProject: Project = {
-    id: newId,
-    name: values.name,
-    subtitle: values.subtitle || "",
-    imgUrl: values.img ? URL.createObjectURL(values.img) : "",
-    status: values.status,
-    fallBackIcon: <SquareStack size={16} />,
+    const newId = Math.random().toString(36).substring(2, 6);
+    const newProject: Project = {
+      id: newId,
+      name: values.name,
+      subtitle: values.subtitle || "",
+      imgUrl: values.img ? URL.createObjectURL(values.img) : "",
+      status: values.status,
+      fallBackIcon: <SquareStack size={16} />,
+    };
+
+    setProjectList((prev) => [...prev, newProject]);
+    setSelectedProjectId(newId);
+    toast.success(`Project "${values.name}" created.`);
+    setIsAddProjectSheetOpen(false);
+    setIsLoading(false);
   };
-
-  setProjectList((prev) => [...prev, newProject]);
-  setSelectedProjectId(newId);
-  toast.success(`Project "${values.name}" created.`);
-  setIsAddProjectSheetOpen(false);
-  setIsLoading(false);
-};
   const toggleProjectDropdown = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsProjectDropdownOpen((open) => !open);
@@ -169,7 +162,6 @@ const handleAddProject = async (values: ProjectFormValues) => {
       prev.includes(menu) ? prev.filter((m) => m !== menu) : [...prev, menu]
     );
   };
-
 
   return (
     <main className="flex-1 bg-zinc-950">
@@ -233,4 +225,3 @@ const handleAddProject = async (values: ProjectFormValues) => {
 }
 
 export default App;
-
