@@ -48,18 +48,18 @@ const MilestonesProgress: React.FC = () => {
       {/* Section heading */}
       <h2
         id="milestones-heading"
-        className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white"
+        className="ml-2 text-2xl font-semibold mb-8 text-gray-900 dark:text-white"
       >
-        Milestones Progress
+        Milestones Progress Tracker
       </h2>
 
       {/* Stepper timeline container */}
-      <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap">
+      <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap ">
         {milestones.map((milestone, index) => (
-          <li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0">
+          <li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0 ">
             <div className="flex items-center">
               {/* Step dot icon */}
-              <div className="z-10 flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
+              <div className="ml-2 z-10 flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
                 <svg
                   className="w-2.5 h-2.5 text-blue-800 dark:text-blue-300"
                   aria-hidden="true"
@@ -73,12 +73,12 @@ const MilestonesProgress: React.FC = () => {
 
               {/* Horizontal line between steps (hidden on last item) */}
               {index < milestones.length - 1 && (
-                <div className="hidden sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
+                <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
               )}
             </div>
 
             {/* Step content */}
-            <div className="mt-3 sm:pe-8">
+            <div className="ml-2 mt-6 sm:pe-8 ">
               {/* Milestone title */}
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {milestone.title}
