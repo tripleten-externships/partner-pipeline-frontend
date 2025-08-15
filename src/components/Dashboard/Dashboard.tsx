@@ -16,6 +16,7 @@ import DashCard from "../DashCard/DashCard";
 import DashContent from "../DashContent/DashContent";
 import AddProjectForm from "../AddProjectForm/AddProjectForm";
 import ActivityLog from "../ActivityLog/ActivityLog";
+import MilestonesProgress from "../MilestonesProgress/MilestonesProgress";
 
 const Dashboard: React.FC<DashProps> = ({
   projectList,
@@ -106,7 +107,7 @@ const Dashboard: React.FC<DashProps> = ({
         <DashCard />
         <DashCard />
       </div>
-
+      <MilestonesProgress />
       <ActivityLog />
       <DashContent />
     </main>
