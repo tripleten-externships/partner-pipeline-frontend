@@ -1,31 +1,44 @@
 import React from "react";
 
+// Define allowed statuses for milestones
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 
+// Each milestone has a title, status, and description
 type Milestone = {
   title: string;
   status: MilestoneStatus;
   description: string;
 };
 
-// Example mocked data with different statuses
+// Logical progression left → right:
+// First three are Complete (green), then In review (blue spinner),
+// then In progress (yellow), then To-do (gray)
 const milestones: Milestone[] = [
-  { title: "Requirements Gathering", status: "To-do", description: "Collect requirements." },
-  { title: "Stakeholder Agreements", status: "In progress", description: "Align with stakeholders." },
-  { title: "Design Prototypes", status: "In review", description: "Review wireframes & mockups." },
-  { title: "Team Formation", status: "Complete", description: "Assemble project team." },
-  { title: "Development Phase X", status: "To-do", description: "Begin core development." },
+  { title: "Requirements Gathering", status: "Complete", description: "Collect requirements." },
+  { title: "Stakeholder Agreements", status: "Complete", description: "Align with stakeholders." },
+  { title: "Design Prototypes", status: "Complete", description: "Review wireframes & mockups." },
+  { title: "Team Formation", status: "In review", description: "Review team structure." },
+  { title: "Development Phase", status: "In progress", description: "Begin core development." },
   { title: "Project Handoff", status: "To-do", description: "Deliver final product." },
 ];
 
-// Map status to Flowbite-style color and icon
+// Map each status to Tailwind color + icon representation
+// (dynamic styling)
 const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }> = {
   "To-do": { 
-    color: "bg-gray-300", 
-    icon: <span className="w-2.5 h-2.5 rounded-full bg-gray-500" /> 
+    color: "bg-gray-300", // Gray circle for tasks not started
+    icon: <span className="w-2.5 h-2.5 rounded-full bg-gray-500" /> // small gray dot inside
   },
   "In progress": { 
-    color: "bg-blue-500", 
+    color: "bg-yellow-400", // Yellow for active task
+    icon: (
+      <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="12" r="10" /> {/* simple filled circle */}
+      </svg>
+    ) 
+  },
+  "In review": { 
+    color: "bg-blue-500", // Blue with a spinner for in review 
     icon: (
       <svg className="w-3 h-3 animate-spin text-white" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -33,19 +46,11 @@ const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }
       </svg>
     ) 
   },
-  "In review": { 
-    color: "bg-yellow-400", 
-    icon: (
-      <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 10h4v2h-6V6h2v6z" />
-      </svg>
-    ) 
-  },
   "Complete": { 
-    color: "bg-green-500", 
+    color: "bg-green-500", // Green for completed tasks
     icon: (
       <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4L9 16.2z" />
+        <path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4L9 16.2z" /> {/* checkmark */}
       </svg>
     ) 
   },
@@ -60,17 +65,22 @@ const MilestonesProgress: React.FC = () => {
 
       <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap">
         {milestones.map((milestone, index) => {
-          const style = statusStyles[milestone.status];
+          const style = statusStyles[milestone.status]; // dynamically get color & icon based on status
           return (
             <li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0">
               <div className="flex items-center">
+                {/* Circle for each milestone */}
                 <div className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}>
-                  {style.icon}
+                  {style.icon} {/* dynamic icon */}
                 </div>
+
+                {/* Connecting line between milestones */}
                 {index < milestones.length - 1 && (
                   <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
                 )}
               </div>
+
+              {/* Milestone text */}
               <div className="ml-2 mt-6 sm:pe-8">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{milestone.title}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
