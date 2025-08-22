@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectItem } from "@/components/ui/select";
 import { Table, TableHeader, TableRow, TableCell, TableBody } from "@/components/ui/table";
+import { SelectContent } from "@radix-ui/react-select";
 
 type UserRole = "Partner" | "Mentor" | "Lead Mentor" | "Designer" | "Coordinator" | "Student";
 
@@ -88,7 +89,7 @@ const UserManagement: React.FC = () => {
         <Select
           value={roleFilter}
           onValueChange={(val) => setRoleFilter(val === "all" ? "" : (val as UserRole))}
-        >
+        ><SelectContent>
           <SelectItem value="all">All Roles</SelectItem>
           <SelectItem value="Lead Mentor">Lead Mentor</SelectItem>
           <SelectItem value="Mentor">Mentor</SelectItem>
@@ -96,14 +97,17 @@ const UserManagement: React.FC = () => {
           <SelectItem value="Partner">Partner</SelectItem>
           <SelectItem value="Designer">Designer</SelectItem>
           <SelectItem value="Coordinator">Coordinator</SelectItem>
+          </SelectContent>
         </Select>
         <Select
           value={statusFilter}
           onValueChange={(val) => setStatusFilter(val as "all" | "Active" | "Inactive")}
         >
+          <SelectContent>
           <SelectItem value="all">All Statuses</SelectItem>
           <SelectItem value="Active">Active</SelectItem>
           <SelectItem value="Inactive">Inactive</SelectItem>
+          </SelectContent>
         </Select>
       </div>
       <Table>
