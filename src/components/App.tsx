@@ -4,6 +4,8 @@ import { toast, Toaster } from "sonner";
 import useClickOutside from "@/hooks/useClickOutside";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./login-route";
+import WelcomePage from "./welcome-page";
+import ProtectedRoute from "./protected-route";
 import UserManagement from "../routes/user-management/user-management";
 import { SquareStack, AudioWaveform, BarChart4 } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
@@ -166,44 +168,8 @@ function App() {
   return (
     <main className="flex-1 bg-zinc-950">
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Dashboard
-              projectList={projectList}
-              setProjectList={setProjectList}
-              selectedProjectId={selectedProjectId}
-              setSelectedProjectId={setSelectedProjectId}
-              formData={formData}
-              setFormData={setFormData}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-              handleChange={handleChange}
-              handleSave={handleSave}
-              onProjectSubmit={handleAddProject}
-              onSubmit={handleSubmit}
-              currentProject={currentProject}
-              handleProjectSelect={handleProjectSelect}
-              openMenus={openMenus}
-              setOpenMenus={setOpenMenus}
-              isSheetOpen={isSheetOpen}
-              setIsSheetOpen={setIsSheetOpen}
-              setIsProjectDropdownOpen={setIsProjectDropdownOpen}
-              isProjectDropdownOpen={isProjectDropdownOpen}
-              toggleProjectDropdown={toggleProjectDropdown}
-              projectDropdownRef={projectDropdownRef}
-              isUserMenuOpen={isUserMenuOpen}
-              toggleUserMenu={toggleUserMenu}
-              userMenuRef={userMenuRef}
-              userEmail={userEmail}
-              toggleMenu={toggleMenu}
-              isAddProjectSheetOpen={isAddProjectSheetOpen}
-              setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
-              handleAddProject={handleAddProject}
-            />
-          }
-        />
-        <Route path="/user-management" element={<UserManagement />} />
+        {/* Public routes */}
+        <Route path="/welcome" element={<WelcomePage />} />
         <Route path="/login" element={<Login />} />
         <Route
           path="/invitation"
@@ -217,6 +183,94 @@ function App() {
               handleAcceptInvite={handleAcceptInvite}
             />
           }
+        />
+        
+        {/* Protected routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard
+                projectList={projectList}
+                setProjectList={setProjectList}
+                selectedProjectId={selectedProjectId}
+                setSelectedProjectId={setSelectedProjectId}
+                formData={formData}
+                setFormData={setFormData}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                handleChange={handleChange}
+                handleSave={handleSave}
+                onProjectSubmit={handleAddProject}
+                onSubmit={handleSubmit}
+                currentProject={currentProject}
+                handleProjectSelect={handleProjectSelect}
+                openMenus={openMenus}
+                setOpenMenus={setOpenMenus}
+                isSheetOpen={isSheetOpen}
+                setIsSheetOpen={setIsSheetOpen}
+                setIsProjectDropdownOpen={setIsProjectDropdownOpen}
+                isProjectDropdownOpen={isProjectDropdownOpen}
+                toggleProjectDropdown={toggleProjectDropdown}
+                projectDropdownRef={projectDropdownRef}
+                isUserMenuOpen={isUserMenuOpen}
+                toggleUserMenu={toggleUserMenu}
+                userMenuRef={userMenuRef}
+                userEmail={userEmail}
+                toggleMenu={toggleMenu}
+                isAddProjectSheetOpen={isAddProjectSheetOpen}
+                setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+                handleAddProject={handleAddProject}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path="/user-management" 
+          element={
+            <ProtectedRoute requiredPermission="users:read">
+              <UserManagement />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard
+                projectList={projectList}
+                setProjectList={setProjectList}
+                selectedProjectId={selectedProjectId}
+                setSelectedProjectId={setSelectedProjectId}
+                formData={formData}
+                setFormData={setFormData}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                handleChange={handleChange}
+                handleSave={handleSave}
+                onProjectSubmit={handleAddProject}
+                onSubmit={handleSubmit}
+                currentProject={currentProject}
+                handleProjectSelect={handleProjectSelect}
+                openMenus={openMenus}
+                setOpenMenus={setOpenMenus}
+                isSheetOpen={isSheetOpen}
+                setIsSheetOpen={setIsSheetOpen}
+                setIsProjectDropdownOpen={setIsProjectDropdownOpen}
+                isProjectDropdownOpen={isProjectDropdownOpen}
+                toggleProjectDropdown={toggleProjectDropdown}
+                projectDropdownRef={projectDropdownRef}
+                isUserMenuOpen={isUserMenuOpen}
+                toggleUserMenu={toggleUserMenu}
+                userMenuRef={userMenuRef}
+                userEmail={userEmail}
+                toggleMenu={toggleMenu}
+                isAddProjectSheetOpen={isAddProjectSheetOpen}
+                setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+                handleAddProject={handleAddProject}
+              />
+            </ProtectedRoute>
+          } 
         />
       </Routes>
       <Toaster position="bottom-center" />
