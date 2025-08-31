@@ -4,8 +4,9 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import * as auth from "../utils/auth";
-import { setToken } from "@/utils/token";
+import { useSessionAuth } from "../hooks/use-session-auth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 import { Button } from "./ui/button";
 import {
@@ -37,6 +38,14 @@ const formSchema = z.object({
 });
 
 export function ProfileForm() {
+  const navigate = useNavigate();
+  const { login, loading, error } = useSessionAuth({
+    onLoginSuccess: (user) => {
+      toast.success(`Welcome back, ${user.name}!`);
+      navigate("/"); // Redirect to dashboard
+    },
+  });
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,23 +56,20 @@ export function ProfileForm() {
   });
 
   // 2. Define a submit handler.
-  // --- added from the prebuilt one in auth.ts. Minorly corrected to fit the new schema. - Alex
-  function onSubmit(values: z.infer<typeof formSchema>) {
-     const makeRequest = () => {
-      if (!values) {
-        return;
-      }
-      return auth.login({ email: values.email, password: values.password }).then((data) => {
-        if (data.token) {
-          setToken(data.token);
-          //room for other functionality (set user, navigate, etc)
-        }
-      });
-    };
-    makeRequest();
-    // token sets, other functionality needs to be set
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await login({ email: values.email, password: values.password });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Login failed";
+      toast.error(errorMessage);
+    }
   }
+
+  const handleGoogleLogin = () => {
+    // Redirect to Google OAuth endpoint
+    const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+    window.location.href = `${API_BASE_URL}/auth/google`;
+  };
 
   return (
     <div className="font-text flex flex-col items-center justify-center h-screen p-[30px]">
@@ -114,13 +120,36 @@ export function ProfileForm() {
                 </FormItem>
               )}
             />
-            <Button className={`${btnClasses} box-border !bg-[#FF8F60] text-black`} type="submit">
-              Login
+            <Button 
+              className={`${btnClasses} box-border !bg-[#FF8F60] text-black`} 
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Signing in..." : "Login"}
             </Button>
           </form>
         </Form>
+        {error && (
+          <p className="text-red-500 text-sm mt-2">{error}</p>
+        )}
         <p className="text-gray-400 text-[14px] md:text-[16px]">Or continue with</p>
-        <Button className={`${btnClasses} bg-transparent text-white `}>Login with Google</Button>
+        <Button 
+          className={`${btnClasses} bg-transparent text-white border border-gray-600 hover:bg-gray-800`}
+          onClick={handleGoogleLogin}
+          type="button"
+          disabled={loading}
+        >
+          Login with Google
+        </Button>
+        <p className="text-gray-400 text-[12px] md:text-[14px] mt-4">
+          Don't have an account?{" "}
+          <button 
+            onClick={() => navigate("/welcome")}
+            className="text-[#FF8F60] hover:underline"
+          >
+            Sign up here
+          </button>
+        </p>
       </div>
     </div>
   );
