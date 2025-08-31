@@ -1,8 +1,13 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { usePermissions, WithPermission } from "@/contexts/permission-context";
@@ -13,7 +18,7 @@ interface User {
   email: string;
   role: "Admin" | "Project Mentor" | "Lead Mentor" | "External Partner" | "Student";
   active: boolean;
-  assignedProjectId?: string[]; //for students
+  assignedProjectId?: string[]; // for students
 }
 
 export default function UserManagementPage() {
@@ -49,11 +54,24 @@ export default function UserManagementPage() {
       user.email.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleRoleChange = (id: string, role: User["role"], assignedProjectId: User["assignedProjectId"] ) => {
-    setUsers((prev) => prev.map((user) => (user.id === id ? { ...user, role, assignedProjectId: role === "student" ? assignedProjectId: [""] } : user)));
+  const handleRoleChange = (
+    id: string,
+    role: User["role"],
+    assignedProjectId: User["assignedProjectId"]
+  ) => {
+    setUsers((prev) =>
+      prev.map((user) =>
+        user.id === id
+          ? {
+              ...user,
+              role,
+              // if no longer Student, clear assignedProjectId
+              assignedProjectId: role === "Student" ? assignedProjectId ?? [] : [],
+            }
+          : user
+      )
+    );
   };
-
-  // updated above function to adresses change from student role to prevent hanging assigned projectId 
 
   const toggleUserStatus = (id: string) => {
     setUsers((prev) =>
@@ -70,8 +88,8 @@ export default function UserManagementPage() {
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-800">User Management</h1>
           <WithPermission permission="system:settings">
-            <Button 
-              onClick={() => window.location.href = '/admin/permissions'}
+            <Button
+              onClick={() => (window.location.href = "/admin/permissions")}
               variant="outline"
             >
               Permission Settings
@@ -99,27 +117,34 @@ export default function UserManagementPage() {
               </div>
 
               <div className="flex items-center space-x-4">
-                <WithPermission permission="users:manage_roles">
+                <WithPermission permission="users:manage_roles" fallback={<span className="text-sm text-gray-500">{user.role}</span>}>
                   <Select
                     value={user.role}
-                    onValueChange={(role) => handleRoleChange(user.id, role as User["role"], user.assignedProjectId ?? [""] )}
+                    onValueChange={(role) =>
+                      handleRoleChange(user.id, role as User["role"], user.assignedProjectId ?? [])
+                    }
                   >
-                    <SelectItem value="Admin">Admin</SelectItem>
-                    <SelectItem value="Lead Mentor">Lead Mentor</SelectItem>
-                    <SelectItem value="Project Mentor">Project Mentor</SelectItem>
-                    <SelectItem value="External Partner">External Partner</SelectItem>
-                    <SelectItem value="Student">Student</SelectItem>
+                    <SelectTrigger className="w-56">
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Admin">Admin</SelectItem>
+                      <SelectItem value="Lead Mentor">Lead Mentor</SelectItem>
+                      <SelectItem value="Project Mentor">Project Mentor</SelectItem>
+                      <SelectItem value="External Partner">External Partner</SelectItem>
+                      <SelectItem value="Student">Student</SelectItem>
+                    </SelectContent>
                   </Select>
                 </WithPermission>
-                
-                <WithPermission 
-                  permission="users:update" 
-                  fallback={<span className="text-sm text-gray-500">{user.role}</span>}
+
+                <WithPermission
+                  permission="users:update"
+                  fallback={<span className="text-sm text-gray-500">{user.active ? "Active" : "Inactive"}</span>}
                 >
                   <div className="flex items-center space-x-2">
                     <span className="text-sm text-gray-700">Active</span>
-                    <Switch 
-                      checked={user.active} 
+                    <Switch
+                      checked={user.active}
                       onCheckedChange={() => toggleUserStatus(user.id)}
                       disabled={!hasPermission("users:update")}
                     />
