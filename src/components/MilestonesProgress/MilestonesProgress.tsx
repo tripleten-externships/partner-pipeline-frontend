@@ -25,34 +25,41 @@ const milestones: Milestone[] = [
 // Map each status to Tailwind color + icon representation
 // (dynamic styling)
 const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }> = {
-  "To-do": { 
+  "To-do": {
     color: "bg-gray-300", // Gray circle for tasks not started
-    icon: <span className="w-2.5 h-2.5 rounded-full bg-gray-500" /> // small gray dot inside
+    icon: <span className="w-2.5 h-2.5 rounded-full bg-gray-500" />, // small gray dot inside
   },
-  "In progress": { 
+  "In progress": {
     color: "bg-yellow-400", // Yellow for active task
     icon: (
       <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
         <circle cx="12" cy="12" r="10" /> {/* simple filled circle */}
       </svg>
-    ) 
+    ),
   },
-  "In review": { 
-    color: "bg-blue-500", // Blue with a spinner for in review 
+  "In review": {
+    color: "bg-blue-500", // Blue with a spinner for in review
     icon: (
       <svg className="w-3 h-3 animate-spin text-white" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
       </svg>
-    ) 
+    ),
   },
-  "Complete": { 
+  Complete: {
     color: "bg-green-500", // Green for completed tasks
     icon: (
       <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
         <path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4L9 16.2z" /> {/* checkmark */}
       </svg>
-    ) 
+    ),
   },
 };
 
@@ -70,7 +77,9 @@ const MilestonesProgress: React.FC = () => {
             <li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0">
               <div className="flex items-center">
                 {/* Circle for each milestone */}
-                <div className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}>
+                <div
+                  className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}
+                >
                   {style.icon} {/* dynamic icon */}
                 </div>
 
@@ -82,7 +91,9 @@ const MilestonesProgress: React.FC = () => {
 
               {/* Milestone text */}
               <div className="ml-2 mt-6 sm:pe-8">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{milestone.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {milestone.title}
+                </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                   Status: <span className="font-medium">{milestone.status}</span>
                 </p>
