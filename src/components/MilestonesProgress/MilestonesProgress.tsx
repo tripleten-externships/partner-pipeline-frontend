@@ -1,4 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
+import { buttonVariants } from "@/components/ui/button.variants";
+import { MilestoneModal } from "../MilestoneModal/MilestoneModal";
 
 // Define allowed statuses for milestones
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
@@ -57,14 +59,26 @@ const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }
 };
 
 const MilestonesProgress: React.FC = () => {
+
+  const [openModal, setOpenModal] = useState(false);
+  const [milestonesList, setMilestonesList] = useState(milestones);
+
+  const handleAddMilestone = (newMilestone: Milestone) => {
+    setMilestonesList((prev) => [...prev, newMilestone]);
+  };
+
   return (
     <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-10">
-      <h2 className="ml-2 text-2xl font-semibold mb-8 text-gray-900 dark:text-white">
-        Milestones Progress Tracker
-      </h2>
+      <div className="flex items-center justify-between mb-8 px-2">
+     <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+      Milestones Progress Tracker
+    </h2>
 
+      <button className={buttonVariants({ variant: "default" })}
+          onClick={() => setOpenModal(true)}>Add milestone</button> 
+      </div>
       <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap">
-        {milestones.map((milestone, index) => {
+{milestonesList.map((milestone, index) => {
           const style = statusStyles[milestone.status]; // dynamically get color & icon based on status
           return (
             <li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0">
@@ -92,6 +106,12 @@ const MilestonesProgress: React.FC = () => {
           );
         })}
       </ol>
+       {/* Modal */}
+      <MilestoneModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        onCreate={handleAddMilestone}
+      />
     </section>
   );
 };
