@@ -28,6 +28,10 @@ export type EditProjectFormProps = {
   onSubmit: () => void;
 };
 
+export type MilestoneProps = {
+  selectedProjectId: string
+};
+
 export type DashProps = {
   projectList: Project[];
   setProjectList: React.Dispatch<React.SetStateAction<Project[]>>;

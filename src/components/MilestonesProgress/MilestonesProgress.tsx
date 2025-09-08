@@ -1,45 +1,51 @@
 import React from "react";
+import { getMilestones } from "@/utils/api";
+import { loadConfig } from "storybook/internal/csf-tools";
+import { MilestoneProps } from "@/utils/types";
 
 type Milestone = {
-  title: string;
+  milestoneName: string;
   status: "To-do";
-  description: string;
+  // description: string; Current Milestone schema does not include description
 };
 
-const milestones: Milestone[] = [
-  {
-    title: "Requirements Gathering",
-    status: "To-do",
-    description: "Collect business and user requirements for the project.",
-  },
-  {
-    title: "Stakeholder Agreements",
-    status: "To-do",
-    description: "Align with stakeholders on scope, timeline, and expectations.",
-  },
-  {
-    title: "Design Prototypes",
-    status: "To-do",
-    description: "Build and review wireframes and UI design mockups.",
-  },
-  {
-    title: "Team Formation",
-    status: "To-do",
-    description: "Assemble the project team and assign roles and responsibilities.",
-  },
-  {
-    title: "Development Phase X",
-    status: "To-do",
-    description: "Begin core feature development for the MVP or next phase.",
-  },
-  {
-    title: "Project Handoff",
-    status: "To-do",
-    description: "Deliver final product, documentation, and training as needed.",
-  },
-];
+// const milestones: Milestone[] = [
+//   {
+//     title: "Requirements Gathering",
+//     status: "To-do",
+//     description: "Collect business and user requirements for the project.",
+//   },
+//   {
+//     title: "Stakeholder Agreements",
+//     status: "To-do",
+//     description: "Align with stakeholders on scope, timeline, and expectations.",
+//   },
+//   {
+//     title: "Design Prototypes",
+//     status: "To-do",
+//     description: "Build and review wireframes and UI design mockups.",
+//   },
+//   {
+//     title: "Team Formation",
+//     status: "To-do",
+//     description: "Assemble the project team and assign roles and responsibilities.",
+//   },
+//   {
+//     title: "Development Phase X",
+//     status: "To-do",
+//     description: "Begin core feature development for the MVP or next phase.",
+//   },
+//   {
+//     title: "Project Handoff",
+//     status: "To-do",
+//     description: "Deliver final product, documentation, and training as needed.",
+//   },
+// ];
 
-const MilestonesProgress: React.FC = () => {
+const MilestonesProgress: React.FC<MilestoneProps> = ({selectedProjectId,}) => {
+  const {data, loading, error} = getMilestones(selectedProjectId);
+  if(error) console.log(error);
+
   return (
     <section
       aria-labelledby="milestones-heading"
@@ -54,8 +60,12 @@ const MilestonesProgress: React.FC = () => {
       </h2>
 
       {/* Stepper timeline container */}
+
+      {loading ? <>
+      <p>Loading</p>
+      </> : <>
       <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap ">
-        {milestones.map((milestone, index) => (
+        {data.milestones.map((milestone:Milestone, index:number) => (
           <li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0 ">
             <div className="flex items-center">
               {/* Step dot icon */}
@@ -72,7 +82,7 @@ const MilestonesProgress: React.FC = () => {
               </div>
 
               {/* Horizontal line between steps (hidden on last item) */}
-              {index < milestones.length - 1 && (
+              {index < data.milestones.length - 1 && (
                 <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
               )}
             </div>
@@ -81,18 +91,21 @@ const MilestonesProgress: React.FC = () => {
             <div className="ml-2 mt-6 sm:pe-8 ">
               {/* Milestone title */}
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {milestone.title}
+                {milestone.milestoneName}
               </h3>
               {/* Milestone status */}
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 Status: <span className="font-medium">{milestone.status}</span>
               </p>
               {/* Milestone description */}
-              <p className="text-sm text-gray-500 dark:text-gray-400">{milestone.description}</p>
+              {/* <p className="text-sm text-gray-500 dark:text-gray-400">{milestone.description}</p> */}
             </div>
           </li>
         ))}
       </ol>
+      </>}
+
+      
     </section>
   );
 };

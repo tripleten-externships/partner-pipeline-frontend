@@ -1,6 +1,7 @@
 import React from "react";
 import { Bell, LogOut, ChevronsUpDown, Settings } from "lucide-react";
 import { UserMenuProps } from "@/utils/types";
+import { getUserData } from "@/utils/api";
 
 const UserMenu: React.FC<UserMenuProps> = ({
   isOpen,
@@ -9,9 +10,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
   userEmail,
 }) => {
   const avatarSrc = "https://github.com/shadcn.png";
-
+  const {data, loading, error} = getUserData(userEmail);
   return (
     <div className="relative" ref={menuRef}>
+      {loading ? <p>Loading</p> : <>
       <button
         onClick={toggleMenu}
         className="w-full flex items-center justify-between text-sm p-2 rounded-md hover:bg-zinc-800 transition"
@@ -23,8 +25,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
             className="w-8 h-8 rounded-md border border-zinc-700"
           />
           <div className="flex flex-col text-xs leading-tight text-zinc-300">
-            <span className="font-medium text-white">{userEmail.split("@")[0]}</span>
-            <span className="text-zinc-400">{userEmail}</span>
+            <span className="font-medium text-white">{data.user.name}</span>
+            <span className="text-zinc-400">{data.user.email}</span>
           </div>
         </div>
         <ChevronsUpDown size={16} className="text-zinc-400" />
@@ -52,6 +54,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
           </ul>
         </div>
       )}
+      </>}      
     </div>
   );
 };

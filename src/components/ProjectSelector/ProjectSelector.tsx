@@ -12,7 +12,7 @@ const ProjectSelector: React.FC<SelectorProps> = ({
   dropdownRef,
 }) => {
   const selectedProject = projectList.find((p) => p.id === selectedProjectId)!;
-
+  
   return (
     <div className="relative" ref={dropdownRef}>
       <button
