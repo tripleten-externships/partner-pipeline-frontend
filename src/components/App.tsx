@@ -8,6 +8,7 @@ import UserManagement from "../routes/user-management/user-management";
 import { SquareStack, AudioWaveform, BarChart4 } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import { FormFields, Project, Invitation, ProjectFormValues } from "@/utils/types";
+import { useProjectIDs } from "@/utils/api";
 
 function App() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ function App() {
     },
   ]);
 
-  const [selectedProjectId, setSelectedProjectId] = useState<string>(projectList[0].id);
+  const [selectedProjectId, setSelectedProjectId] = useState<string>("noID");
   const [formData, setFormData] = useState<FormFields>({
     name: "",
     description: "",
@@ -56,7 +57,7 @@ function App() {
   const currentProject = projectList.find((p) => p.id === selectedProjectId);
   const [invitation, setInvitation] = useState<Invitation | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [userEmail, setUserEmail] = useState("morty@example.com"); // use real session/user context in production --comments for lint to ignore for dev
+  const [userEmail, setUserEmail] = useState("foo@foo.com"); // use real session/user context in production --comments for lint to ignore for dev
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Replace with real logic
 
@@ -72,6 +73,28 @@ function App() {
       });
     }
   }, [currentProject, isSheetOpen]);
+
+  // Convoluted way of getting a valid default id.
+  // - Check if the current id matches any valid id.
+  // - If not, set it to an arbitrary one.
+  function validateID(projects: Project[]) {
+    for(let i = 0; i < projects.length; i++){
+      if(projects[i].id == selectedProjectId) return;
+    }
+    if(projects.length > 0)
+      setSelectedProjectId(projects[0].id);
+    else
+      console.error("No projects available."); // TODO: Add support for zero available projects.
+  }
+  {
+    const {loading, data} = useProjectIDs();
+    if(!loading){
+      validateID(data.projects);
+    }
+  }
+
+  
+  
 
   //Simulate invitation
   useEffect(() => {

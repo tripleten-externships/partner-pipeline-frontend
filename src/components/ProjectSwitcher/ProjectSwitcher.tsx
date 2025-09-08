@@ -12,31 +12,37 @@ import {
     DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
+import { useProjects } from '@/utils/api';
+import { BarChart4 } from 'lucide-react';
 
-const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({ projectList, selectedProjectId, handleProjectSelect,setIsAddProjectSheetOpen }) => {
-
-    const selectedProject = projectList.find((p) => p.id === selectedProjectId)!;
+const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({ selectedProjectId, handleProjectSelect,setIsAddProjectSheetOpen }) => {
+    const {data, loading, refetch} = useProjects();
+    const selectedProject = loading ? undefined : data.projects.find((p: { id: string; }) => p.id === selectedProjectId);
 
     return (
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={(open) => {if(open) refetch()}}>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-2 size-full truncate cursor-pointer"><div className="flex items-center justify-center rounded-lg bg-blue-600 size-8">
+                {loading || !selectedProject ? <p>Loading</p> : 
+                <Button  variant="ghost" className="p-2 size-full truncate cursor-pointer"><div className="flex items-center justify-center rounded-lg bg-blue-600 size-8">
                     {selectedProject.fallBackIcon}
                 </div>
                     <div className="flex flex-col truncate text-left max-w-full"><h3>{selectedProject.name}</h3><p className="text-xs text-neutral-400 truncate">{selectedProject.subtitle || ""}</p>
                     </div>
                     <ChevronsUpDown className="ml-auto" />
                 </Button>
+                }
+                
 
             </DropdownMenuTrigger>
             <DropdownMenuContent side="right" className="min-w-60">
                 <DropdownMenuLabel className='text-xs text-neutral-400'>Projects</DropdownMenuLabel>
+                {!loading ? <>
                 <DropdownMenuGroup>
-                    {projectList.map((project, index: number) => (
+                    {data.projects.map((project: { id: string; name: string; }, index: number) => (
                         <DropdownMenuItem key={project.id}
                             onSelect={() => handleProjectSelect(project.id)}>
                             <div className="flex items-center justify-center rounded size-6 border border-neutral-700">
-                                {project.fallBackIcon}
+                                {<BarChart4 size={16} />}
                             </div>
                             {project.name}
                             <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
@@ -44,6 +50,8 @@ const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({ projectList, selected
                     ))}
 
                 </DropdownMenuGroup>
+                </> : <></>}
+                
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={() => setIsAddProjectSheetOpen(true)}>
                     <div className="flex items-center justify-center rounded size-6 border border-neutral-700">
