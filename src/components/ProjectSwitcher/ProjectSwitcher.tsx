@@ -12,11 +12,11 @@ import {
     DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
-import { getProjects } from '@/utils/api';
+import { useProjects } from '@/utils/api';
 import { BarChart4 } from 'lucide-react';
 
-const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({ projectList, selectedProjectId, handleProjectSelect,setIsAddProjectSheetOpen }) => {
-    const {data, loading, error, refetch} = getProjects();
+const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({ selectedProjectId, handleProjectSelect,setIsAddProjectSheetOpen }) => {
+    const {data, loading, refetch} = useProjects();
     const selectedProject = loading ? undefined : data.projects.find((p: { id: string; }) => p.id === selectedProjectId);
 
     return (

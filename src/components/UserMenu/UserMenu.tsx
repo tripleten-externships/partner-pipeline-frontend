@@ -1,7 +1,7 @@
 import React from "react";
 import { Bell, LogOut, ChevronsUpDown, Settings } from "lucide-react";
 import { UserMenuProps } from "@/utils/types";
-import { getUserData } from "@/utils/api";
+import { useUserData } from "@/utils/api";
 
 const UserMenu: React.FC<UserMenuProps> = ({
   isOpen,
@@ -10,7 +10,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   userEmail,
 }) => {
   const avatarSrc = "https://github.com/shadcn.png";
-  const {data, loading, error} = getUserData(userEmail);
+  const {data, loading} = useUserData(userEmail);
   return (
     <div className="relative" ref={menuRef}>
       {loading ? <p>Loading</p> : <>

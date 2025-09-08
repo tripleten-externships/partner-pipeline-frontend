@@ -1,4 +1,4 @@
-import { getActivityLogs } from "@/utils/api";
+import { useActivityLogs } from "@/utils/api";
 import React from "react";
 
 type Props = Record<string, never>;
@@ -53,7 +53,7 @@ type Props = Record<string, never>;
 // ];
 
 const ActivityLog: React.FC<Props> = () => {
-  const {data, loading, error} = getActivityLogs();
+  const {data, loading, error} = useActivityLogs();
   if(error) console.log(error);
 
   return (

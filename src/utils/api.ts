@@ -1,4 +1,4 @@
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 
 function processServerRequest(res: Response) {
   return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
@@ -13,7 +13,7 @@ const headers = {
 };
 //making an assumption for headers
 
-const getProjectIDs = () => {
+const useProjectIDs = () => {
    return useQuery(gql`query Query {
     projects {
       id
@@ -22,7 +22,7 @@ const getProjectIDs = () => {
 {fetchPolicy: "network-only"});
 }
 
-const getProjects = () => {
+const useProjects = () => {
   return useQuery(gql`query Query {
     projects {
       id,
@@ -34,7 +34,7 @@ const getProjects = () => {
 {fetchPolicy: "network-only"});
 };
 
-const getUserData = (email: string) => {
+const useUserData = (email: string) => {
   return useQuery(gql`query Query($where: UserWhereUniqueInput!) {
   user(where: $where) {
     email
@@ -45,7 +45,7 @@ const getUserData = (email: string) => {
   );
 }
 
-const getMilestones = (projectId:string) => {
+const useMilestones = (projectId:string) => {
   return useQuery(gql`query Query($where: MilestoneWhereInput!) {
   milestones(where: $where) {
     milestoneName
@@ -56,7 +56,7 @@ const getMilestones = (projectId:string) => {
   );
 }
 
-const getActivityLogs = () => {
+const useActivityLogs = () => {
   return useQuery(gql`query Query($orderBy: [ActivityLogOrderByInput!]!) {
   activityLogs(orderBy: $orderBy) {
     id
@@ -74,4 +74,4 @@ const getActivityLogs = () => {
   {variables : {orderBy:[{timestamp: "desc"}]}});
 }
 
-export { processServerRequest, baseUrl, headers, getProjects, getProjectIDs, getUserData, getMilestones, getActivityLogs };
+export { processServerRequest, baseUrl, headers, useProjects, useProjectIDs, useUserData, useMilestones, useActivityLogs };

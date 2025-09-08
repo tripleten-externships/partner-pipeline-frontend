@@ -5,13 +5,10 @@ import useClickOutside from "@/hooks/useClickOutside";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./login-route";
 import UserManagement from "../routes/user-management/user-management";
-import { SquareStack, AudioWaveform, BarChart4, Variable } from "lucide-react";
+import { SquareStack, AudioWaveform, BarChart4 } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import { FormFields, Project, Invitation, ProjectFormValues } from "@/utils/types";
-import { gql, useMutation, useQuery } from '@apollo/client';
-import { email } from "node_modules/zod/v4/core/regexes.cjs";
-import { setContext } from '@apollo/client/link/context';
-import { getProjectIDs } from "@/utils/api";
+import { useProjectIDs } from "@/utils/api";
 
 function App() {
   const navigate = useNavigate();
@@ -90,62 +87,13 @@ function App() {
       console.error("No projects available."); // TODO: Add support for zero available projects.
   }
   {
-    const {loading, data, error} = getProjectIDs();
+    const {loading, data} = useProjectIDs();
     if(!loading){
       validateID(data.projects);
     }
   }
 
   
-  const QUERY_PROJECT = gql`
-  query Query($orderBy: [ProjectOrderByInput!]!) {
-  projects(orderBy: $orderBy) {
-    name
-  }
-}
-  `;
-
-  const SIGNIN = gql`
-  mutation Mutation($email: String!, $password: String!) {
-  authenticateUserWithPassword(email: $email, password: $password) {
-    ... on UserAuthenticationWithPasswordSuccess {
-      item {
-        id
-      }
-      sessionToken
-    }
-    ... on UserAuthenticationWithPasswordFailure {
-      message
-    }
-  }
-}
-`;
-// const response = useMutation(SIGNIN, {variables:{email:"test@gmail.com",password:"password123"}});
-// console.log(response);
-const QUERY = gql`
-query Query($orderBy: [UserLogOrderByInput!]!) {
-  userLogs(orderBy: $orderBy) {
-    id
-  }
-}
-`;
-const QUERY_MILESTONE = gql`
-query Query($orderBy: [MilestoneOrderByInput!]!) {
-  milestones(orderBy: $orderBy) {
-    milestoneName
-  }
-}
-`;
-
-
-//    const milestone = useQuery(QUERY_MILESTONE, {variables:{
-//   "orderBy": [
-//     {
-//       "createdAt": "asc"
-//     }
-//   ]
-// }});
-//    console.log(milestone);
   
 
   //Simulate invitation

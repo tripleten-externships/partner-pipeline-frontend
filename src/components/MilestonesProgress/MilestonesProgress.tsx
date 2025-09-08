@@ -1,6 +1,5 @@
 import React from "react";
-import { getMilestones } from "@/utils/api";
-import { loadConfig } from "storybook/internal/csf-tools";
+import { useMilestones } from "@/utils/api";
 import { MilestoneProps } from "@/utils/types";
 
 type Milestone = {
@@ -43,7 +42,7 @@ type Milestone = {
 // ];
 
 const MilestonesProgress: React.FC<MilestoneProps> = ({selectedProjectId,}) => {
-  const {data, loading, error} = getMilestones(selectedProjectId);
+  const {data, loading, error} = useMilestones(selectedProjectId);
   if(error) console.log(error);
 
   return (
