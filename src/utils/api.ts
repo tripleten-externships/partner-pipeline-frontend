@@ -3,7 +3,7 @@ function processServerRequest(res: Response) {
 }
 //helpful function pair for shorthand on requests to check for errors
 
-const baseUrl = process.env.NODE_ENV === "production" ? "" : "http://localhost:3000";
+const baseUrl = process.env.NODE_ENV === "production" ? "" : "http://localhost:8080";
 
 const headers = {
   Accept: "application/json",
@@ -11,4 +11,27 @@ const headers = {
 };
 //making an assumption for headers
 
-export { processServerRequest, baseUrl, headers };
+const getActivityLog = async (projectId: string) => {
+  const res = await fetch(`${baseUrl}/api/projects/${projectId}/activity-log`, {
+    method: "GET",
+    headers: headers,
+  });
+  return processServerRequest(res);
+};
+
+// Types for Activity Log API response
+export interface ActivityLogEntry {
+  milestone: {
+    id: string;
+    milestoneName: string;
+  };
+  oldStatus: string;
+  newStatus: string;
+  updatedBy: {
+    id: string;
+    name: string;
+  };
+  timestamp: string;
+}
+
+export { processServerRequest, baseUrl, headers , getActivityLog};
