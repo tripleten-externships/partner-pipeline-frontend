@@ -15,6 +15,8 @@ import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
+import { useProjectIDs } from "@/utils/api";
+
 function App() {
   const navigate = useNavigate();
 
@@ -60,8 +62,11 @@ function App() {
   );
 
   const [invitation, setInvitation] = useState<Invitation | null>(null);
-  const [userEmail] = useState("morty@example.com");
-  const [isLoggedIn] = useState(true);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [userEmail] = useState("foo@foo.com"); // use real session/user context in production --comments for lint to ignore for dev
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isLoggedIn] = useState(true); // Replace with real logic
 
   useClickOutside(projectDropdownRef, () => setIsProjectDropdownOpen(false));
   useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
@@ -82,6 +87,29 @@ function App() {
     }
   }, [currentProject, isSheetOpen]);
 
+  // Convoluted way of getting a valid default id.
+  // - Check if the current id matches any valid id.
+  // - If not, set it to an arbitrary one.
+  // function validateID(projects: Project[]) {
+  //   for(let i = 0; i < projects.length; i++){
+  //     if(projects[i].id == selectedProjectId) return;
+  //   }
+  //   if(projects.length > 0)
+  //     setSelectedProjectId(projects[0].id);
+  //   else
+  //     console.error("No projects available."); // TODO: Add support for zero available projects.
+  // }
+  // {
+  //   const {loading, data} = useProjectIDs();
+  //   if(!loading){
+  //     validateID(data.projects);
+  //   }
+  // }
+
+  
+  
+
+  //Simulate invitation
   useEffect(() => {
     setIsLoading(true);
     const t = setTimeout(() => {

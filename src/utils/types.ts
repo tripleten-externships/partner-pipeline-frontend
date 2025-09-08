@@ -28,6 +28,10 @@ export type EditProjectFormProps = {
   onDelete: () => void;
 };
 
+export type MilestoneProps = {
+  selectedProjectId: string
+};
+
 export type DashProps = {
   projectList: Project[];
   selectedProjectId: string;
