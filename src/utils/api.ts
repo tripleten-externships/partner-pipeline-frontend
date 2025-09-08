@@ -46,13 +46,13 @@ const useUserData = (email: string) => {
 }
 
 const useMilestones = (projectId:string) => {
-  return useQuery(gql`query Query($where: MilestoneWhereInput!) {
-  milestones(where: $where) {
+  return useQuery(gql`query Query($where: MilestoneWhereInput!, $orderBy: [MilestoneOrderByInput!]!) {
+  milestones(where: $where, orderBy: $orderBy) {
     milestoneName
     status
   }
   }`,
-  {variables : {where:{project:{id:{equals:projectId}}}}}
+  {variables : {where:{project:{id:{equals:projectId}}}, orderBy:[{createdAt: "asc"}]}}
   );
 }
 
