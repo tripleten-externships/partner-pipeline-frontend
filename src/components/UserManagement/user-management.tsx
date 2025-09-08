@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectItem } from "@/components/ui/select";
 import { useAuth } from "@/hooks/use-auth";
+import { SelectContent } from "@radix-ui/react-select";
 
 interface User {
   id: string;
@@ -86,9 +87,11 @@ export default function UserManagementPage() {
     value={user.role}
     onValueChange={(role) => handleRoleChange(user.id, role as User["role"], user.assignedProjectId ?? [""] )}
   >
+    <SelectContent>
     <SelectItem value="admin">Admin</SelectItem>
     <SelectItem value="mentor">Mentor</SelectItem>
     <SelectItem value="student">Student</SelectItem>
+    </SelectContent>
   </Select>
 ) : (
   <p className="text-sm text-gray-500">{user.role}</p> // just displays the role for non-admins admins can move roles around
