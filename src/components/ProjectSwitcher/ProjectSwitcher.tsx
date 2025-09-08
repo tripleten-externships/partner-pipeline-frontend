@@ -12,8 +12,8 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
-import { useProjects } from '@/utils/api';
-import { BarChart4 } from 'lucide-react';
+// import { useProjects } from '@/utils/api';
+// import { BarChart4 } from 'lucide-react';
 
 const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
   projectList,

@@ -15,7 +15,7 @@ import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
-import { useProjectIDs } from "@/utils/api";
+// import { useProjectIDs } from "@/utils/api";
 
 function App() {
   const navigate = useNavigate();
@@ -63,10 +63,10 @@ function App() {
 
   const [invitation, setInvitation] = useState<Invitation | null>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [userEmail] = useState("foo@foo.com"); // use real session/user context in production --comments for lint to ignore for dev
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLoggedIn] = useState(true); // Replace with real logic
+
+  const [userEmail] = useState("foo@foo.com"); 
+
+  const [isLoggedIn] = useState(true);
 
   useClickOutside(projectDropdownRef, () => setIsProjectDropdownOpen(false));
   useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
