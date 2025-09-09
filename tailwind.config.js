@@ -1,4 +1,4 @@
-
+/* eslint-env node */
 import HeadlessTailwindPlugin from "@headlessui/tailwindcss";
 
 /** @type {import('tailwindcss').Config} */
