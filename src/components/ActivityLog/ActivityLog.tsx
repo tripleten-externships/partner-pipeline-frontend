@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getActivityLog, ActivityLogEntry } from "../../utils/api";
+import { formatTimestamp } from "../../utils/timeFormat";
 
 interface Props {
   projectId: string;
@@ -32,11 +33,7 @@ const ActivityLog: React.FC<Props> = ({ projectId }) => {
     fetchLogs();
   }, [projectId]);
 
-  // Format timestamp with date and military time
-  const formatTimestamp = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString('en-US', { hour12: false })}`;
-  };
+  // Note: formatTimestamp is now imported from utils/timeFormat.ts
 
   if (isLoading) {
     return <div>Loading...</div>;
