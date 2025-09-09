@@ -90,6 +90,11 @@ If your commit message does not conform to the correct pattern, you will receive
     Brief summary of the change in present tense. Not capitalized. No period at the end.
 ```
 
+## Features
+
+### Activity Log
+Timeline component with progressive timestamps ("2 minutes ago", "Yesterday at 2:30PM PST"). Includes timezone detection and follows [UI best practices](https://medium.com/user-experince/ui-date-stamp-best-practices-85ae2c5ad9eb).
+
 ## Helpful Resources
 
 This project uses the following key libraries
