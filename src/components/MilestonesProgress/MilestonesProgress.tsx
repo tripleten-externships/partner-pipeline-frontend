@@ -89,7 +89,7 @@ const MilestonesProgress: React.FC = () => {
                 </div>
 
                 {/* Connecting line between milestones */}
-                {index < milestones.length - 1 && (
+                {index < milestonesList.length - 1 && (
                   <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
                 )}
               </div>

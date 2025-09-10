@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
+
 // Define allowed statuses
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 
@@ -104,5 +105,8 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({ open, onClose, o
     </Dialog>
   );
 };
+
+
+
 
 
