@@ -87,17 +87,20 @@ const ActivityLog: React.FC<Props> = () => {
               <div className="ml-2 sm:ml-4 p-3 sm:p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex-1 min-w-0 transform transition-transform duration-200 hover:-translate-y-1">
                 <div className="flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0">
                   <div className="text-xs sm:text-sm font-normal text-gray-500 dark:text-gray-300 flex-1 min-w-0">
-                    <strong className="break-words">{activity.user}</strong> updated{" "}
+                    <strong>{activity.user}</strong> updated{" "}
                     {/* TODO: Update href with real route when milestone routes are available */}
                     <a
                       href="#"
-                      className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer break-words"
+                      className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
                     >
                       {activity.milestone}
                     </a>{" "}
-                    from <span>{activity.oldStatus}</span> to <span>{activity.newStatus}</span>
+                    from <span className="font-medium">{activity.oldStatus}</span> to{" "}
+                    <span className="font-medium">{activity.newStatus}</span>
                   </div>
-                  <time className="text-xs text-gray-400">{activity.timestamp}</time>
+                  <time className="text-xs text-gray-400 dark:text-gray-500 sm:ms-4 flex-shrink-0">
+                    {activity.timestamp}
+                  </time>
                 </div>
               </div>
             </div>

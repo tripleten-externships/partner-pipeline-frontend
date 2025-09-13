@@ -65,39 +65,50 @@ const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }
 
 const MilestonesProgress: React.FC = () => {
   return (
-    <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-10">
-      <h2 className="ml-2 text-2xl font-semibold mb-8 text-gray-900 dark:text-white">
+    <section className="relative px-2 sm:px-4 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-6 sm:mb-10">
+      <h2 className="ml-2 text-lg sm:text-xl md:text-2xl font-semibold mb-6 sm:mb-8 text-gray-900 dark:text-white">
         Milestones Progress Tracker
       </h2>
 
-      <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap">
+      {/* Mobile/Tablet: Vertical layout, Desktop: Horizontal layout */}
+      <ol className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 sm:gap-6">
         {milestones.map((milestone, index) => {
           const style = statusStyles[milestone.status]; // dynamically get color & icon based on status
           return (
-            <li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0">
-              <div className="flex items-center">
-                {/* Circle for each milestone */}
-                <div
-                  className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}
-                >
-                  {style.icon} {/* dynamic icon */}
+            <li key={index} className="flex-1 md:min-w-0 relative">
+              {/* Mobile/Tablet: Horizontal layout with connecting line on left */}
+              <div className="flex flex-row md:flex-col items-start md:items-center">
+                <div className="flex flex-col md:flex-row items-center md:w-full">
+                  {/* Circle for each milestone */}
+                  <div
+                    className={`ml-2 md:ml-0 z-10 flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full ${style.color} flex-shrink-0`}
+                  >
+                    {style.icon} {/* dynamic icon */}
+                  </div>
+
+                  {/* Connecting line between milestones */}
+                  {index < milestones.length - 1 && (
+                    <>
+                      {/* Vertical line for mobile/tablet */}
+                      <div className="flex md:hidden ml-5 sm:ml-6 w-px h-8 sm:h-10 bg-gray-200 dark:bg-gray-700 mt-2"></div>
+                      {/* Horizontal line for desktop */}
+                      <div className="hidden md:block md:flex-1 h-0.5 bg-gray-200 dark:bg-gray-700 ml-2 mr-2"></div>
+                    </>
+                  )}
                 </div>
 
-                {/* Connecting line between milestones */}
-                {index < milestones.length - 1 && (
-                  <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
-                )}
-              </div>
-
-              {/* Milestone text */}
-              <div className="ml-2 mt-6 sm:pe-8">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {milestone.title}
-                </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                  Status: <span className="font-medium">{milestone.status}</span>
-                </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{milestone.description}</p>
+                {/* Milestone text - responsive positioning and sizing */}
+                <div className="ml-6 sm:ml-10 md:ml-0 md:mt-4 flex-1 min-w-0 -mt-1 md:mt-4 md:text-left">
+                  <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white break-words">
+                    {milestone.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">
+                    Status: <span className="font-medium">{milestone.status}</span>
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 break-words">
+                    {milestone.description}
+                  </p>
+                </div>
               </div>
             </li>
           );
