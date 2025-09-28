@@ -74,4 +74,24 @@ const useActivityLogs = () => {
   {variables : {orderBy:[{timestamp: "desc"}]}});
 }
 
-export { processServerRequest, baseUrl, headers, useProjects, useProjectIDs, useUserData, useMilestones, useActivityLogs };
+interface UpdateMilestoneData {
+  milestoneName?: string;
+  status?: string;
+  // Add other updatable fields as needed
+}
+
+async function updateMilestone(projectId: string, milestoneId: string, data: UpdateMilestoneData) {
+  try {
+    const response = await fetch(`${baseUrl}/api/projects/${projectId}/milestones/${milestoneId}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(data),
+    });
+    return processServerRequest(response);
+  } catch (error) {
+    console.error('Error updating milestone:', error);
+    throw error;
+  }
+}
+
+export { processServerRequest, baseUrl, headers, useProjects, useProjectIDs, useUserData, useMilestones, useActivityLogs, updateMilestone };
