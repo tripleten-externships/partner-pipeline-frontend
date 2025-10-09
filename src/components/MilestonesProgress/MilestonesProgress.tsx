@@ -1,28 +1,30 @@
 import React, {useState} from "react";
 import { buttonVariants } from "@/components/ui/button.variants";
 import { MilestoneModal } from "../MilestoneModal/MilestoneModal";
+import { useMilestones } from "@/utils/api";
+import { MilestoneProps } from "@/utils/types";
 
 // Define allowed statuses for milestones
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 
 // Each milestone has a title, status, and description
 type Milestone = {
-  title: string;
-  status: MilestoneStatus;
-  description: string;
+  milestoneName: string;
+  status: "To-do";
+  // description: string; Current Milestone schema does not include description
 };
 
 // Logical progression left → right:
 // First three are Complete (green), then In review (blue spinner),
 // then In progress (yellow), then To-do (gray)
-const milestones: Milestone[] = [
-  { title: "Requirements Gathering", status: "Complete", description: "Collect requirements." },
-  { title: "Stakeholder Agreements", status: "Complete", description: "Align with stakeholders." },
-  { title: "Design Prototypes", status: "Complete", description: "Review wireframes & mockups." },
-  { title: "Team Formation", status: "In review", description: "Review team structure." },
-  { title: "Development Phase", status: "In progress", description: "Begin core development." },
-  { title: "Project Handoff", status: "To-do", description: "Deliver final product." },
-];
+// const milestones: Milestone[] = [
+//   { title: "Requirements Gathering", status: "Complete", description: "Collect requirements." },
+//   { title: "Stakeholder Agreements", status: "Complete", description: "Align with stakeholders." },
+//   { title: "Design Prototypes", status: "Complete", description: "Review wireframes & mockups." },
+//   { title: "Team Formation", status: "In review", description: "Review team structure." },
+//   { title: "Development Phase", status: "In progress", description: "Begin core development." },
+//   { title: "Project Handoff", status: "To-do", description: "Deliver final product." },
+// ];
 
 // Map each status to Tailwind color + icon representation
 // (dynamic styling)
@@ -87,6 +89,12 @@ const MilestonesProgress: React.FC = () => {
                 <div className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}>
                   {style.icon} {/* dynamic icon */}
                 </div>
+                
+              {/* Horizontal line between steps (hidden on last item) */}
+              {index < data.milestones.length - 1 && (
+                <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
+              )}
+            </div>
 
                 {/* Connecting line between milestones */}
                 {index < milestonesList.length - 1 && (
@@ -96,14 +104,14 @@ const MilestonesProgress: React.FC = () => {
 
               {/* Milestone text */}
               <div className="ml-2 mt-6 sm:pe-8">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{milestone.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{milestone.milestoneName}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                   Status: <span className="font-medium">{milestone.status}</span>
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{milestone.description}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Milestone description</p> {/* current milestone schema does not contain a description */}
               </div>
-            </li>
-          );
+            
+          </li>)
         })}
       </ol>
        {/* Modal */}

@@ -30,6 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   userMenuRef,
   userEmail,
   toggleMenu,
+  loadingProjects,        
+  projectError,  
 }) => {
 
 
@@ -41,9 +43,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className="mb-6">
           <ProjectSwitcher
             projectList={projectList}
+            loading={loadingProjects}
+            error={projectError}
             selectedProjectId={selectedProjectId}
             isProjectDropdownOpen={isProjectDropdownOpen}
-            toggleProjectDropdown={toggleProjectDropdown} //error here
+            toggleProjectDropdown={toggleProjectDropdown} 
             dropdownRef={projectDropdownRef}
             handleProjectSelect={handleProjectSelect}
             isAddProjectSheetOpen={isAddProjectSheetOpen}
