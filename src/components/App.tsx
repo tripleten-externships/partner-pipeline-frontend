@@ -8,6 +8,7 @@ import Login from "./login-route";
 import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
+import InviteModal from "./InviteModal/inviteModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
@@ -23,10 +24,7 @@ function App() {
   // GraphQL
   const { data, loading, error, refetch } = useQuery<{ projects: Project[] }>(GET_PROJECTS);
 
-  const projectList = React.useMemo<Project[]>(
-  () => data?.projects ?? [],
-  [data?.projects]
-);
+  const projectList = React.useMemo<Project[]>(() => data?.projects ?? [], [data?.projects]);
   const [createProject] = useMutation(CREATE_PROJECT, {
     refetchQueries: [{ query: GET_PROJECTS }],
   });
@@ -52,6 +50,7 @@ function App() {
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
   const projectDropdownRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -63,8 +62,7 @@ function App() {
 
   const [invitation, setInvitation] = useState<Invitation | null>(null);
 
-
-  const [userEmail] = useState("foo@foo.com"); 
+  const [userEmail] = useState("foo@foo.com");
 
   const [isLoggedIn] = useState(true);
 
@@ -106,9 +104,6 @@ function App() {
   //   }
   // }
 
-  
-  
-
   //Simulate invitation
   useEffect(() => {
     setIsLoading(true);
@@ -129,7 +124,6 @@ function App() {
     }, 300);
     return () => clearTimeout(t);
   }, [projectList]);
-
 
   const handleChange = <K extends keyof FormFields>(field: K, value: FormFields[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -267,6 +261,7 @@ function App() {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
+              onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
         />
@@ -285,7 +280,13 @@ function App() {
             />
           }
         />
+        {/* <button onClick={() => setIsInviteModalOpen(true)}>Invite Team Member</button> */}
       </Routes>
+      <InviteModal
+        isOpen={isInviteModalOpen}
+        onClose={() => setIsInviteModalOpen(false)}
+        projectId={selectedProjectId}
+      />
       <Toaster position="bottom-center" />
     </main>
   );
