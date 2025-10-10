@@ -74,13 +74,13 @@ const MilestonesProgress: React.FC = () => {
       <div className="flex items-center justify-between mb-8 px-2">
      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
       Milestones Progress Tracker
-    </h2>
+     </h2>
 
       <button className={buttonVariants({ variant: "default" })}
           onClick={() => setOpenModal(true)}>Add milestone</button> 
       </div>
       <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap">
-{milestonesList.map((milestone, index) => {
+       {milestonesList.map((milestone, index) => {
           const style = statusStyles[milestone.status]; // dynamically get color & icon based on status
           return (
             <li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0">

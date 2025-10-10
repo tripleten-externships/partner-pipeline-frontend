@@ -6,7 +6,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Button } from "@/components/ui/button";   
 
 
-// Define allowed statuses
+// Define allowed statuses 
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 
 interface MilestoneModalProps {
