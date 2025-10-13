@@ -57,34 +57,36 @@ const ActivityLog: React.FC<Props> = () => {
   if(error) console.log(error);
 
   return (
-    <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow">
 
+<section className="relative px-2 sm:px-4 pt-4 pb-4 bg-zinc-950 rounded-md shadow">
       {loading ? <>
       <p>Loading</p>
       </> : <>
       {/* Vertical line */}
-      <div className="absolute top-4 bottom-4 left-5 w-px bg-gray-200 dark:bg-gray-700"></div>
+      <div className="absolute top-4 bottom-4 left-3 sm:left-5 w-px bg-gray-200 dark:bg-gray-700"></div>
 
-      <ol className="relative space-y-4">
+
+      <ol className="relative space-y-3 space-y-4">
         {data.activityLogs.map((activity: { id: string; img: string; user: string; updatedBy: string; milestone: { milestoneName: string; }; oldStatus: string; newStatus: string; timestamp: string; }) => (
           <li key={activity.id} className="ms-0 relative">
             <div className="flex items-start">
               {/* Circle icon */}
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center flex-shrink-0">
                 {/* Outer circle (anchor) */}
                 <a
                   href="#"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-900 group overflow-hidden"
+                  className="flex items-center justify-center w-8 h:8 sm:w-10 sm:h-10 rounded-full bg-white dark:bg-gray-900 group overflow-hidden"
                 >
                   {/* Inner circle */}
                   {activity.img ? (
                     <img
                       src={activity.img}
                       alt={activity.user}
-                      className="w-6 h-6 rounded-full object-cover transition-all duration-300 group-hover:w-10 group-hover:h-10"
+                      className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover transition-all duration-300 group-hover:w-8 group-hover:h-8 sm:group-hover:w-10 sm:group-hover:h-10"
                     />
                   ) : (
-                    <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-800 dark:text-blue-300 transition-all duration-300 group-hover:w-10 group-hover:h-10">
+
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-800 dark:text-blue-300 transition-all duration-300 group-hover:w-8 group-hover:h-8 group-hover:w-10 group-hover:h-10">
                       {activity.updatedBy ? activity.updatedBy[0].toUpperCase() : "?"}
                     </div>
                   )}
@@ -92,10 +94,10 @@ const ActivityLog: React.FC<Props> = () => {
               </div>
 
               {/* Card content */}
-              <div className="ml-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex-1 transform transition-transform duration-200 hover:-translate-y-1">
-                <div className="flex justify-between">
-                  <div className="text-sm font-normal text-gray-500 dark:text-gray-300">
-                    <strong>{activity.updatedBy}</strong> updated{" "}
+              <div className="ml-2 sm:ml-4 p-3 sm:p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600 flex-1 min-w-0 transform transition-transform duration-200 hover:-translate-y-1">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0">
+                  <div className="text-xs sm:text-sm font-normal text-gray-500 dark:text-gray-300 flex-1 min-w-0">
+                    <strong>{activity.user}</strong> updated{" "}
                     {/* TODO: Update href with real route when milestone routes are available */}
                     <a
                       href="#"
@@ -103,10 +105,12 @@ const ActivityLog: React.FC<Props> = () => {
                     >
                       {activity.milestone.milestoneName}
                     </a>{" "}
-                    from <span>{activity.oldStatus}</span> to <span>{activity.newStatus}</span>
+                    from <span className="font-medium">{activity.oldStatus}</span> to{" "}
+                    <span className="font-medium">{activity.newStatus}</span>
                   </div>
-                  {/* TODO: Format the timestamp */}
-                  <time className="text-xs text-gray-400">{activity.timestamp}</time>
+                  <time className="text-xs text-gray-400 dark:text-gray-500 sm:ms-4 flex-shrink-0">
+                    {activity.timestamp}
+                  </time>
                 </div>
               </div>
             </div>

@@ -3,12 +3,7 @@ import { Bell, LogOut, ChevronsUpDown, Settings } from "lucide-react";
 import { UserMenuProps } from "@/utils/types";
 import { useUserData } from "@/utils/api";
 
-const UserMenu: React.FC<UserMenuProps> = ({
-  isOpen,
-  toggleMenu,
-  menuRef,
-  userEmail,
-}) => {
+const UserMenu: React.FC<UserMenuProps> = ({ isOpen, toggleMenu, menuRef, userEmail }) => {
   const avatarSrc = "https://github.com/shadcn.png";
   const { data, loading, error } = useUserData(userEmail);
 
@@ -18,6 +13,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
   return (
     <div className="relative" ref={menuRef}>
+
       {loading ? (
         <p>Loading</p>
       ) : error ? (
@@ -28,18 +24,18 @@ const UserMenu: React.FC<UserMenuProps> = ({
             onClick={toggleMenu}
             className="w-full flex items-center justify-between text-sm p-2 rounded-md hover:bg-zinc-800 transition"
           >
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 pl-2">
               <img
                 src={avatarSrc}
                 alt="user avatar"
-                className="w-8 h-8 rounded-md border border-zinc-700"
+                className="w-6 sm:w-8 h-6 sm:h-8 rounded-md border border-zinc-700"
               />
-              <div className="flex flex-col text-xs leading-tight text-zinc-300">
-                <span className="font-medium text-white">{displayName}</span>
-                <span className="text-zinc-400">{displayEmail}</span>
+              <div className="flex flex-col text-xs truncate leading-tight text-zinc-300 text-center sm:text-left gap-1">
+                <span className="font-medium text-white truncate">{displayName}</span>
+                <span className="text-zinc-400 truncate">{displayEmail}</span>
               </div>
             </div>
-            <ChevronsUpDown size={16} className="text-zinc-400" />
+            <ChevronsUpDown size={16} className="text-zinc-400 ml-0.8 sm:ml-4" />
           </button>
 
           {isOpen && (

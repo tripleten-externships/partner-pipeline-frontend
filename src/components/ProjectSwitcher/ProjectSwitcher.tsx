@@ -30,7 +30,7 @@ const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
 
   if (loading) {
     return (
-      <Button variant="ghost" className="w-full justify-start text-left animate-pulse">
+      <Button variant="ghost" className="w-full justify-start text-left animate-pulse"> 
         Loading projects...
       </Button>
     );
@@ -86,6 +86,5 @@ const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
     </DropdownMenu>
   );
 };
-
 
 export default ProjectSwitcher;

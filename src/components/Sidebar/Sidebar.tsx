@@ -33,12 +33,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   loadingProjects,        
   projectError,  
 }) => {
-
-
   const isOpen = (menu: string) => openMenus.includes(menu);
 
   return (
-    <aside className="w-64 bg-zinc-900 text-white h-screen flex flex-col justify-between p-4 shadow-lg border-r border-zinc-800">
+    <aside className="w-36 sm:w-64 bg-zinc-900 text-white h-screen flex flex-col justify-between p-4 shadow-lg border-r border-zinc-800">
       <div>
         <div className="mb-6">
           <ProjectSwitcher
@@ -53,15 +51,13 @@ const Sidebar: React.FC<SidebarProps> = ({
             isAddProjectSheetOpen={isAddProjectSheetOpen}
             setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
           />
-
         </div>
-
 
         {/* Platform Section */}
         <h2 className="text-xs text-zinc-400 mb-3 tracking-wide">Platform</h2>
         <div>
           <button
-            className="w-full flex items-center justify-between text-sm font-sm mb-2"
+            className="w-full flex items-center justify-between text-xs sm:text-sm font-sm mb-2"
             onClick={() => toggleMenu("overview")}
           >
             <span className="flex items-center gap-2">
@@ -78,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           )}
 
           <button
-            className="w-full flex items-center justify-between text-sm font-sm mt-4 mb-2"
+            className="w-full flex items-center justify-between text-xs sm:text-sm font-sm mt-4 mb-2"
             onClick={() => toggleMenu("milestones")}
           >
             <span className="flex items-center gap-2">
@@ -95,11 +91,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           )}
 
           <button
-            className="w-full flex items-center justify-between text-sm font-sm mt-4 mb-2"
+            className="w-full flex items-center justify-between text-xs sm:text-sm font-sm mt-4 mb-2"
             onClick={() => toggleMenu("docs")}
           >
-            <span className="flex items-center gap-2">
-              <BookOpen size={16} /> Documentation
+            <span className="flex items-center gap-2 min-w-0">
+              <BookOpen size={16} />
+              <span className="truncate block max-w-[80px] sm:max-w-none">Documentation</span>
             </span>
             {isOpen("docs") ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
@@ -113,7 +110,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           )}
 
           <button
-            className="w-full flex items-center justify-between text-sm font-sm mt-4 mb-2"
+            className="w-full flex items-center justify-between text-xs sm:text-sm font-sm mt-4 mb-2"
             onClick={() => toggleMenu("settings")}
           >
             <span className="flex items-center gap-2">
@@ -131,8 +128,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Important Links */}
         <div className="mt-6 pt-4">
-          <h2 className="text-sm font-semibold text-zinc-400 mb-2">Important Links</h2>
-          <ul className="text-sm text-zinc-300 space-y-1">
+          <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 mb-2">Important Links</h2>
+          <ul className="text-xs sm:text-sm text-zinc-300 sm:space-y-3 space-y-2">
             <li className="flex items-center gap-2">
               <Frame size={14} /> Design System
             </li>
@@ -150,7 +147,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* User Context */}
-      <div className="pt-4">
+      <div className="flex pt-4 justify-center border-t border-zinc-800">
         <UserMenu
           isOpen={isUserMenuOpen} //error here
           toggleMenu={toggleUserMenu}
@@ -163,4 +160,3 @@ const Sidebar: React.FC<SidebarProps> = ({
 };
 
 export default Sidebar;
-

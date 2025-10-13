@@ -27,34 +27,41 @@ type Milestone = {
 // Map each status to Tailwind color + icon representation
 // (dynamic styling)
 const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }> = {
-  "To-do": { 
+  "To-do": {
     color: "bg-gray-300", // Gray circle for tasks not started
-    icon: <span className="w-2.5 h-2.5 rounded-full bg-gray-500" /> // small gray dot inside
+    icon: <span className="w-2.5 h-2.5 rounded-full bg-gray-500" />, // small gray dot inside
   },
-  "In progress": { 
+  "In progress": {
     color: "bg-yellow-400", // Yellow for active task
     icon: (
       <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
         <circle cx="12" cy="12" r="10" /> {/* simple filled circle */}
       </svg>
-    ) 
+    ),
   },
-  "In review": { 
-    color: "bg-blue-500", // Blue with a spinner for in review 
+  "In review": {
+    color: "bg-blue-500", // Blue with a spinner for in review
     icon: (
       <svg className="w-3 h-3 animate-spin text-white" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
       </svg>
-    ) 
+    ),
   },
-  "Complete": { 
+  Complete: {
     color: "bg-green-500", // Green for completed tasks
     icon: (
       <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
         <path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4L9 16.2z" /> {/* checkmark */}
       </svg>
-    ) 
+    ),
   },
 };
 
@@ -63,40 +70,51 @@ const MilestonesProgress: React.FC<MilestoneProps> = ({selectedProjectId,}) => {
   if(error) console.log(error);
 
   return (
-    <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-10">
-      <h2 className="ml-2 text-2xl font-semibold mb-8 text-gray-900 dark:text-white">
+    <section className="relative px-2 sm:px-4 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-6 sm:mb-10">
+      <h2 className="ml-2 text-lg sm:text-xl md:text-2xl font-semibold mb-6 sm:mb-8 text-gray-900 dark:text-white">
         Milestones Progress Tracker
       </h2>
-
       {/* Stepper timeline container */}
-
       {loading ? <>
       <p>Loading</p>
       </> : <>
-      <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap ">
+      <ol className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 sm:gap-6">
         {data.milestones.map((milestone:Milestone, index:number) => {
           let style = statusStyles[milestone.status]; // dynamically get color & icon based on status
           if(!style) style = statusStyles["To-do"]; // default display type"
-          return (<li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0 ">
-            <div className="flex items-center">
-              {/* Step dot icon */}
+          return (<li key={index} className="flex-1 md:min-w-0 relative">
+              {/* Mobile/Tablet: Horizontal layout with connecting line on left */}
+              <div className="flex flex-row md:flex-col items-start md:items-center">
+                <div className="flex flex-col md:flex-row items-center md:w-full">
+                  {/* Circle for each milestone */}
+              
               <div className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}>
                   {style.icon} {/* dynamic icon */}
                 </div>
                 
               {/* Horizontal line between steps (hidden on last item) */}
               {index < data.milestones.length - 1 && (
-                <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
+                     <>
+                      {/* Vertical line for mobile/tablet */}
+                      <div className="flex md:hidden ml-5 sm:ml-6 w-px h-8 sm:h-10 bg-gray-200 dark:bg-gray-700 mt-2"></div>
+                      {/* Horizontal line for desktop */}
+                      <div className="hidden md:block md:flex-1 h-0.5 bg-gray-200 dark:bg-gray-700 ml-2 mr-2"></div>
+                    </>
               )}
-            </div>
-
-             {/* Milestone text */}
-              <div className="ml-2 mt-6 sm:pe-8">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{milestone.milestoneName}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                  Status: <span className="font-medium">{milestone.status}</span>
-                </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Milestone description</p> {/* current milestone schema does not contain a description */}
+                </div>
+                  {/* Milestone text - responsive positioning and sizing */}
+                <div className="ml-6 sm:ml-10 md:ml-0 md:mt-4 flex-1 min-w-0 -mt-1 md:mt-4 md:text-left">
+                  <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white break-words">
+                    {milestone.milestoneName}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">
+                    Status: <span className="font-medium">{milestone.status}</span>
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 break-words">
+                    Milestone description
+                  </p> {/* current milestone schema does not contain a description */}
+                </div>
+               
               </div>
             
           </li>)
