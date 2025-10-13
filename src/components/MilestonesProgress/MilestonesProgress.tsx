@@ -1,26 +1,28 @@
 import React from "react";
+import { useMilestones } from "@/utils/api";
+import { MilestoneProps } from "@/utils/types";
 
 // Define allowed statuses for milestones
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 
 // Each milestone has a title, status, and description
 type Milestone = {
-  title: string;
-  status: MilestoneStatus;
-  description: string;
+  milestoneName: string;
+  status: "To-do";
+  // description: string; Current Milestone schema does not include description
 };
 
 // Logical progression left → right:
 // First three are Complete (green), then In review (blue spinner),
 // then In progress (yellow), then To-do (gray)
-const milestones: Milestone[] = [
-  { title: "Requirements Gathering", status: "Complete", description: "Collect requirements." },
-  { title: "Stakeholder Agreements", status: "Complete", description: "Align with stakeholders." },
-  { title: "Design Prototypes", status: "Complete", description: "Review wireframes & mockups." },
-  { title: "Team Formation", status: "In review", description: "Review team structure." },
-  { title: "Development Phase", status: "In progress", description: "Begin core development." },
-  { title: "Project Handoff", status: "To-do", description: "Deliver final product." },
-];
+// const milestones: Milestone[] = [
+//   { title: "Requirements Gathering", status: "Complete", description: "Collect requirements." },
+//   { title: "Stakeholder Agreements", status: "Complete", description: "Align with stakeholders." },
+//   { title: "Design Prototypes", status: "Complete", description: "Review wireframes & mockups." },
+//   { title: "Team Formation", status: "In review", description: "Review team structure." },
+//   { title: "Development Phase", status: "In progress", description: "Begin core development." },
+//   { title: "Project Handoff", status: "To-do", description: "Deliver final product." },
+// ];
 
 // Map each status to Tailwind color + icon representation
 // (dynamic styling)
@@ -63,57 +65,64 @@ const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }
   },
 };
 
-const MilestonesProgress: React.FC = () => {
+const MilestonesProgress: React.FC<MilestoneProps> = ({selectedProjectId,}) => {
+  const {data, loading, error} = useMilestones(selectedProjectId);
+  if(error) console.log(error);
+
   return (
     <section className="relative px-2 sm:px-4 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-6 sm:mb-10">
       <h2 className="ml-2 text-lg sm:text-xl md:text-2xl font-semibold mb-6 sm:mb-8 text-gray-900 dark:text-white">
         Milestones Progress Tracker
       </h2>
-
-      {/* Mobile/Tablet: Vertical layout, Desktop: Horizontal layout */}
+      {/* Stepper timeline container */}
+      {loading ? <>
+      <p>Loading</p>
+      </> : <>
       <ol className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 sm:gap-6">
-        {milestones.map((milestone, index) => {
-          const style = statusStyles[milestone.status]; // dynamically get color & icon based on status
-          return (
-            <li key={index} className="flex-1 md:min-w-0 relative">
+        {data.milestones.map((milestone:Milestone, index:number) => {
+          let style = statusStyles[milestone.status]; // dynamically get color & icon based on status
+          if(!style) style = statusStyles["To-do"]; // default display type"
+          return (<li key={index} className="flex-1 md:min-w-0 relative">
               {/* Mobile/Tablet: Horizontal layout with connecting line on left */}
               <div className="flex flex-row md:flex-col items-start md:items-center">
                 <div className="flex flex-col md:flex-row items-center md:w-full">
                   {/* Circle for each milestone */}
-                  <div
-                    className={`ml-2 md:ml-0 z-10 flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full ${style.color} flex-shrink-0`}
-                  >
-                    {style.icon} {/* dynamic icon */}
-                  </div>
-
-                  {/* Connecting line between milestones */}
-                  {index < milestones.length - 1 && (
-                    <>
+              
+              <div className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}>
+                  {style.icon} {/* dynamic icon */}
+                </div>
+                
+              {/* Horizontal line between steps (hidden on last item) */}
+              {index < data.milestones.length - 1 && (
+                     <>
                       {/* Vertical line for mobile/tablet */}
                       <div className="flex md:hidden ml-5 sm:ml-6 w-px h-8 sm:h-10 bg-gray-200 dark:bg-gray-700 mt-2"></div>
                       {/* Horizontal line for desktop */}
                       <div className="hidden md:block md:flex-1 h-0.5 bg-gray-200 dark:bg-gray-700 ml-2 mr-2"></div>
                     </>
-                  )}
+              )}
                 </div>
-
-                {/* Milestone text - responsive positioning and sizing */}
+                  {/* Milestone text - responsive positioning and sizing */}
                 <div className="ml-6 sm:ml-10 md:ml-0 md:mt-4 flex-1 min-w-0 -mt-1 md:mt-4 md:text-left">
                   <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white break-words">
-                    {milestone.title}
+                    {milestone.milestoneName}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">
                     Status: <span className="font-medium">{milestone.status}</span>
                   </p>
                   <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 break-words">
-                    {milestone.description}
-                  </p>
+                    Milestone description
+                  </p> {/* current milestone schema does not contain a description */}
                 </div>
+               
               </div>
-            </li>
-          );
+            
+          </li>)
         })}
       </ol>
+      </>}
+
+      
     </section>
   );
 };

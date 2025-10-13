@@ -23,18 +23,20 @@ export type EditProjectFormProps = {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   onChange: (field: keyof FormFields, value: string) => void;
-  onSave: (updatedFields: FormFields) => void;
   onCancel: () => void;
   onSubmit: () => void;
+  onDelete: () => void;
+};
+
+export type MilestoneProps = {
+  selectedProjectId: string
 };
 
 export type DashProps = {
   projectList: Project[];
-  setProjectList: React.Dispatch<React.SetStateAction<Project[]>>;
   selectedProjectId: string;
   setSelectedProjectId: React.Dispatch<React.SetStateAction<string>>;
-  currentProject?: Project;
-  handleSave: (updatedFields: Partial<Project>) => void;
+  currentProject?: Project | null;
   onSubmit: () => void;
   isSheetOpen: boolean;
   setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,6 +47,9 @@ export type DashProps = {
   setIsProjectDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleProjectSelect: (id: string) => void;
   handleAddProject: (values: ProjectFormValues) => void;
+  handleDeleteProject: () => void;
+  loadingProjects: boolean;
+  projectError: Error | undefined;
   formData: FormFields;
 
   setFormData: React.Dispatch<React.SetStateAction<{
@@ -106,6 +111,9 @@ export interface SidebarProps {
   userEmail: string;
   isAddProjectSheetOpen: boolean;
   setIsAddProjectSheetOpen: (open: boolean) => void;
+
+  loadingProjects: boolean;
+  projectError: Error | undefined;
 }
 
 export interface UserMenuProps {
@@ -142,6 +150,8 @@ export type ProjectSwitcherProps = {
   dropdownRef: React.RefObject<HTMLDivElement>;
   isAddProjectSheetOpen: boolean;
   setIsAddProjectSheetOpen: (open: boolean) => void;
+  loading?: boolean;
+  error?: Error;
 };
 
 export interface AddProjectFormProps {

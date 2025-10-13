@@ -27,11 +27,11 @@ const Dashboard: React.FC<DashProps> = ({
   isLoading,
   setIsLoading,
   handleChange,
-  handleSave,
   onSubmit,
   isSheetOpen,
   setIsSheetOpen,
   handleAddProject,
+  handleDeleteProject,
   openMenus,
   setOpenMenus,
   isProjectDropdownOpen,
@@ -45,10 +45,14 @@ const Dashboard: React.FC<DashProps> = ({
   toggleMenu,
   userMenuRef,
   userEmail,
+  loadingProjects,
+  projectError, 
 }) => (
   <div className="flex h-screen">
     <Sidebar
       projectList={projectList}
+      loadingProjects={loadingProjects}
+      projectError={projectError}
       selectedProjectId={selectedProjectId}
       isProjectDropdownOpen={isProjectDropdownOpen}
       toggleProjectDropdown={toggleProjectDropdown}
@@ -84,9 +88,10 @@ const Dashboard: React.FC<DashProps> = ({
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
                 onChange={handleChange}
-                onSave={handleSave}
+                
                 onCancel={() => setIsSheetOpen(false)}
                 onSubmit={onSubmit}
+                onDelete={handleDeleteProject}
               />
             )}
           </SheetContent>
@@ -107,7 +112,7 @@ const Dashboard: React.FC<DashProps> = ({
         <DashCard />
         <DashCard />
       </div>
-      <MilestonesProgress />
+      <MilestonesProgress selectedProjectId={selectedProjectId} />
       <ActivityLog />
       <DashContent />
     </main>
