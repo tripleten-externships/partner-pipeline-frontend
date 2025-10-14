@@ -12,8 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
-// import { useProjects } from '@/utils/api';
-// import { BarChart4 } from 'lucide-react';
+
 
 const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
   projectList,
@@ -26,7 +25,7 @@ const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
 
   const renderIcon = selectedProject?.fallBackIcon || <FolderClosed size={16} />;
   const renderName = selectedProject?.name || "No project selected";
-  // const renderSubtitle = selectedProject?.subtitle || "";
+ 
 
   if (loading) {
     return (

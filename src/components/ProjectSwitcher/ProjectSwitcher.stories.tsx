@@ -10,24 +10,26 @@ const sampleProjects: Project[] = [{
   name: "Drops Diabetes App",
   imgUrl: "",
   fallBackIcon: <SquareStack size={16} />,
-  subtitle: "Manage diabetes treatment app",
-  status: "Active",
+  project: "",
+  isActive: false
 },
 {
   id: "2tGh",
   name: "Drops Marketing Page",
   imgUrl: "",
   fallBackIcon: <AudioWaveform size={16} />,
-  subtitle: "Drops Marketing Page App",
-  status: "Completed",
+  project: "",
+  isActive: false
 },
+ 
 {
   id: "7hId",
   name: "Drops Analytics",
   imgUrl: "",
   fallBackIcon: <BarChart4 size={16} />,
-  status: "Paused",
-}]
+  project: "",
+  isActive: false
+},]
 
 const meta: Meta<typeof ProjectSwitcher> = {
   title: "Components/ProjectSwitcher",
