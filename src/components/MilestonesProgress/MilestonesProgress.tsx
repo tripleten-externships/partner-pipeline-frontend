@@ -1,6 +1,7 @@
-import React from "react";
-import { useMilestones } from "@/utils/api";
-import { MilestoneProps } from "@/utils/types";
+import React, {useState} from "react";
+import { buttonVariants } from "@/components/ui/button.variants";
+import { MilestoneModal } from "../MilestoneModal/MilestoneModal";
+
 
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 
@@ -120,5 +121,6 @@ const MilestonesProgress: React.FC<MilestoneProps> = ({ selectedProjectId }) => 
     </section>
   );
 };
+
 
 export default MilestonesProgress;
