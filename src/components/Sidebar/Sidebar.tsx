@@ -152,7 +152,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* User Context */}
       <div className="pt-4">
         <UserMenu
-          isOpen={isUserMenuOpen} //error here
+          isOpen={isUserMenuOpen} 
           toggleMenu={toggleUserMenu}
           menuRef={userMenuRef}
           userEmail={userEmail}

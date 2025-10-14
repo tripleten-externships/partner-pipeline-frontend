@@ -2,65 +2,79 @@ import React from "react";
 import { useMilestones } from "@/utils/api";
 import { MilestoneProps } from "@/utils/types";
 
-// Define allowed statuses for milestones
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 
-// Each milestone has a title, status, and description
-type Milestone = {
-  milestoneName: string;
-  status: "To-do";
-  // description: string; Current Milestone schema does not include description
+type MilestoneRaw = {
+  id?: string;
+  milestoneName?: string | null;
+  status?: string | null;
 };
 
-// Logical progression left → right:
-// First three are Complete (green), then In review (blue spinner),
-// then In progress (yellow), then To-do (gray)
-// const milestones: Milestone[] = [
-//   { title: "Requirements Gathering", status: "Complete", description: "Collect requirements." },
-//   { title: "Stakeholder Agreements", status: "Complete", description: "Align with stakeholders." },
-//   { title: "Design Prototypes", status: "Complete", description: "Review wireframes & mockups." },
-//   { title: "Team Formation", status: "In review", description: "Review team structure." },
-//   { title: "Development Phase", status: "In progress", description: "Begin core development." },
-//   { title: "Project Handoff", status: "To-do", description: "Deliver final product." },
-// ];
+type MilestoneUI = {
+  id?: string;
+  milestoneName: string;
+  status: MilestoneStatus;
+};
 
-// Map each status to Tailwind color + icon representation
-// (dynamic styling)
+const mapStatus = (s?: string): MilestoneStatus => {
+  switch (s) {
+    case "not_started":
+    case "To-do":
+      return "To-do";
+    case "in_progress":
+    case "In progress":
+      return "In progress";
+    case "completed":
+    case "Complete":
+      return "Complete";
+    case "blocked":
+    case "In review":
+      return "In review";
+    default:
+      return "To-do";
+  }
+};
+
 const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }> = {
-  "To-do": { 
-    color: "bg-gray-300", // Gray circle for tasks not started
-    icon: <span className="w-2.5 h-2.5 rounded-full bg-gray-500" /> // small gray dot inside
+  "To-do": {
+    color: "bg-gray-300",
+    icon: <span className="w-2.5 h-2.5 rounded-full bg-gray-500" />,
   },
-  "In progress": { 
-    color: "bg-yellow-400", // Yellow for active task
+  "In progress": {
+    color: "bg-yellow-400",
     icon: (
       <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
-        <circle cx="12" cy="12" r="10" /> {/* simple filled circle */}
+        <circle cx="12" cy="12" r="10" />
       </svg>
-    ) 
+    ),
   },
-  "In review": { 
-    color: "bg-blue-500", // Blue with a spinner for in review 
+  "In review": {
+    color: "bg-blue-500",
     icon: (
       <svg className="w-3 h-3 animate-spin text-white" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
       </svg>
-    ) 
+    ),
   },
-  "Complete": { 
-    color: "bg-green-500", // Green for completed tasks
+  Complete: {
+    color: "bg-green-500",
     icon: (
       <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4L9 16.2z" /> {/* checkmark */}
+        <path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4L9 16.2z" />
       </svg>
-    ) 
+    ),
   },
 };
 
-const MilestonesProgress: React.FC<MilestoneProps> = ({selectedProjectId,}) => {
-  const {data, loading, error} = useMilestones(selectedProjectId);
-  if(error) console.log(error);
+const MilestonesProgress: React.FC<MilestoneProps> = ({ selectedProjectId }) => {
+  const { data, loading, error } = useMilestones(selectedProjectId);
+
+  const milestones: MilestoneUI[] = (data?.milestones ?? []).map((m: MilestoneRaw) => ({
+    id: m.id,
+    milestoneName: m.milestoneName ?? "Untitled milestone",
+    status: mapStatus(m.status ?? undefined),
+  }));
 
   return (
     <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-10">
@@ -68,43 +82,41 @@ const MilestonesProgress: React.FC<MilestoneProps> = ({selectedProjectId,}) => {
         Milestones Progress Tracker
       </h2>
 
-      {/* Stepper timeline container */}
+      {loading && <p className="ml-2 text-sm text-gray-400">Loading…</p>}
+      {!loading && error && (
+        <p className="ml-2 text-sm text-red-400">Couldn’t load milestones. Check console for details.</p>
+      )}
+      {!loading && !error && milestones.length === 0 && (
+        <p className="ml-2 text-sm text-gray-400">No milestones yet for this project.</p>
+      )}
 
-      {loading ? <>
-      <p>Loading</p>
-      </> : <>
-      <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap ">
-        {data.milestones.map((milestone:Milestone, index:number) => {
-          let style = statusStyles[milestone.status]; // dynamically get color & icon based on status
-          if(!style) style = statusStyles["To-do"]; // default display type"
-          return (<li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0 ">
-            <div className="flex items-center">
-              {/* Step dot icon */}
-              <div className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}>
-                  {style.icon} {/* dynamic icon */}
+      {!loading && !error && milestones.length > 0 && (
+        <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap">
+          {milestones.map((milestone, index) => {
+            const style = statusStyles[milestone.status] ?? statusStyles["To-do"];
+            return (
+              <li key={milestone.id ?? index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0">
+                <div className="flex items-center">
+                  <div className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}>
+                    {style.icon}
+                  </div>
+                  {index < milestones.length - 1 && (
+                    <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700" />
+                  )}
                 </div>
-                
-              {/* Horizontal line between steps (hidden on last item) */}
-              {index < data.milestones.length - 1 && (
-                <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
-              )}
-            </div>
 
-             {/* Milestone text */}
-              <div className="ml-2 mt-6 sm:pe-8">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{milestone.milestoneName}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                  Status: <span className="font-medium">{milestone.status}</span>
-                </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Milestone description</p> {/* current milestone schema does not contain a description */}
-              </div>
-            
-          </li>)
-        })}
-      </ol>
-      </>}
-
-      
+                <div className="ml-2 mt-6 sm:pe-8">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{milestone.milestoneName}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                    Status: <span className="font-medium">{milestone.status}</span>
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Milestone description</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      )}
     </section>
   );
 };

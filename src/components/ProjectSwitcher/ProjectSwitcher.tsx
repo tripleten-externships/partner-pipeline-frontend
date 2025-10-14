@@ -26,7 +26,7 @@ const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
 
   const renderIcon = selectedProject?.fallBackIcon || <FolderClosed size={16} />;
   const renderName = selectedProject?.name || "No project selected";
-  const renderSubtitle = selectedProject?.subtitle || "";
+  // const renderSubtitle = selectedProject?.subtitle || "";
 
   if (loading) {
     return (
@@ -45,7 +45,7 @@ const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
           </div>
           <div className="flex flex-col truncate text-left max-w-full">
             <h3>{renderName}</h3>
-            <p className="text-xs text-neutral-400 truncate">{renderSubtitle}</p>
+            {/* <p className="text-xs text-neutral-400 truncate">{renderSubtitle}</p> */}
           </div>
           <ChevronsUpDown className="ml-auto" />
         </Button>

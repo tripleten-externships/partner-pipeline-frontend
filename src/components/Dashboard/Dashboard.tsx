@@ -113,7 +113,7 @@ const Dashboard: React.FC<DashProps> = ({
         <DashCard />
       </div>
       <MilestonesProgress selectedProjectId={selectedProjectId} />
-      <ActivityLog />
+      <ActivityLog selectedProjectId={selectedProjectId} />
       <DashContent />
     </main>
   </div>

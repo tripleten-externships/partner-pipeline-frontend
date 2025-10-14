@@ -7,8 +7,13 @@ export type Project = {
   name: string;
   imgUrl: string,
   fallBackIcon: React.ReactNode;
-  subtitle?: string;
-  status: ProjectStatus;
+  project: string;     // slug string (required by backend)
+  isActive: boolean;   // replaces "status"
+  lastUpdate?: string;
+  membersCount?: number;
+  milestonesCount?: number;
+  // subtitle?: string;
+  // status: ProjectStatus;
 };
 
 export type FormFields = {

@@ -34,6 +34,23 @@ const useProjects = () => {
 {fetchPolicy: "network-only"});
 };
 
+export const useProjectInvitations = (projectId?: string) => {
+  const skip = !projectId || typeof projectId !== "string";
+  return useQuery(
+    gql`
+      query ProjectInvitations($projectId: ID!) {
+        projectInvitations(where: { project: { id: { equals: $projectId } } }) {
+          id
+          email
+          user { id email name }
+          invitationTokens { id tokenHash roleToGrant expiresAt revoked }
+        }
+      }
+    `,
+    { variables: { projectId: projectId as string }, skip, fetchPolicy: "cache-and-network" }
+  );
+};
+
 const useUserData = (email: string) => {
   return useQuery(gql`query Query($where: UserWhereUniqueInput!) {
   user(where: $where) {
@@ -45,34 +62,59 @@ const useUserData = (email: string) => {
   );
 }
 
-const useMilestones = (projectId:string) => {
-  return useQuery(gql`query Query($where: MilestoneWhereInput!) {
-  milestones(where: $where) {
-    milestoneName
-    status
-  }
-  }`,
-  {variables : {where:{project:{id:{equals:projectId}}}}}
-  );
-}
+const useMilestones = (projectId: string | undefined) => {
+  const shouldSkip = !projectId || typeof projectId !== "string";
 
-const useActivityLogs = () => {
-  return useQuery(gql`query Query($orderBy: [ActivityLogOrderByInput!]!) {
-  activityLogs(orderBy: $orderBy) {
-    id
-    timestamp
-    milestone {
-      milestoneName
+  return useQuery(
+    gql`
+      query Milestones($projectId: ID!) {
+        milestones(
+          where: { project: { id: { equals: $projectId } } }
+          orderBy: [{ updatedAt: desc }]
+        ) {
+          id
+          milestoneName
+          status   # not_started | in_progress | completed | blocked
+          updatedAt
+          updatedBy { id name }
+        }
+      }
+    `,
+    {
+      variables: { projectId: projectId as string },
+      skip: shouldSkip,
+      fetchPolicy: "cache-and-network",
     }
-    oldStatus
-    newStatus
-    updatedBy {
-      name
+  );
+};
+
+const useActivityLogs = (projectId?: string) => {
+  const shouldSkip = !projectId || typeof projectId !== "string";
+
+  return useQuery(
+    gql`
+      query ActivityLogs($projectId: ID!) {
+        activityLogs(
+          where: { project: { id: { equals: $projectId } } }
+          orderBy: [{ timestamp: desc }]
+          take: 50
+        ) {
+          id
+          timestamp
+          milestone { id milestoneName }
+          oldStatus
+          newStatus
+          updatedBy { id name }
+        }
+      }
+    `,
+    {
+      variables: { projectId: projectId as string },
+      skip: shouldSkip,
+      fetchPolicy: "cache-and-network",
     }
-  }
-  }`,
-  {variables : {orderBy:[{timestamp: "desc"}]}});
-}
+  );
+};
 
 interface UpdateMilestoneData {
   milestoneName?: string;
@@ -94,4 +136,23 @@ async function updateMilestone(projectId: string, milestoneId: string, data: Upd
   }
 }
 
-export { processServerRequest, baseUrl, headers, useProjects, useProjectIDs, useUserData, useMilestones, useActivityLogs, updateMilestone };
+const useMe = () => {
+  return useQuery(
+    gql`
+      query Me {
+        authenticatedItem {
+          __typename
+          ... on User {
+            id
+            email
+            name
+            role
+          }
+        }
+      }
+    `,
+    { fetchPolicy: "network-only" } // ensures fresh session data each load
+  );
+};
+
+export { processServerRequest, baseUrl, headers, useProjects, useProjectIDs, useUserData, useMilestones, useActivityLogs, updateMilestone, useMe };

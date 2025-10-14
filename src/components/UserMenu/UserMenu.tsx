@@ -1,20 +1,35 @@
 import React from "react";
 import { Bell, LogOut, ChevronsUpDown, Settings } from "lucide-react";
 import { UserMenuProps } from "@/utils/types";
-import { useUserData } from "@/utils/api";
+import { useMe } from "@/utils/api";
+import { logout } from "@/utils/auth";
+import { useApolloClient } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 
 const UserMenu: React.FC<UserMenuProps> = ({
   isOpen,
   toggleMenu,
   menuRef,
-  userEmail,
+  userEmail, 
 }) => {
   const avatarSrc = "https://github.com/shadcn.png";
-  const { data, loading, error } = useUserData(userEmail);
+  const { data, loading, error } = useMe();
+  const apollo = useApolloClient();
+  const navigate = useNavigate();
 
-  const user = data?.user ?? null;
-  const displayName = user?.name ?? (userEmail ? userEmail.split("@")[0] : "User");
-  const displayEmail = user?.email ?? userEmail ?? "";
+  const me = data?.authenticatedItem?.__typename === "User" ? data.authenticatedItem : null;
+  const displayName = me?.name ?? (userEmail ? userEmail.split("@")[0] : "User");
+  const displayEmail = me?.email ?? userEmail ?? "";
+
+  const handleLogout = async () => {
+    try {
+      await logout();           // end Keystone session cookie
+      await apollo.clearStore(); // drop cached data
+      navigate("/login");        // go to sign-in
+    } catch (e) {
+      console.error("Logout failed", e);
+    }
+  };
 
   return (
     <div className="relative" ref={menuRef}>
@@ -58,7 +73,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 <li className="px-4 py-2 hover:bg-zinc-800 flex items-center gap-2 cursor-pointer">
                   <Bell size={16} /> Notifications
                 </li>
-                <li className="px-4 py-2 hover:bg-zinc-800 flex items-center gap-2 cursor-pointer border-t border-zinc-700">
+                <li
+                  className="px-4 py-2 hover:bg-zinc-800 flex items-center gap-2 cursor-pointer border-t border-zinc-700"
+                  onClick={handleLogout}
+                >
                   <LogOut size={16} /> Log out
                 </li>
               </ul>
