@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { SearchFilter } from "@/components/waitlist/SearchFilter";
-import { WaitlistTable } from "@/components/waitlist/WaitlistTable";
+import { SearchFilter } from "@/components/Waitlist/SearchFilter";
+import { WaitlistTable } from "@/components/Waitlist/WaitlistTable";
 
 export default function WaitlistPage() {
   const [search, setSearch] = useState("");
