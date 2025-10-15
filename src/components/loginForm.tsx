@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import * as auth from "../utils/auth";
-import { setToken } from "@/utils/token";
+import { client } from "../store";
 
 import { Button } from "./ui/button";
 import {
@@ -48,23 +48,18 @@ export function ProfileForm() {
 
   // 2. Define a submit handler.
   // --- added from the prebuilt one in auth.ts. Minorly corrected to fit the new schema. - Alex
-  function onSubmit(values: z.infer<typeof formSchema>) {
-     const makeRequest = () => {
-      if (!values) {
-        return;
-      }
-      return auth.login({ email: values.email, password: values.password }).then((data) => {
-        if (data.token) {
-          setToken(data.token);
-          //room for other functionality (set user, navigate, etc)
-        }
-      });
-    };
-    makeRequest();
-    // token sets, other functionality needs to be set
-    console.log(values);
-  }
+async function onSubmit(values: z.infer<typeof formSchema>) {
+  const result = await auth.login({ email: values.email, password: values.password });
 
+  if (result.__typename === "UserAuthenticationWithPasswordSuccess") {
+    // Make Apollo forget any anonymous cache and re-fetch as the logged-in user
+    await client.resetStore();
+    window.location.replace("/"); // or window.location.replace("/")
+  } else {
+    console.error(result.message);
+    // toast.error(result.message);
+  }
+}
   return (
     <div className="font-text flex flex-col items-center justify-center h-screen p-[30px]">
       <div className="flex flex-col w-80 max-w-[660px] items-center md:w-[480px] lg:w-[620px]">
