@@ -15,6 +15,8 @@ import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
+import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
+
 // import { useProjectIDs } from "@/utils/api";
 
 function App() {
@@ -23,10 +25,7 @@ function App() {
   // GraphQL
   const { data, loading, error, refetch } = useQuery<{ projects: Project[] }>(GET_PROJECTS);
 
-  const projectList = React.useMemo<Project[]>(
-  () => data?.projects ?? [],
-  [data?.projects]
-);
+  const projectList = React.useMemo<Project[]>(() => data?.projects ?? [], [data?.projects]);
   const [createProject] = useMutation(CREATE_PROJECT, {
     refetchQueries: [{ query: GET_PROJECTS }],
   });
@@ -63,8 +62,7 @@ function App() {
 
   const [invitation, setInvitation] = useState<Invitation | null>(null);
 
-
-  const [userEmail] = useState("foo@foo.com"); 
+  const [userEmail] = useState("foo@foo.com");
 
   const [isLoggedIn] = useState(true);
 
@@ -106,9 +104,6 @@ function App() {
   //   }
   // }
 
-  
-  
-
   //Simulate invitation
   useEffect(() => {
     setIsLoading(true);
@@ -129,7 +124,6 @@ function App() {
     }, 300);
     return () => clearTimeout(t);
   }, [projectList]);
-
 
   const handleChange = <K extends keyof FormFields>(field: K, value: FormFields[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -285,7 +279,9 @@ function App() {
             />
           }
         />
+        <Route path="/admin/waitlist" element={<WaitlistPage />} />
       </Routes>
+
       <Toaster position="bottom-center" />
     </main>
   );
