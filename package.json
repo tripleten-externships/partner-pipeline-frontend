@@ -51,7 +51,6 @@
     "cross-spawn": "^7.0.6",
     "dayjs": "^1.11.10",
     "dotenv": "^17.0.1",
-    "esbuild": "^0.19.8",
     "eventsource": "^4.0.0",
     "eventsource-parser": "^3.0.3",
     "express": "^5.1.0",
