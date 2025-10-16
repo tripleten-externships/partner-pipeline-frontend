@@ -10,7 +10,8 @@ type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 interface EditMilestoneModalProps {
   open: boolean;
   onClose: () => void;
-  onEdit: (milestone: { title: string; status: MilestoneStatus; description: string }) =>  void;
+  onEdit: (Milestone: { title: string; status: MilestoneStatus; description: string }) =>  void;
+  Milestone: { title: string; status: MilestoneStatus; description: string };
 }
 
 export const EditMilestoneModal: React.FC<EditMilestoneModalProps> = ({ open, onClose, onEdit, Milestone }) => {
