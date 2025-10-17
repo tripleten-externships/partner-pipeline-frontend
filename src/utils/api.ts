@@ -3,7 +3,6 @@ import { gql, useQuery } from "@apollo/client";
 function processServerRequest(res: Response) {
   return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
 }
-//helpful function pair for shorthand on requests to check for errors
 
 const baseUrl = process.env.NODE_ENV === "production" ? "" : "http://localhost:3000";
 
@@ -11,7 +10,6 @@ const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",
 };
-//making an assumption for headers
 
 const useProjectIDs = () => {
   return useQuery(
@@ -68,7 +66,22 @@ export const useProjectInvitations = (projectId?: string) => {
     { variables: { projectId: projectId as string }, skip, fetchPolicy: "cache-and-network" }
   );
 };
-
+const useWaitlistEntries = () => {
+  return useQuery(
+    gql`
+      query WaitlistEntries {
+        waitlistEntries(orderBy: [{ createdAt: desc }]) {
+          id
+          name
+          email
+          status
+          createdAt
+        }
+      }
+    `,
+    { fetchPolicy: "cache-and-network" }
+  );
+};
 const useUserData = (email: string) => {
   return useQuery(
     gql`
@@ -95,7 +108,7 @@ const useMilestones = (projectId: string | undefined) => {
         ) {
           id
           milestoneName
-          status # not_started | in_progress | completed | blocked
+          status
           updatedAt
           updatedBy {
             id
@@ -149,8 +162,8 @@ const useActivityLogs = (projectId?: string) => {
 interface UpdateMilestoneData {
   milestoneName?: string;
   status?: string;
-  // Add other updatable fields as needed
 }
+
 interface ImportResult {
   success: boolean;
   message: string;
@@ -160,6 +173,7 @@ interface ImportResult {
     errors: string[];
   };
 }
+
 async function importStudentsFromCsv(file: File): Promise<ImportResult> {
   const formData = new FormData();
   formData.append("file", file);
@@ -209,7 +223,7 @@ const useMe = () => {
         }
       }
     `,
-    { fetchPolicy: "network-only" } // ensures fresh session data each load
+    { fetchPolicy: "network-only" }
   );
 };
 
@@ -225,4 +239,5 @@ export {
   updateMilestone,
   useMe,
   importStudentsFromCsv,
+  useWaitlistEntries, // Added this 
 };

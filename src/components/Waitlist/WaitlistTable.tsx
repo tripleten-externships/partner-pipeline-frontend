@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
 import { ImportStudentsModal } from "@/components/CsvImportModal";
-import { importStudentsFromCsv } from "@/utils/api";
+import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
 
 interface WaitlistUser {
   id: string;
@@ -17,86 +17,7 @@ interface Props {
   status: string;
 }
 
-// Mock data (11 users)
-const mockData: WaitlistUser[] = [
-  {
-    id: "1",
-    name: "Sarah Kim",
-    email: "sarah@example.com",
-    status: "pending",
-    createdAt: "2025-10-12",
-  },
-  {
-    id: "2",
-    name: "David Lee",
-    email: "david@example.com",
-    status: "approved",
-    createdAt: "2025-10-11",
-  },
-  {
-    id: "3",
-    name: "Anna Wong",
-    email: "anna@example.com",
-    status: "rejected",
-    createdAt: "2025-10-10",
-  },
-  {
-    id: "4",
-    name: "John Doe",
-    email: "john@example.com",
-    status: "pending",
-    createdAt: "2025-10-09",
-  },
-  {
-    id: "5",
-    name: "Mia Chen",
-    email: "mia@example.com",
-    status: "approved",
-    createdAt: "2025-10-08",
-  },
-  {
-    id: "6",
-    name: "Leo Park",
-    email: "leo@example.com",
-    status: "pending",
-    createdAt: "2025-10-07",
-  },
-  {
-    id: "7",
-    name: "Sophia Nguyen",
-    email: "sophia@example.com",
-    status: "approved",
-    createdAt: "2025-10-06",
-  },
-  {
-    id: "8",
-    name: "Ethan Brown",
-    email: "ethan@example.com",
-    status: "rejected",
-    createdAt: "2025-10-05",
-  },
-  {
-    id: "9",
-    name: "Grace Lin",
-    email: "grace@example.com",
-    status: "approved",
-    createdAt: "2025-10-04",
-  },
-  {
-    id: "10",
-    name: "Olivia Smith",
-    email: "olivia@example.com",
-    status: "pending",
-    createdAt: "2025-10-03",
-  },
-  {
-    id: "11",
-    name: "Liam Johnson",
-    email: "liam@example.com",
-    status: "pending",
-    createdAt: "2025-10-02",
-  },
-];
+
 
 export function WaitlistTable({ search, status }: Props) {
   const [users, setUsers] = useState<WaitlistUser[]>([]);
@@ -105,20 +26,24 @@ export function WaitlistTable({ search, status }: Props) {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [importSuccess, setImportSuccess] = useState<string | null>(null);
   const usersPerPage = 10;
+  // Fetch real data from GraphQL
+  const { data, loading, error, refetch } = useWaitlistEntries();
 
   useEffect(() => {
-    // filter
-    let filtered = mockData.filter(
-      (user) =>
+    if (!data?.waitlistEntries) return;
+
+    // Filter based on search and status
+    let filtered = data.waitlistEntries.filter(
+      (user: WaitlistUser) =>
         user.name.toLowerCase().includes(search.toLowerCase()) ||
         user.email.toLowerCase().includes(search.toLowerCase())
     );
 
     if (status !== "all") {
-      filtered = filtered.filter((u) => u.status === status);
+      filtered = filtered.filter((u: WaitlistUser) => u.status === status);
     }
 
-    // pagination logic
+    // Pagination logic
     const total = Math.ceil(filtered.length / usersPerPage);
     setTotalPages(total);
 
@@ -127,7 +52,7 @@ export function WaitlistTable({ search, status }: Props) {
     const paginated = filtered.slice(start, end);
 
     setUsers(paginated);
-  }, [search, status, page]);
+  }, [data, search, status, page]);
 
   const handleImportStudents = async (file: File) => {
     const result = await importStudentsFromCsv(file);
@@ -138,9 +63,8 @@ export function WaitlistTable({ search, status }: Props) {
     // Clear success message after 5 seconds
     setTimeout(() => setImportSuccess(null), 5000);
 
-    // TODO: Refresh the waitlist data from backend
-    // For now, we'll keep using mock data until backend is ready
-    // When backend is ready, add a refetch function here
+    // Refetch the waitlist data to show new entries
+    await refetch();
   };
 
   const handlePrev = () => {
@@ -150,6 +74,16 @@ export function WaitlistTable({ search, status }: Props) {
   const handleNext = () => {
     if (page < totalPages) setPage((prev) => prev + 1);
   };
+
+  if (loading) {
+    return <div className="text-center py-6">Loading waitlist...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-6 text-red-600">Error loading waitlist: {error.message}</div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -168,6 +102,7 @@ export function WaitlistTable({ search, status }: Props) {
 
       {/* Table */}
 
+      {/* Table */}
       <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
           <thead className="bg-gray-50 dark:bg-gray-800">
@@ -244,6 +179,7 @@ export function WaitlistTable({ search, status }: Props) {
           </button>
         </div>
       </div>
+
       {/* Import Modal */}
       <ImportStudentsModal
         open={isImportModalOpen}
