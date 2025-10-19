@@ -8,13 +8,16 @@ import Login from "./login-route";
 import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
-import InviteModal from "./InviteModal/inviteModal";
+import InviteModal from "./InviteModal/InviteModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
+// import { useProjectInvitations } from "@/utils/api";
 
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
 import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
+
+import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 
 // import { useProjectIDs } from "@/utils/api";
 
@@ -51,6 +54,7 @@ function App() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
   const projectDropdownRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -79,8 +83,10 @@ function App() {
     if (currentProject && isSheetOpen) {
       setFormData({
         name: currentProject.name || "",
-        description: currentProject.subtitle || "",
-        status: currentProject.status || "",
+        // show the current slug in your “description” text box so users can edit it
+        description: currentProject.project || "",
+        // map boolean to your legacy status select
+        status: currentProject.isActive ? "Active" : "Completed",
       });
     }
   }, [currentProject, isSheetOpen]);
@@ -124,7 +130,6 @@ function App() {
     }, 300);
     return () => clearTimeout(t);
   }, [projectList]);
-
   const handleChange = <K extends keyof FormFields>(field: K, value: FormFields[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -158,15 +163,21 @@ function App() {
   const handleAddProject = async (values: ProjectFormValues) => {
     setIsLoading(true);
     try {
+      // Basic slug fallback — the backend requires a "project" string
+      const projectSlug = values.name
+        .toLowerCase()
+        .replace(/\s+/g, "-") // replace spaces with dashes
+        .replace(/[^a-z0-9-]/g, ""); // strip weird characters
+
       const { data } = await createProject({
         variables: {
           name: values.name,
-          subtitle: values.subtitle || "",
-          status: values.status,
+          project: projectSlug, // ✅ required by backend
+          isActive: values.status === "Active", // optional mapping
         },
       });
 
-      await refetch(); // 🚨 ensures the new project appears in projectList
+      await refetch(); // ensures UI updates
 
       toast.success(`Project "${data.createProject.name}" created.`);
       setSelectedProjectId(data.createProject.id);
@@ -280,7 +291,7 @@ function App() {
             />
           }
         />
-        {/* <button onClick={() => setIsInviteModalOpen(true)}>Invite Team Member</button> */}
+        <Route path="/admin/waitlist" element={<WaitlistPage />} />
       </Routes>
       <InviteModal
         isOpen={isInviteModalOpen}

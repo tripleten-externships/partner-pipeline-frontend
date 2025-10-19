@@ -3,9 +3,10 @@ import React, { useState } from "react";
 interface InviteModalProps {
   isOpen: boolean;
   onClose: () => void;
+  projectId: string;
 }
 
-const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
+const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose, projectId }) => {
   const [name, setName] = useState("");
   const [cohort, setCohort] = useState<number | "">("");
   const [role, setRole] = useState("student");
@@ -19,20 +20,43 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
     setError("");
 
     try {
-      console.log("Inviting:", name, "from cohort:", cohort, "as:", role);
-      //   fake api call, test sending button
-      //   const response = await fetch("/api/invitations", {
-      //     method: "POST",
-      //     headers: { "Content-Type": "application/json" },
-      //     body: JSON.stringify({ name, cohort, role }),
-      //   });
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!projectId || projectId.trim() === "") {
+        setError(
+          "No project selected. Please select a project first or wait for projects to load."
+        );
+        return;
+      }
+
+      console.log("Sending invitation for project:", projectId);
+
+      //TODO - Not Actual Id, DONT forget
+      const tempStudentId = `cm${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 8)}`;
+
+      const response = await fetch(`/api/projects/${projectId}/invitation`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          studentId: tempStudentId, // TODO: Replace with real database user ID, Currently The team has no real users
+          roleToGrant: role,
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          maxUses: 1,
+          notes: `TEST INVITATION - Name: ${name}, Cohort: ${cohort}, Role: ${role} (Generated test ID for demo)`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Invitation sent successfully:", result);
 
       onClose();
       setName("");
       setCohort("");
       setRole("student");
     } catch (err) {
+      console.error("Failed to send invitation:", err);
       setError("Failed to send invitation");
     } finally {
       setIsSubmitting(false);
