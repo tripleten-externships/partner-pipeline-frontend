@@ -17,7 +17,7 @@ import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
-import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
+// import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 
 // import { useProjectIDs } from "@/utils/api";
 
@@ -291,7 +291,7 @@ function App() {
             />
           }
         />
-        <Route path="/admin/waitlist" element={<WaitlistPage />} />
+        {/* <Route path="/admin/waitlist" element={<WaitlistPage />} /> */}
       </Routes>
       <InviteModal
         isOpen={isInviteModalOpen}
