@@ -8,15 +8,16 @@ import Login from "./login-route";
 import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
+import InviteModal from "./InviteModal/InviteModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
-//import { useProjectInvitations } from "@/utils/api";
+// import { useProjectInvitations } from "@/utils/api";
 
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
 import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
-import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
+// import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 
 // import { useProjectIDs } from "@/utils/api";
 
@@ -52,6 +53,7 @@ function App() {
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
   const projectDropdownRef = useRef<HTMLDivElement>(null);
@@ -128,7 +130,6 @@ function App() {
     }, 300);
     return () => clearTimeout(t);
   }, [projectList]);
-
   const handleChange = <K extends keyof FormFields>(field: K, value: FormFields[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -271,6 +272,7 @@ function App() {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
+              onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
         />
@@ -289,9 +291,13 @@ function App() {
             />
           }
         />
-        <Route path="/admin/waitlist" element={<WaitlistPage />} />
+        {/* <Route path="/admin/waitlist" element={<WaitlistPage />} /> */}
       </Routes>
-
+      <InviteModal
+        isOpen={isInviteModalOpen}
+        onClose={() => setIsInviteModalOpen(false)}
+        projectId={selectedProjectId}
+      />
       <Toaster position="bottom-center" />
     </main>
   );
