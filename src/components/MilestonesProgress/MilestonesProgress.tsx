@@ -3,8 +3,10 @@ import { buttonVariants } from "@/components/ui/button.variants";
 import { MilestoneModal } from "../MilestoneModal/MilestoneModal";
 
 
+
 // Define allowed statuses for milestones
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
+
 
 // Each milestone has a title, status, and description
 type Milestone = {
@@ -12,6 +14,7 @@ type Milestone = {
   status: MilestoneStatus;
   // description: string; Current Milestone schema does not include description
 };
+
 
 // Logical progression left → right:
 // First three are Complete (green), then In review (blue spinner),
@@ -67,9 +70,11 @@ const MilestonesProgress: React.FC = () => {
     { title: "Initial setup", status: "Complete" },
   ]);
 
+  
   const handleAddMilestone = (newMilestone: Milestone) => {
     setMilestonesList((prev) => [...prev, newMilestone]);
   };
+
 
   return (
     <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-10">
@@ -124,12 +129,14 @@ const MilestonesProgress: React.FC = () => {
         })}
       </ol>
 
-      {/* Modal */}
+      Modal
       <MilestoneModal
         open={openModal}
         onClose={() => setOpenModal(false)}
         onCreate={handleAddMilestone}
       />
+
+
     </section>
   );
 };
