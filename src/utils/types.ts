@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export type ProjectStatus = "Active" | "Completed" | "Paused" | "Archived";
+export type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 
 export type Project = {
   id: string;
