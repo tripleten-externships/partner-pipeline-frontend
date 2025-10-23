@@ -1,14 +1,17 @@
 import React, {useState} from "react";
 import { buttonVariants } from "@/components/ui/button.variants";
 import { EditMilestoneModal } from "../EditMilestoneForm/EditMilestoneForm";
+import { MilestoneModal } from "../MilestoneModal/MilestoneModal";
+
 
 // Define allowed statuses for milestones
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 
 // Each milestone has a title, status, and description
 type Milestone = {
-  title: string;
+ title: string;
   status: MilestoneStatus;
+  // description: string; Current Milestone schema does not include description
 };
 
 
@@ -72,30 +75,49 @@ const MilestonesProgress: React.FC = () => {
   const handleEditMilestone = (newMilestone: Milestone) => {
     selectedMilestone.title = newMilestone.title;
     selectedMilestone.status = newMilestone.status;
+
+
+const MilestonesProgress: React.FC = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const [milestonesList, setMilestonesList] = useState<Milestone[]>([
+    { title: "Initial setup", status: "Complete" },
+  ]);
+
+  const handleAddMilestone = (newMilestone: Milestone) => {
+    setMilestonesList((prev) => [...prev, newMilestone]);
   };
 
   return (
     <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-10">
       <div className="flex items-center justify-between mb-8 px-2">
-     <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-      Milestones Progress Tracker
-    </h2>
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+          Milestones Progress Tracker
+        </h2>
+
+        <button
+          className={buttonVariants({ variant: "default" })}
+          onClick={() => setOpenModal(true)}
+        >
+          Add milestone
+        </button>
       </div>
+
       <ol className="flex flex-wrap justify-between items-start gap-6 sm:flex-nowrap">
-
-{milestonesList.map((milestone, index) => {
-          const style = statusStyles[milestone.status]; // dynamically get color & icon based on status
+        {milestonesList.map((milestone, index) => {
+          const style = statusStyles[milestone.status];
           return (
-            <li key={index} className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0">
+            <li
+              key={index}
+              className="flex-1 min-w-[180px] sm:min-w-0 relative mb-6 sm:mb-0"
+            >
               <div className="flex items-center">
-                
-
-                {/* Circle for each milestone */}
-                <div className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}>
-                  {style.icon} {/* dynamic icon */}
+                <div
+                  className={`ml-2 z-10 flex items-center justify-center w-6 h-6 rounded-full ${style.color}`}
+                >
+                  {style.icon}
                 </div>
 
-                {/* Connecting line between milestones */}
+                {/* Line between milestones */}
                 {index < milestonesList.length - 1 && (
                   <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
                 )}
@@ -103,17 +125,16 @@ const MilestonesProgress: React.FC = () => {
 
               {/* Milestone text */}
               <div className="ml-2 mt-6 sm:pe-8">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{milestone.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {milestone.title}
+                </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                   Status: <span className="font-medium">{milestone.status}</span>
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Milestone description</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Milestone description
+                </p>
               </div>
-        <button className={buttonVariants({ variant: "default" })}
-          onClick={() => {
-          setSelectedMilestone(milestone);
-          setOpenModal(true);
-}}>Edit milestone</button> 
             </li>
           );
         })}
@@ -131,8 +152,15 @@ const MilestonesProgress: React.FC = () => {
     status: selectedMilestone.status}
   } />
 
+      {/* Modal */}
+      <MilestoneModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        onCreate={handleAddMilestone}
+      />
     </section>
   );
 };
+
 
 export default MilestonesProgress;

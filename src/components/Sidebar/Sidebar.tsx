@@ -30,11 +30,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   userMenuRef,
   userEmail,
   toggleMenu,
-  loadingProjects,        
-  projectError,  
+  loadingProjects,
+  projectError,
 }) => {
-
-
   const isOpen = (menu: string) => openMenus.includes(menu);
 
   return (
@@ -47,15 +45,13 @@ const Sidebar: React.FC<SidebarProps> = ({
             error={projectError}
             selectedProjectId={selectedProjectId}
             isProjectDropdownOpen={isProjectDropdownOpen}
-            toggleProjectDropdown={toggleProjectDropdown} 
+            toggleProjectDropdown={toggleProjectDropdown}
             dropdownRef={projectDropdownRef}
             handleProjectSelect={handleProjectSelect}
             isAddProjectSheetOpen={isAddProjectSheetOpen}
             setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
           />
-
         </div>
-
 
         {/* Platform Section */}
         <h2 className="text-xs text-zinc-400 mb-3 tracking-wide">Platform</h2>
@@ -74,6 +70,11 @@ const Sidebar: React.FC<SidebarProps> = ({
               <li>History</li>
               <li>Starred</li>
               <li>Settings</li>
+              {/* Temporary testing */}
+              <li>
+                <a href="/admin/waitlist">Waitlist</a>
+              </li>{" "}
+              {/* Temporary testing */}
             </ul>
           )}
 
@@ -152,7 +153,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* User Context */}
       <div className="pt-4">
         <UserMenu
-          isOpen={isUserMenuOpen} //error here
+          isOpen={isUserMenuOpen} 
           toggleMenu={toggleUserMenu}
           menuRef={userMenuRef}
           userEmail={userEmail}
@@ -163,4 +164,3 @@ const Sidebar: React.FC<SidebarProps> = ({
 };
 
 export default Sidebar;
-

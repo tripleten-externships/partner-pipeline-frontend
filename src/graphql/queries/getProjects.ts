@@ -5,8 +5,11 @@ export const GET_PROJECTS = gql`
     projects {
       id
       name
-      subtitle
-      status
+      project
+      isActive
+      lastUpdate
+      membersCount
+      milestonesCount
     }
   }
 `;

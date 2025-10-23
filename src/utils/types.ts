@@ -6,10 +6,15 @@ export type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete"
 export type Project = {
   id: string;
   name: string;
-  imgUrl: string,
+  imgUrl: string;
   fallBackIcon: React.ReactNode;
-  subtitle?: string;
-  status: ProjectStatus;
+  project: string;     // slug string (required by backend)
+  isActive: boolean;   // replaces "status"
+  lastUpdate?: string;
+  membersCount?: number;
+  milestonesCount?: number;
+  // subtitle?: string;
+  // status: ProjectStatus;
 };
 
 export type FormFields = {
@@ -30,7 +35,7 @@ export type EditProjectFormProps = {
 };
 
 export type MilestoneProps = {
-  selectedProjectId: string
+  selectedProjectId: string;
 };
 
 export type DashProps = {
@@ -53,11 +58,13 @@ export type DashProps = {
   projectError: Error | undefined;
   formData: FormFields;
 
-  setFormData: React.Dispatch<React.SetStateAction<{
-    name: string;
-    description: string;
-    status: ProjectStatus;
-  }>>;
+  setFormData: React.Dispatch<
+    React.SetStateAction<{
+      name: string;
+      description: string;
+      status: ProjectStatus;
+    }>
+  >;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   toggleProjectDropdown: (e: React.MouseEvent) => void;
@@ -70,6 +77,7 @@ export type DashProps = {
   isAddProjectSheetOpen: boolean;
   setIsAddProjectSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onProjectSubmit: (values: ProjectFormValues) => void;
+  onOpenInviteModal: () => void;
 };
 
 export type DashCardProps = {
@@ -170,8 +178,7 @@ export const projectFormSchema = z.object({
   img: z
     .any()
     .refine(
-      (file) =>
-        !file || (file instanceof File && ["image/png", "image/jpeg"].includes(file.type)),
+      (file) => !file || (file instanceof File && ["image/png", "image/jpeg"].includes(file.type)),
       "Only PNG or JPEG images are allowed"
     )
     .optional(),
