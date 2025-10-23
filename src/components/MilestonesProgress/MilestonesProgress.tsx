@@ -66,22 +66,17 @@ const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }
 const MilestonesProgress: React.FC = () => {
 
   const [openModal, setOpenModal] = useState(false);
-    const [milestonesList] = useState<Milestone[]>([
+   const [openEditModal, setOpenEditModal] = useState(false);
+  const [milestonesList, setMilestonesList] = useState<Milestone[]>([
     { title: "Initial setup", status: "Complete" },
   ]);
-    const [selectedMilestone, setSelectedMilestone] = useState(milestonesList[0] || null);
+  const [selectedMilestone, setSelectedMilestone] = useState(milestonesList[0] || null);
   
 
   const handleEditMilestone = (newMilestone: Milestone) => {
     selectedMilestone.title = newMilestone.title;
     selectedMilestone.status = newMilestone.status;
-
-
-const MilestonesProgress: React.FC = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [milestonesList, setMilestonesList] = useState<Milestone[]>([
-    { title: "Initial setup", status: "Complete" },
-  ]);
+  };
 
   const handleAddMilestone = (newMilestone: Milestone) => {
     setMilestonesList((prev) => [...prev, newMilestone]);
@@ -135,17 +130,22 @@ const MilestonesProgress: React.FC = () => {
                   Milestone description
                 </p>
               </div>
+          <button className={buttonVariants({ variant: "default" })}
+          onClick={() => {
+          setSelectedMilestone(milestone);
+          setOpenEditModal(true);
+}}>Edit milestone</button> 
             </li>
           );
         })}
       </ol>
 
       
-       {/* Modal */}
+       {/* Edit Milsetone Modal*/}
 
        <EditMilestoneModal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
+        open={openEditModal}
+        onClose={() => setOpenEditModal(false)}
         onEdit={handleEditMilestone}
         Milestone={{
     title: selectedMilestone.title,
