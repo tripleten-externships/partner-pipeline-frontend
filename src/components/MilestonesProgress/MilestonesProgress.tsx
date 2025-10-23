@@ -9,7 +9,6 @@ type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 type Milestone = {
   title: string;
   status: MilestoneStatus;
-  description: string;
 };
 
 
@@ -17,14 +16,14 @@ type Milestone = {
 // Logical progression left → right:
 // First three are Complete (green), then In review (blue spinner),
 // then In progress (yellow), then To-do (gray)
-const milestones: Milestone[] = [
-  { title: "Requirements Gathering", status: "Complete", description: "Collect requirements." },
-  { title: "Stakeholder Agreements", status: "Complete", description: "Align with stakeholders." },
-  { title: "Design Prototypes", status: "Complete", description: "Review wireframes & mockups." },
-  { title: "Team Formation", status: "In review", description: "Review team structure." },
-  { title: "Development Phase", status: "In progress", description: "Begin core development." },
-  { title: "Project Handoff", status: "To-do", description: "Deliver final product." },
-];
+// const milestones: Milestone[] = [
+//   { title: "Requirements Gathering", status: "Complete", description: "Collect requirements." },
+//   { title: "Stakeholder Agreements", status: "Complete", description: "Align with stakeholders." },
+//   { title: "Design Prototypes", status: "Complete", description: "Review wireframes & mockups." },
+//   { title: "Team Formation", status: "In review", description: "Review team structure." },
+//   { title: "Development Phase", status: "In progress", description: "Begin core development." },
+//   { title: "Project Handoff", status: "To-do", description: "Deliver final product." },
+// ];
 
 
 // Map each status to Tailwind color + icon representation
@@ -64,14 +63,15 @@ const statusStyles: Record<MilestoneStatus, { color: string; icon: JSX.Element }
 const MilestonesProgress: React.FC = () => {
 
   const [openModal, setOpenModal] = useState(false);
-  const [selectedMilestone, setSelectedMilestone] = useState(milestones[0] || null);
-  const [milestonesList] = useState(milestones);
+    const [milestonesList] = useState<Milestone[]>([
+    { title: "Initial setup", status: "Complete" },
+  ]);
+    const [selectedMilestone, setSelectedMilestone] = useState(milestonesList[0] || null);
   
 
   const handleEditMilestone = (newMilestone: Milestone) => {
     selectedMilestone.title = newMilestone.title;
     selectedMilestone.status = newMilestone.status;
-    selectedMilestone.description = newMilestone.description;
   };
 
   return (
@@ -96,7 +96,7 @@ const MilestonesProgress: React.FC = () => {
                 </div>
 
                 {/* Connecting line between milestones */}
-                {index < milestones.length - 1 && (
+                {index < milestonesList.length - 1 && (
                   <div className="hidden ml-4 sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
                 )}
               </div>
@@ -107,9 +107,9 @@ const MilestonesProgress: React.FC = () => {
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                   Status: <span className="font-medium">{milestone.status}</span>
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{milestone.description}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Milestone description</p>
               </div>
-                                  <button className={buttonVariants({ variant: "default" })}
+        <button className={buttonVariants({ variant: "default" })}
           onClick={() => {
           setSelectedMilestone(milestone);
           setOpenModal(true);
@@ -128,9 +128,9 @@ const MilestonesProgress: React.FC = () => {
         onEdit={handleEditMilestone}
         Milestone={{
     title: selectedMilestone.title,
-    status: selectedMilestone.status,
-    description: selectedMilestone.description
-  }} />
+    status: selectedMilestone.status}
+  } />
+
     </section>
   );
 };

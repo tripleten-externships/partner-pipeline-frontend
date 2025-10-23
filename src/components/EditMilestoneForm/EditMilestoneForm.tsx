@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
@@ -10,31 +10,32 @@ type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
 interface EditMilestoneModalProps {
   open: boolean;
   onClose: () => void;
-  onEdit: (Milestone: { title: string; status: MilestoneStatus; description: string }) =>  void;
-  Milestone: { title: string; status: MilestoneStatus; description: string };
+  onEdit: (Milestone: { title: string; status: MilestoneStatus;}) =>  void;
+  Milestone: { title: string; status: MilestoneStatus;};
 }
 
+//Milestone
 export const EditMilestoneModal: React.FC<EditMilestoneModalProps> = ({ open, onClose, onEdit, Milestone }) => {
   const [title, setTitle] = useState(Milestone.title ||" ");
    const [status, setStatus] = useState<MilestoneStatus | "">(Milestone.status);
-  const [description, setDescription] = useState(Milestone.description || " ");
+  // const [description, setDescription] = useState(Milestone.description || " ");
 
-  const isValid = title.trim() !== "" && status !== "" && description.trim() !== "";
+  const isValid = title.trim() !== "" && status !== "";
 
   useEffect(() => {
     if (open) { 
       setTitle(title);
       setStatus(status);
-      setDescription(description);
+      // setDescription(description);
     }
-  }, [open, title, status, description]); 
+  }, [open, title, status]); 
 
   const handleEdit = () => {
     if (!isValid) return;
     onEdit({
       title,
       status: status as MilestoneStatus,
-      description,
+      // description,
     });
     onClose();
   };
@@ -78,7 +79,7 @@ export const EditMilestoneModal: React.FC<EditMilestoneModalProps> = ({ open, on
           </div>
 
           {/* Description */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description
             </label>
@@ -88,7 +89,7 @@ export const EditMilestoneModal: React.FC<EditMilestoneModalProps> = ({ open, on
               placeholder="Enter description"
               rows={3}
             />
-          </div>
+          </div> */}
 
           {/* Actions */}
           <div className="flex justify-end gap-3 pt-2">
