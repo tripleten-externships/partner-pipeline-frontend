@@ -227,9 +227,9 @@ const useMe = () => {
   );
 };
 
-async function sendProjectInvitation(projectId: string, data: {name: string; email: string; role: string}) {
+async function sendUserInvitation(projectId: string, data: {name: string; email: string; role: string}) {
   try {
-    const response = await fetch(`${baseUrl}/api/projects/${projectId}/invites`, {
+    const response = await fetch(`${baseUrl}/api/projects/${projectId}/invitations`, {
       method: "POST",
       headers,
       body: JSON.stringify(data),
@@ -253,8 +253,8 @@ export {
   updateMilestone,
   useMe,
   importStudentsFromCsv,
-  useWaitlistEntries, // Added this 
-  sendProjectInvitation,
+  useWaitlistEntries, // Added this
+  sendUserInvitation,
 };
 
 
