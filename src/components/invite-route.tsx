@@ -3,7 +3,7 @@ import { InviteFormModal} from "../components/InviteFormModal/InviteFormModal";
 // import {sendUserInvitation} from "@/utils/api"
 
 
-function Login() {
+function Invite() {
 
 //Roles for the new accounts
 type AccessLevel = "admin" | "student";
@@ -44,4 +44,4 @@ const [AccountsList] = useState<Account[]>([
   );
 }
 
-export default Login;
+export default Invite;
