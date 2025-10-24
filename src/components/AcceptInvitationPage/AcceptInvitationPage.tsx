@@ -1,5 +1,5 @@
 // src/AcceptInvitationPage/AcceptInvitationPage.tsx
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Card,
   CardHeader,
@@ -10,17 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { AcceptInvitationPageProps } from '@/utils/types';
-import { InviteFormModal } from "../InviteFormModal/InviteFormModal";
 
-//Roles for the new accounts
-type AccessLevel = "admin" | "student";
-
-//Each Account has a name, email, and role as filled in through the form
-type Account = {
-  name: string;
-  email: string;
-  role: AccessLevel;
-}
 
 const AcceptInvitationPage: React.FC<AcceptInvitationPageProps> = ({
   projectList,
@@ -31,19 +21,6 @@ const AcceptInvitationPage: React.FC<AcceptInvitationPageProps> = ({
   handleAcceptInvite,
 }) => {
 
-//Invitation Form Modal Open or closed
-  const [openModal, setOpenModal] = useState(false); //Set to true if always open
-
-//Default Account that is premade can be null in the future
-  const [AccountsList, setAccountsList] = useState<Account[]>([
-    { name: "Joe", email: "Joe@gmail.com", role: "admin" },
-  ]);
-
-//Called upon succesful submit of Invitation Form 
-   const handleAddAccount = (newAccount: Account) => {
-    setAccountsList((prev) => [...prev, newAccount]);
-    console.log(AccountsList);
-  };
 
   if (!invitation) {
      return <p className="text-center mt-60">Loading invitation...</p>; 
@@ -78,7 +55,6 @@ const AcceptInvitationPage: React.FC<AcceptInvitationPageProps> = ({
           onClick={() => {
             setSelectedProjectId(invitation.id);
             handleAcceptInvite();
-            setOpenModal(true); //Invitation Modal is opened 
           }}
         >
           Accept as {userEmail}
@@ -95,12 +71,6 @@ const AcceptInvitationPage: React.FC<AcceptInvitationPageProps> = ({
       )}
 
     
-    {/* Modal */}
-                <InviteFormModal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        onCreate={handleAddAccount}
-      />
     </Card>
 
     
