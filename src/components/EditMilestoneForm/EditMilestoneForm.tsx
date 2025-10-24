@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-// import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
@@ -17,8 +16,7 @@ interface EditMilestoneModalProps {
 //Milestone
 export const EditMilestoneModal: React.FC<EditMilestoneModalProps> = ({ open, onClose, onEdit, Milestone }) => {
   const [title, setTitle] = useState(Milestone.title ||" ");
-   const [status, setStatus] = useState<MilestoneStatus | "">(Milestone.status);
-  // const [description, setDescription] = useState(Milestone.description || " ");
+  const [status, setStatus] = useState<MilestoneStatus | "">(Milestone.status);
 
   const isValid = title.trim() !== "" && status !== "";
 
@@ -26,7 +24,6 @@ export const EditMilestoneModal: React.FC<EditMilestoneModalProps> = ({ open, on
     if (open) { 
       setTitle(title);
       setStatus(status);
-      // setDescription(description);
     }
   }, [open, title, status]); 
 
@@ -35,7 +32,6 @@ export const EditMilestoneModal: React.FC<EditMilestoneModalProps> = ({ open, on
     onEdit({
       title,
       status: status as MilestoneStatus,
-      // description,
     });
     onClose();
   };
@@ -77,19 +73,6 @@ export const EditMilestoneModal: React.FC<EditMilestoneModalProps> = ({ open, on
               </SelectContent>
             </Select>
           </div>
-
-          {/* Description */}
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Description
-            </label>
-            <Textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter description"
-              rows={3}
-            />
-          </div> */}
 
           {/* Actions */}
           <div className="flex justify-end gap-3 pt-2">
