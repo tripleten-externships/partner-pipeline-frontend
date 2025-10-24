@@ -9,13 +9,16 @@ import Invite from "./invite-route";
 import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
+import InviteModal from "./InviteModal/InviteModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
-import { useProjectInvitations } from "@/utils/api";
+// import { useProjectInvitations } from "@/utils/api";
 
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
 import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
+
+// import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 
 // import { useProjectIDs } from "@/utils/api";
 
@@ -25,10 +28,7 @@ function App() {
   // GraphQL
   const { data, loading, error, refetch } = useQuery<{ projects: Project[] }>(GET_PROJECTS);
 
-  const projectList = React.useMemo<Project[]>(
-  () => data?.projects ?? [],
-  [data?.projects]
-);
+  const projectList = React.useMemo<Project[]>(() => data?.projects ?? [], [data?.projects]);
   const [createProject] = useMutation(CREATE_PROJECT, {
     refetchQueries: [{ query: GET_PROJECTS }],
   });
@@ -54,7 +54,8 @@ function App() {
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
-  const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
   const projectDropdownRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -66,8 +67,7 @@ function App() {
 
   const [invitation, setInvitation] = useState<Invitation | null>(null);
 
-
-  const [userEmail] = useState("foo@foo.com"); 
+  const [userEmail] = useState("foo@foo.com");
 
   const [isLoggedIn] = useState(true);
 
@@ -81,16 +81,16 @@ function App() {
   }, [projectList, selectedProjectId]);
 
   useEffect(() => {
-  if (currentProject && isSheetOpen) {
-    setFormData({
-      name: currentProject.name || "",
-      // show the current slug in your “description” text box so users can edit it
-      description: currentProject.project || "",
-      // map boolean to your legacy status select
-      status: currentProject.isActive ? "Active" : "Completed",
-    });
-  }
-}, [currentProject, isSheetOpen]);
+    if (currentProject && isSheetOpen) {
+      setFormData({
+        name: currentProject.name || "",
+        // show the current slug in your “description” text box so users can edit it
+        description: currentProject.project || "",
+        // map boolean to your legacy status select
+        status: currentProject.isActive ? "Active" : "Completed",
+      });
+    }
+  }, [currentProject, isSheetOpen]);
 
   // Convoluted way of getting a valid default id.
   // - Check if the current id matches any valid id.
@@ -111,36 +111,26 @@ function App() {
   //   }
   // }
 
-  
-  
-
-useEffect(() => {
-  if (!selectedProjectId && (!projectList || projectList.length === 0)) {
-    setInvitation(null);
-    return;
-  }
-
-  // prefer a real invitation if present
-  const projectId = selectedProjectId ?? projectList[0].id;
-  const invitations = invData?.projectInvitations ?? [];
-  if (invitations.length > 0) {
-    // pick the first available invitation
-    const inv = invitations[0];
-    setInvitation({
-      id: inv.id,
-      projectName: projectList.find(p => p.id === projectId)?.name ?? "Project",
-      inviterName: inv.user?.name ?? "Inviter",
-      role: inv.invitationTokens?.[0]?.roleToGrant ?? "Collaborator",
-      projectLogo: "/logo.png",
-      projectIcon: projectList.find(p => p.id === projectId)?.fallBackIcon ?? <SquareStack size={16} />,
-    });
-    return;
-  }
-
-  // fallback to simulated invite if none exist
-  // ...use the defensive simulation code from Option A
-}, [selectedProjectId, projectList, invData]);
-
+  //Simulate invitation
+  useEffect(() => {
+    setIsLoading(true);
+    const t = setTimeout(() => {
+      const sampleId = projectList[0]?.id;
+      const existing = projectList.find((p) => p.id === sampleId);
+      if (existing) {
+        setInvitation({
+          id: existing.id,
+          projectName: existing.name,
+          inviterName: "Dev Tester",
+          role: "Collaborator",
+          projectLogo: "/logo.png",
+          projectIcon: existing.fallBackIcon ?? <SquareStack size={16} />,
+        });
+      }
+      setIsLoading(false);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [projectList]);
   const handleChange = <K extends keyof FormFields>(field: K, value: FormFields[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -171,35 +161,35 @@ useEffect(() => {
     }
   };
 
-const handleAddProject = async (values: ProjectFormValues) => {
-  setIsLoading(true);
-  try {
-    // Basic slug fallback — the backend requires a "project" string
-    const projectSlug = values.name
-      .toLowerCase()
-      .replace(/\s+/g, "-") // replace spaces with dashes
-      .replace(/[^a-z0-9-]/g, ""); // strip weird characters
+  const handleAddProject = async (values: ProjectFormValues) => {
+    setIsLoading(true);
+    try {
+      // Basic slug fallback — the backend requires a "project" string
+      const projectSlug = values.name
+        .toLowerCase()
+        .replace(/\s+/g, "-") // replace spaces with dashes
+        .replace(/[^a-z0-9-]/g, ""); // strip weird characters
 
-    const { data } = await createProject({
-      variables: {
-        name: values.name,
-        project: projectSlug,                 // ✅ required by backend
-        isActive: values.status === "Active", // optional mapping
-      },
-    });
+      const { data } = await createProject({
+        variables: {
+          name: values.name,
+          project: projectSlug, // ✅ required by backend
+          isActive: values.status === "Active", // optional mapping
+        },
+      });
 
-    await refetch(); // ensures UI updates
+      await refetch(); // ensures UI updates
 
-    toast.success(`Project "${data.createProject.name}" created.`);
-    setSelectedProjectId(data.createProject.id);
-    setIsAddProjectSheetOpen(false);
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to create project.");
-  } finally {
-    setIsLoading(false);
-  }
-};
+      toast.success(`Project "${data.createProject.name}" created.`);
+      setSelectedProjectId(data.createProject.id);
+      setIsAddProjectSheetOpen(false);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to create project.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleDeleteProject = async () => {
     if (!currentProject) return;
@@ -283,6 +273,7 @@ const handleAddProject = async (values: ProjectFormValues) => {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
+              onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
         />
@@ -302,7 +293,13 @@ const handleAddProject = async (values: ProjectFormValues) => {
             />
           }
         />
+        {/* <Route path="/admin/waitlist" element={<WaitlistPage />} /> */}
       </Routes>
+      <InviteModal
+        isOpen={isInviteModalOpen}
+        onClose={() => setIsInviteModalOpen(false)}
+        projectId={selectedProjectId}
+      />
       <Toaster position="bottom-center" />
     </main>
   );
