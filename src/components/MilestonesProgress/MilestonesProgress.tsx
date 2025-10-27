@@ -4,8 +4,10 @@ import { EditMilestoneModal } from "../EditMilestoneForm/EditMilestoneForm";
 import { MilestoneModal } from "../MilestoneModal/MilestoneModal";
 
 
+
 // Define allowed statuses for milestones
 type MilestoneStatus = "To-do" | "In progress" | "In review" | "Complete";
+
 
 // Each milestone has a title, status, and description
 type Milestone = {
@@ -78,9 +80,11 @@ const MilestonesProgress: React.FC = () => {
     selectedMilestone.status = newMilestone.status;
   };
 
+  
   const handleAddMilestone = (newMilestone: Milestone) => {
     setMilestonesList((prev) => [...prev, newMilestone]);
   };
+
 
   return (
     <section className="relative pl-0 pr-0 pt-4 pb-4 bg-zinc-950 rounded-md shadow mb-10">
@@ -158,6 +162,8 @@ const MilestonesProgress: React.FC = () => {
         onClose={() => setOpenModal(false)}
         onCreate={handleAddMilestone}
       />
+
+
     </section>
   );
 };

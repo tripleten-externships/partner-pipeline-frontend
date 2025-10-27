@@ -5,6 +5,7 @@ import { toast, Toaster } from "sonner";
 import useClickOutside from "@/hooks/useClickOutside";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./login-route";
+import Invite from "./invite-route";
 import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
@@ -279,6 +280,7 @@ function App() {
         />
         <Route path="/user-management" element={<UserManagement />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/invite" element={<Invite />} />
         <Route
           path="/invitation"
           element={
