@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   ChevronDown,
   ChevronUp,
@@ -12,6 +13,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import UserMenu from "../UserMenu/UserMenu";
+import { MailPlus } from "lucide-react";
 import { SidebarProps } from "@/utils/types";
 import ProjectSwitcher from "../ProjectSwitcher/ProjectSwitcher";
 
@@ -112,6 +114,12 @@ const Sidebar: React.FC<SidebarProps> = ({
               <li>Changelog</li>
             </ul>
           )}
+
+          <li>
+            <Link  to="/invite" className="flex items-center gap-2">
+            <MailPlus size={14} /> Invitations
+            </Link>
+          </li>
 
           <button
             className="w-full flex items-center justify-between text-sm font-sm mt-4 mb-2"

@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../Sidebar/Sidebar";
+import Sidebar from "../Sidebar";
 import { DashProps } from "@/utils/types";
 import {
   Sheet,
@@ -46,8 +46,7 @@ const Dashboard: React.FC<DashProps> = ({
   userMenuRef,
   userEmail,
   loadingProjects,
-  projectError,
-  onOpenInviteModal,
+  projectError, 
 }) => (
   <div className="flex h-screen">
     <Sidebar
@@ -73,7 +72,6 @@ const Dashboard: React.FC<DashProps> = ({
     <main className="flex-1 p-6 overflow-y-auto bg-zinc-950">
       <BreadcrumbHeader section="Overview" page="History" />
       <div className="flex justify-end mb-4 gap-2">
-        <button onClick={onOpenInviteModal}>Invite</button>
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <button className={buttonVariants({ variant: "default" })}>Edit Project</button>
@@ -90,6 +88,7 @@ const Dashboard: React.FC<DashProps> = ({
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
                 onChange={handleChange}
+                
                 onCancel={() => setIsSheetOpen(false)}
                 onSubmit={onSubmit}
                 onDelete={handleDeleteProject}
