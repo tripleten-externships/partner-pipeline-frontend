@@ -227,7 +227,7 @@ const useMe = () => {
   );
 };
 
-async function sendUserInvitation(projectId: string, data: {name: string; email: string; role: string}) {
+async function sendUserInvitation(projectId: string, data: {name: string; email: string; roleToGrant: string}) {
   try {
     const response = await fetch(`${baseUrl}/api/projects/${projectId}/invitations`, {
       method: "POST",
