@@ -29,7 +29,7 @@ const [openModal, setOpenModal] = useState(true); //Set to true if always open
   //Called upon succesful submit of Invitation Form (what happens after pressing submit)
    const handleAddAccount = (newAccount: Account) => {
     console.log(newAccount);
-    sendUserInvitation("10", newAccount);
+    sendUserInvitation("10", {name: newAccount.name, email: newAccount.email, roleToGrant: newAccount.role});
   };
 
   return (
