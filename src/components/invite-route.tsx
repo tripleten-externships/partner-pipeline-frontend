@@ -15,10 +15,8 @@ type Account = {
   role: AccessLevel;
 }
 
-
-
 //Invitation Form Modal Open or closed
-const [openModal, setOpenModal] = useState(true); //Set to true if always open
+const [openModal] = useState(true); //Set to true if always open
 
 //Default list of Accounts that is premade can be null (empty) in the future
 // const [AccountsList] = useState<Account[]>([
@@ -37,7 +35,6 @@ const [openModal, setOpenModal] = useState(true); //Set to true if always open
     {/* Modal */}
         <InviteFormModal
             open={openModal}
-            onClose={() => setOpenModal(false)}
             onCreate={handleAddAccount}
         />
     </>
