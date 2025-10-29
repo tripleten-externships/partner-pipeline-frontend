@@ -30,7 +30,7 @@ const SendInvitePage: React.FC<DashProps>
   email: string;
   role: AccessLevel;
 }
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal] = useState(true);
      const handleAddAccount = (newAccount: Account) => {
     console.log(newAccount);
     sendUserInvitation("10", {name: newAccount.name, email: newAccount.email, roleToGrant: newAccount.role});
@@ -58,7 +58,6 @@ const SendInvitePage: React.FC<DashProps>
     />
          <InviteFormModal
             open={openModal}
-            onClose={() => setOpenModal(false)}
             onCreate={handleAddAccount}
         />
       </div>

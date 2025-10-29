@@ -1,3 +1,5 @@
+//InviteFormModal.tsx
+//Used in invite route to send emails
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -8,11 +10,10 @@ type AccessLevel = "admin" | "student";
 
 interface InviteFormModalProps {
   open: boolean;
-  onClose: () => void;
   onCreate: (Account: { name: string; email: string; role: AccessLevel }) =>  void;
 }
 
-export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onClose, onCreate }) => {
+export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate }) => {
   const [name, setName] = useState(" ");
    const [email, setEmail] = useState(" ");
   const [role, setRole] = useState<AccessLevel | "">("");
@@ -20,6 +21,7 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onClose,
 
     const validateEmail = (email: string): boolean => {
       // A common regex pattern for email validation
+      // TODO: Perhaps check back end for email validation (duplicate emails)
       const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return regex.test(email);
     };
@@ -48,12 +50,12 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onClose,
       email,
       role: role as AccessLevel,
     });
-    onClose();
   };
 
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog open={open} >
+      <DialogContent showCloseButton={false} className="max-w-sm sm:max-w-lg"> 
         <DialogHeader>
           <DialogTitle>Create Account Form</DialogTitle>
         </DialogHeader>
@@ -97,8 +99,8 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onClose,
                 <SelectValue placeholder="Select your Role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="admin">admin</SelectItem>
-                <SelectItem value="student">student</SelectItem>
+                <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="student">Student</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -107,9 +109,6 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onClose,
 
           {/* Actions */}
           <div className="flex justify-end gap-3 pt-2">
-            <Button variant="outline" onClick={onClose}>
-              Exit Form Without Account
-            </Button>
             <Button onClick={handleCreate} disabled={!isValid}>
               Create Account
             </Button>
