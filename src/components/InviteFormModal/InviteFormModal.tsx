@@ -67,7 +67,7 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
         border-5
       "
     >
-      <div className="mb-4 text-lg font-semibold">Create Account Form</div>
+      <div className="mb-4 text-lg font-semibold">Send Account Form</div>
 
       <div className="space-y-4">
         {/* Name */}
@@ -117,7 +117,7 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
         {/* Actions */}
         <div className="flex justify-end gap-3 pt-2">
           <Button onClick={handleCreate} disabled={!isValid}>
-            Create Account
+            Send Invite
           </Button>
         </div>
       </div>
