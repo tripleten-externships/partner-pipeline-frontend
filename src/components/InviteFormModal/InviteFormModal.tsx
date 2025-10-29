@@ -67,7 +67,7 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
         border-5
       "
     >
-      <div className="mb-4 text-lg font-semibold">Send Account Form</div>
+      <div className="mb-4 text-lg font-semibold">Send Invite Form</div>
 
       <div className="space-y-4">
         {/* Name */}
