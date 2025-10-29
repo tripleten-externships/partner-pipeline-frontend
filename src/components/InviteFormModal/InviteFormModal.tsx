@@ -79,7 +79,7 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
+            placeholder="Enter Name of Invitee"
             required
           />
         </div>
@@ -93,7 +93,7 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
             type="email"
             value={email}
             onChange={handleEmailChange}
-            placeholder="Enter your email"
+            placeholder="Enter email of Invitee"
             required
           />
           {validEmail === false && <p className="text-red-500">Please enter a valid email address.</p>}
@@ -106,7 +106,7 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
           </label>
           <Select value={role} onValueChange={(val) => setRole(val as AccessLevel)}>
             <SelectTrigger>
-              <SelectValue placeholder="Select your Role" />
+              <SelectValue placeholder="Select Role for Invitee" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="admin">Admin</SelectItem>
@@ -125,4 +125,5 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
     </div>
   );
 };
+
 
