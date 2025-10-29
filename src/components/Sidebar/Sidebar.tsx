@@ -112,14 +112,15 @@ const Sidebar: React.FC<SidebarProps> = ({
               <li>Get Started</li>
               <li>Tutorials</li>
               <li>Changelog</li>
+              <li>
+                <Link  to="/invite" className="flex items-center gap-2">
+                <MailPlus size={14} /> Invitations
+                </Link>
+              </li>
             </ul>
           )}
 
-          <li>
-            <Link  to="/invite" className="flex items-center gap-2">
-            <MailPlus size={14} /> Invitations
-            </Link>
-          </li>
+     
 
           <button
             className="w-full flex items-center justify-between text-sm font-sm mt-4 mb-2"
