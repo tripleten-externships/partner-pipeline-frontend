@@ -1,4 +1,5 @@
 // InviteFormModal.tsx
+// Modal to send users invitations
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
@@ -18,7 +19,7 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
   const [validEmail, setIsValidEmail] = useState<boolean | null>(null); //Flag to set when email field is valid or invalid
 
 
-  //Validate Email by comparing regex to email filed
+  //Validate Email by comparing regex to email input
   const validateEmail = (email: string): boolean => {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return regex.test(email);
@@ -67,7 +68,7 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
         border-5
       "
     >
-      <div className="mb-4 text-lg font-semibold">Send Invite Form</div>
+      <div className="mb-4 text-lg font-semibold">Send Invites</div>
 
       <div className="space-y-4">
         {/* Name */}
@@ -124,3 +125,4 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
     </div>
   );
 };
+
