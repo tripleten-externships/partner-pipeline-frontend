@@ -5,7 +5,7 @@ import { toast, Toaster } from "sonner";
 import useClickOutside from "@/hooks/useClickOutside";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./login-route";
-import Invite from "./invite-route";
+import SendInvitePage from "./invite-route";
 import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
@@ -280,7 +280,39 @@ function App() {
         />
         <Route path="/user-management" element={<UserManagement />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/invite" element={<Invite />} />
+        <Route path="/invite" element={<SendInvitePage 
+              projectList={projectList}
+              loadingProjects={loading}
+              projectError={error}
+              selectedProjectId={selectedProjectId}
+              setSelectedProjectId={setSelectedProjectId}
+              formData={formData}
+              setFormData={setFormData}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              handleChange={handleChange}
+              onSubmit={handleSubmit}
+              onProjectSubmit={handleAddProject}
+              currentProject={currentProject}
+              handleDeleteProject={handleDeleteProject}
+              handleProjectSelect={handleProjectSelect}
+              openMenus={openMenus}
+              setOpenMenus={setOpenMenus}
+              isSheetOpen={isSheetOpen}
+              setIsSheetOpen={setIsSheetOpen}
+              isProjectDropdownOpen={isProjectDropdownOpen}
+              setIsProjectDropdownOpen={setIsProjectDropdownOpen}
+              toggleProjectDropdown={toggleProjectDropdown}
+              projectDropdownRef={projectDropdownRef}
+              isUserMenuOpen={isUserMenuOpen}
+              toggleUserMenu={toggleUserMenu}
+              userMenuRef={userMenuRef}
+              userEmail={userEmail}
+              toggleMenu={toggleMenu}
+              isAddProjectSheetOpen={isAddProjectSheetOpen}
+              setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+              handleAddProject={handleAddProject}
+              onOpenInviteModal={() => setIsInviteModalOpen(true)}/>} />
         <Route
           path="/invitation"
           element={
