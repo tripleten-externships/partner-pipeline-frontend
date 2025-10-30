@@ -1,0 +1,193 @@
+diff --git a/package.json b/package.json
+index e2bc673..f27a239 100644
+--- a/package.json
++++ b/package.json
+@@ -5,7 +5,7 @@
+   "type": "module",
+   "scripts": {
+     "prepare": "husky install",
+-    "dev": "vite --open",
++    "dev": "vite",
+     "build": "tsc && vite build",
+     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+     "preview": "vite preview",
+@@ -32,7 +32,7 @@
+     "@heroicons/react": "^2.0.18",
+     "@hookform/resolvers": "^5.1.1",
+     "@keystone-6/document-renderer": "^1.1.2",
+-    "@radix-ui/react-dropdown-menu": "^2.1.15",
++    "@radix-ui/react-avatar": "^1.1.10",
+     "@radix-ui/react-dialog": "^1.1.14",
+     "@radix-ui/react-label": "^2.1.7",
+     "@radix-ui/react-select": "^2.2.5",
+@@ -48,6 +48,7 @@
+     "imask": "^7.6.0",
+     "lodash": "^4.17.21",
+     "lucide-react": "^0.510.0",
++    "next-themes": "^0.4.6",
+     "pluralize": "^8.0.0",
+     "react": "^18.3.1",
+     "react-dom": "^18.3.1",
+@@ -58,6 +59,7 @@
+     "react-router": "^6.16.0",
+     "react-router-dom": "^6.16.0",
+     "react-spinners": "^0.13.8",
++    "sonner": "^2.0.5",
+     "sql": "^0.78.0",
+     "storybook": "^9.0.0",
+     "styled-components": "^6.1.0",
+diff --git a/src/utils/types.ts b/src/utils/types.ts
+index 73a85cf..70f3625 100644
+--- a/src/utils/types.ts
++++ b/src/utils/types.ts
+@@ -1,18 +1,16 @@
+-export type ProjectStatus = "Active" | "Completed" | "Paused" | "Archived";
+-
+ export type Project = {
+-  id: string;
++  id: number;
+   name: string;
+-  imgUrl: string,
+-  fallBackIcon: React.ReactNode;
+-  subtitle?: string;
+-  status: ProjectStatus;
++  icon: React.ReactNode;
++  shortcut: string;
++  description: string;
++  status: string;
+ };
+ 
+ export type FormFields = {
+   name: string;
+   description: string;
+-  status: "Active" | "Completed" | "Paused" | "Archived";
++  status: string;
+ };
+ 
+ export type EditProjectFormProps = {
+@@ -23,52 +21,107 @@ export type EditProjectFormProps = {
+   onChange: (field: keyof FormFields, value: string) => void;
+   onSave: (updatedFields: FormFields) => void;
+   onCancel: () => void;
++  onSubmit: () => void;
+ };
+ 
+ export type DashProps = {
+   projectList: Project[];
+   setProjectList: React.Dispatch<React.SetStateAction<Project[]>>;
+-  selectedProjectId: string;
+-  setSelectedProjectId: React.Dispatch<React.SetStateAction<string>>;
++  selectedProjectId: number;
++  setSelectedProjectId: React.Dispatch<React.SetStateAction<number>>;
+   currentProject?: Project;
+   handleSave: (updatedFields: Partial<Project>) => void;
++  onSubmit: () => void;
+   isSheetOpen: boolean;
+   setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
+   openMenus: string[];
+   setOpenMenus: React.Dispatch<React.SetStateAction<string[]>>;
+-  handleProjectSelect: (id: string) => void;
+-  formData: FormFields;
+-
++  toggleMenu: (menu: string) => void;
++  isProjectDropdownOpen: boolean;
++  setIsProjectDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
++  handleProjectSelect: (id: number) => void;
++  formData: {
++    name: string;
++    description: string;
++    status: string;
++  };
+   setFormData: React.Dispatch<React.SetStateAction<{
+     name: string;
+     description: string;
+-    status: ProjectStatus;
++    status: string;
+   }>>;
+   isLoading: boolean;
+   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+-  handleChange: <K extends keyof FormFields>(field: K, value: FormFields[K]) => void;
++  handleChange: (field: string, value: string) => void;
++    toggleProjectDropdown: (e: React.MouseEvent) => void;
++  projectDropdownRef: React.RefObject<HTMLDivElement>;
++  isUserMenuOpen: boolean;
++  toggleUserMenu: (e: React.MouseEvent) => void;
++  userMenuRef: React.RefObject<HTMLDivElement>;
++  userEmail: string;
+ };
+ 
+ export type DashCardProps = {
+   children?: React.ReactNode;
+ };
+ 
++export type DashContentProps = {
++  children?: React.ReactNode;
++};
++
+ export type BreadcrumbHeaderProps = {
+   section: string;
+   page: string;
+ };
+ 
+-export type SidebarProps = {
++export type SelectorProps = {
+   projectList: Project[];
+-  selectedProjectId: string;
+-  setSelectedProjectId: React.Dispatch<React.SetStateAction<string>>;
++  selectedProjectId: number;
++  isProjectDropdownOpen: boolean;
++  toggleProjectDropdown: (e: React.MouseEvent) => void;
++  dropdownRef: React.RefObject<HTMLDivElement>;
++  handleProjectSelect: (id: number) => void;
++};
++
++export interface SidebarProps {
++  projectList: Project[];
++  selectedProjectId: number;
++  isProjectDropdownOpen: boolean;
++  toggleProjectDropdown: (e: React.MouseEvent) => void;
++  toggleMenu: (menu: string) => void;
++  projectDropdownRef: React.RefObject<HTMLDivElement>;
++  handleProjectSelect: (id: number) => void;
++
+   openMenus: string[];
+   setOpenMenus: React.Dispatch<React.SetStateAction<string[]>>;
+-  handleProjectSelect: (id: string) => void;
+-};
+ 
+-export type ProjectSwitcherProps = {
++  isUserMenuOpen: boolean;
++  toggleUserMenu: (e: React.MouseEvent) => void;
++  userMenuRef: React.RefObject<HTMLDivElement>;
++  userEmail: string;
++}
++
++export interface UserMenuProps {
++  isOpen: boolean;
++  toggleMenu: (e: React.MouseEvent) => void;
++  menuRef: React.RefObject<HTMLDivElement>;
++  userEmail: string;
++}
++
++export interface Invitation {
++  id: number;
++  projectName: string;
++  inviterName: string;
++  role: string;
++  projectLogo: string;
++  projectIcon: React.ReactNode;
++}
++
++export interface AcceptInvitationPageProps {
+   projectList: Project[];
+-  selectedProjectId: string;
+-  handleProjectSelect: (id: string) => void;
+-};
+\ No newline at end of file
++  setSelectedProjectId: (id: number) => void;
++  invitation: Invitation | null;
++  isLoggedIn: boolean;
++  userEmail: string;
++  handleAcceptInvite: () => void;
++}
+\ No newline at end of file
