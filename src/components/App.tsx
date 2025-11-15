@@ -11,8 +11,7 @@ import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import InviteModal from "./InviteModal/InviteModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
-// import { useProjectInvitations } from "@/utils/api";
-
+import { baseUrl, headers, processServerRequest } from "@/utils/api";
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
 import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
@@ -216,6 +215,12 @@ function App() {
       toast.error("You must be logged in to accept this invitation.");
       return;
     }
+    fetch(`${baseUrl}/accept`, {
+      method: "POST",
+      headers,
+      credentials: "include",
+      body: JSON.stringify({ token: new URLSearchParams(window.location.search).get("token") }),
+    }).then(processServerRequest);
     toast.success(`Successfully joined ${invitation?.projectName} as ${invitation?.role}`);
     setTimeout(() => navigate("/"), 1500);
   };
