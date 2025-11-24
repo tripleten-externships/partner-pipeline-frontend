@@ -31,7 +31,7 @@ interface StudentStatusModalProps{
 
 const StudentStatusModal: React.FC<StudentStatusModalProps> = ({isOpen, onClose, student}) => {
     const [notes, setNotes] = useState<string>(student.notes ?? "");
-    const [isSaving, setIsSaving] = useState(false);
+    const [setIsSaving] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         console.log("Submit button has been pressed", notes);
