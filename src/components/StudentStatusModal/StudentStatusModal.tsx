@@ -31,7 +31,7 @@ interface StudentStatusModalProps{
 
 const StudentStatusModal: React.FC<StudentStatusModalProps> = ({isOpen, onClose, student}) => {
     const [notes, setNotes] = useState<string>(student.notes ?? "");
-    const [setIsSaving] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         console.log("Submit button has been pressed", notes);
@@ -105,7 +105,7 @@ const StudentStatusModal: React.FC<StudentStatusModalProps> = ({isOpen, onClose,
                         placeholder="Add notes about this student..." 
                         max="100" className="student-status__modal_notes"
                     />
-                    <button type="submit" className="student-status__modal_save-button">Save</button>
+                    <button type="submit" className="student-status__modal_save-button" disabled={isSaving}>{isSaving ? "Saving..." : "Save" }</button>
                 </form>
 
             </div>
