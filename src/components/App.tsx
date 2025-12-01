@@ -10,6 +10,7 @@ import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import InviteModal from "./InviteModal/InviteModal";
+import WaitlistDashboard from "@/routes/WaitlistDashboard";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 // import { useProjectInvitations } from "@/utils/api";
 
@@ -326,6 +327,7 @@ function App() {
             />
           }
         />
+        <Route path="/waitlist" element={<WaitlistDashboard />} />
         {/* <Route path="/admin/waitlist" element={<WaitlistPage />} /> */}
       </Routes>
       <InviteModal
