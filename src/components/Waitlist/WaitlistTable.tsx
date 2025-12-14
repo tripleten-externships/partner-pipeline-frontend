@@ -31,7 +31,7 @@ const formatDate = (iso: string | null | undefined) => {
 // Helper: map the raw status string to a user-friendly label, use Tailwind classes for a colored "badge"
 function getStatusBadge(statusRaw: string | null | undefined) {
   if (!statusRaw) {
-    return { label: "unknown", className: "bg-sinc-100 text-zinc-700" };
+    return { label: "unknown", className: "bg-zinc-100 text-zinc-700" };
 
   }
   const status = statusRaw.toLowerCase().trim();
