@@ -23,6 +23,8 @@ import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
 // import { useProjectIDs } from "@/utils/api";
 
+// import StudentAcceptanceRate from "./MetricCards/StudentAcceptanceRate"; // Uncomment when ready to add StudentAcceptanceRate metric card
+
 function App() {
   const navigate = useNavigate();
 
@@ -238,6 +240,8 @@ function App() {
 
   return (
     <main className="flex-1 bg-zinc-950">
+      {/* TODO: the hardcoded invitedCount and acceptedCount numbers below should eventually be replaced with backend acceptance metrics */}
+      {/* <StudentAcceptanceRate invitedCount={120} acceptedCount={84}/>  */}
       <Routes>
         <Route
           path="/"
