@@ -14,10 +14,10 @@ import AddProjectForm from "../AddProjectForm/AddProjectForm";
 import BreadcrumbHeader from "../BreadcrumbHeader/BreadcrumbHeader";
 import DashCard from "../DashCard/DashCard";
 import DashContent from "../DashContent/DashContent";
-import StudentsWaitingCard from "../Dashboard/StudentsWaitingCard";
 import EditProjectForm from "../EditProjectForm/EditProjectForm";
 import MilestonesProgress from "../MilestonesProgress/MilestonesProgress";
 import Sidebar from "../Sidebar/Sidebar";
+import StudentsWaitingCard from "../WaitlistCard/StudentsWaitingCard";
 
 const Dashboard: React.FC<DashProps> = ({
   projectList,
