@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
 import { ImportStudentsModal } from "@/components/CsvImportModal";
 import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
+import { mockWaitlistEntries } from "@/mocks/waitlist.mock";
 
 interface WaitlistUser {
   id: string;
@@ -17,6 +18,10 @@ interface Props {
   status: string;
 }
 
+// FLIP TO FALSE WHEN READY TO USE REAL DATA
+const USE_MOCK_DATA = true;
+
+// Helper: format ISO date string to more readable format
 const formatDate = (iso: string | null | undefined) => {
   if (!iso) return "—";
   const d = new Date(iso);
@@ -102,7 +107,14 @@ export function WaitlistTable({ search, status }: Props) {
     if (!data?.waitlistEntries) return;
 
     // Full list returned by GraphQL
-    let filtered: WaitlistUser[] = data.waitlistEntries;
+    // let filtered: WaitlistUser[] = data.waitlistEntries;
+
+    // mock data toggle
+    const sourceEntries = USE_MOCK_DATA 
+    ? mockWaitlistEntries 
+    : data?.waitlistEntries ?? [];
+    
+    let filtered: WaitlistUser[] = sourceEntries;
 
     // Text search filter
     if (search.trim() !== "") {
