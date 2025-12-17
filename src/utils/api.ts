@@ -227,12 +227,29 @@ const useMe = () => {
   );
 };
 
-async function sendUserInvitation(projectId: string, data: {name: string; email: string; roleToGrant: string}) {
+async function sendUserInvitation(
+  projectId: string, 
+  data: {toName: string; toEmail: string; roleToGrant: string;}
+) {
+  // TEST CODE:
+  // console.log("Sending invitation with data:", {
+  //   projectId,
+  //   ...data,
+  //   expiresAt: new Date(Date.now() + 7*24*60*60*1000).toISOString(),
+  //   maxUses: 1
+  // });
+  // return Promise.resolve({ success: true }); // mock response
   try {
     const response = await fetch(`${baseUrl}/api/projects/${projectId}/invitations`, {
       method: "POST",
       headers,
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+          ...data,
+          expiresAt: new Date(
+            Date.now() + 7 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          maxUses: 1,
+        }), // ^^added expiresAt and maxUses since the backend invitationsRoute uses these
     });
     return processServerRequest(response);
   } catch (error) {
