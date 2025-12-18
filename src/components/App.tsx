@@ -9,18 +9,21 @@ import SendInvitePage from "./invite-route";
 import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
+import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
 import InviteModal from "./InviteModal/InviteModal";
 import WaitlistDashboard from "@/routes/WaitlistDashboard";
+import StudentStatusModal from "./StudentStatusModal/StudentStatusModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
-// import { useProjectInvitations } from "@/utils/api";
-
+import { baseUrl, headers, processServerRequest } from "@/utils/api";
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
 import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
+//importing student interface for styling of modal
+import type {Student} from "./StudentStatusModal/StudentStatusModal";
 
-// import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
+import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 
 // import { useProjectIDs } from "@/utils/api";
 
@@ -57,6 +60,7 @@ function App() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  
   // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
   const projectDropdownRef = useRef<HTMLDivElement>(null);
@@ -72,6 +76,35 @@ function App() {
   const [userEmail] = useState("foo@foo.com");
 
   const [isLoggedIn] = useState(true);
+
+  //hardcoded to keep studentstatus modal opened for styling
+  const isModalOpen = false;
+
+  //mock student object for styling
+  const mockStudent: Student = {
+    id: "Mock Student",
+    email: "example@student.com",
+    status: "active",
+    program: "SE",
+    invitesSent: 3,
+    completionDate: "2025-12-01",
+    lastContactDate: "2025-11-10",
+    dateAdded: "2024-01-05",
+    voucherIssued: "2025-10-20",
+    profileUrl: "https://website.com/students/123",
+    notes: "This is just a test",
+  };
+
+  //temporary do nothing onClose func
+  const handleClose = () => {};
+
+  //temporary admin stats object for styling
+  const mockAdminStats = {
+    waitingCount: 12,
+    inactiveCount: 7,
+    inviteAcceptanceRate: 0.63,
+    avgResponseTimeDays: 4,
+  };
 
   useClickOutside(projectDropdownRef, () => setIsProjectDropdownOpen(false));
   useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
@@ -217,6 +250,12 @@ function App() {
       toast.error("You must be logged in to accept this invitation.");
       return;
     }
+    fetch(`${baseUrl}/accept`, {
+      method: "POST",
+      headers,
+      credentials: "include",
+      body: JSON.stringify({ token: new URLSearchParams(window.location.search).get("token") }),
+    }).then(processServerRequest);
     toast.success(`Successfully joined ${invitation?.projectName} as ${invitation?.role}`);
     setTimeout(() => navigate("/"), 1500);
   };
@@ -278,6 +317,7 @@ function App() {
               onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
+          
         />
         <Route path="/user-management" element={<UserManagement />} />
         <Route path="/login" element={<Login />} />
@@ -327,13 +367,19 @@ function App() {
             />
           }
         />
-        <Route path="/waitlist" element={<WaitlistDashboard />} />
-        {/* <Route path="/admin/waitlist" element={<WaitlistPage />} /> */}
+        <Route path="/waitlist" element={<WaitlistPage />} />
+        <Route path="/waitlist-dashboard" element={<WaitlistDashboard />} />
       </Routes>
+      <AdminInsightsContainer stats={mockAdminStats}/>
       <InviteModal
         isOpen={isInviteModalOpen}
         onClose={() => setIsInviteModalOpen(false)}
         projectId={selectedProjectId}
+      />
+      <StudentStatusModal
+      isOpen={isModalOpen}
+      onClose={handleClose}
+      student={mockStudent} 
       />
       <Toaster position="bottom-center" />
     </main>
