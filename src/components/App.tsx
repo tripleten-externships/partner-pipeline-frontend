@@ -10,6 +10,7 @@ import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import InviteModal from "./InviteModal/InviteModal";
+import StudentStatusModal from "./StudentStatusModal/StudentStatusModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 import { baseUrl, headers, processServerRequest } from "@/utils/api";
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
@@ -17,6 +18,8 @@ import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
+//importing student interface for styling of modal
+import type {Student} from "./StudentStatusModal/StudentStatusModal";
 
 import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 
@@ -55,6 +58,7 @@ function App() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  
   // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
   const projectDropdownRef = useRef<HTMLDivElement>(null);
@@ -70,6 +74,27 @@ function App() {
   const [userEmail] = useState("foo@foo.com");
 
   const [isLoggedIn] = useState(true);
+
+  //hardcoded to keep studentstatus modal opened for styling
+  const isModalOpen = false;
+
+  //mock student object for styling
+  const mockStudent: Student = {
+    id: "Mock Student",
+    email: "example@student.com",
+    status: "active",
+    program: "SE",
+    invitesSent: 3,
+    completionDate: "2025-12-01",
+    lastContactDate: "2025-11-10",
+    dateAdded: "2024-01-05",
+    voucherIssued: "2025-10-20",
+    profileUrl: "https://website.com/students/123",
+    notes: "This is just a test",
+  };
+
+  //temporary do nothing onClose func
+  const handleClose = () => {};
 
   useClickOutside(projectDropdownRef, () => setIsProjectDropdownOpen(false));
   useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
@@ -337,6 +362,11 @@ function App() {
         isOpen={isInviteModalOpen}
         onClose={() => setIsInviteModalOpen(false)}
         projectId={selectedProjectId}
+      />
+      <StudentStatusModal
+      isOpen={isModalOpen}
+      onClose={handleClose}
+      student={mockStudent} 
       />
       <Toaster position="bottom-center" />
     </main>
