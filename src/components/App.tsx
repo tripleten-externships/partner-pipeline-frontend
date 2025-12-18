@@ -11,6 +11,7 @@ import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
 import InviteModal from "./InviteModal/InviteModal";
+import WaitlistDashboard from "@/routes/WaitlistDashboard";
 import StudentStatusModal from "./StudentStatusModal/StudentStatusModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 import { baseUrl, headers, processServerRequest } from "@/utils/api";
@@ -367,6 +368,7 @@ function App() {
           }
         />
         <Route path="/waitlist" element={<WaitlistPage />} />
+        <Route path="/waitlist-dashboard" element={<WaitlistDashboard />} />
       </Routes>
       <AdminInsightsContainer stats={mockAdminStats}/>
       <InviteModal
