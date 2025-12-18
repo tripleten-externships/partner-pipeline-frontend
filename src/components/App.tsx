@@ -9,6 +9,7 @@ import SendInvitePage from "./invite-route";
 import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
+import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
 import InviteModal from "./InviteModal/InviteModal";
 import StudentStatusModal from "./StudentStatusModal/StudentStatusModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
@@ -95,6 +96,14 @@ function App() {
 
   //temporary do nothing onClose func
   const handleClose = () => {};
+
+  //temporary admin stats object for styling
+  const mockAdminStats = {
+    waitingCount: 12,
+    inactiveCount: 7,
+    inviteAcceptanceRate: 0.63,
+    avgResponseTimeDays: 4,
+  };
 
   useClickOutside(projectDropdownRef, () => setIsProjectDropdownOpen(false));
   useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
@@ -307,6 +316,7 @@ function App() {
               onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
+          
         />
         <Route path="/user-management" element={<UserManagement />} />
         <Route path="/login" element={<Login />} />
@@ -358,6 +368,7 @@ function App() {
         />
         <Route path="/waitlist" element={<WaitlistPage />} />
       </Routes>
+      <AdminInsightsContainer stats={mockAdminStats}/>
       <InviteModal
         isOpen={isInviteModalOpen}
         onClose={() => setIsInviteModalOpen(false)}
