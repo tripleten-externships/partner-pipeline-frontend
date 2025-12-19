@@ -12,13 +12,13 @@ import React from "react";
 import ActivityLog from "../ActivityLog/ActivityLog";
 import AddProjectForm from "../AddProjectForm/AddProjectForm";
 import BreadcrumbHeader from "../BreadcrumbHeader/BreadcrumbHeader";
-import DashCard from "../DashCard/DashCard";
 import DashContent from "../DashContent/DashContent";
 import EditProjectForm from "../EditProjectForm/EditProjectForm";
 import MilestonesProgress from "../MilestonesProgress/MilestonesProgress";
 import Sidebar from "../Sidebar/Sidebar";
 import AverageResponseTimeCard from "../WaitlistCard/AverageResponseTimeCard";
 import { InactiveStudentsCard } from "../WaitlistCard/InactiveStudentsCard";
+import StudentsWaitingCard from "../WaitlistCard/StudentsWaitingCard";
 
 const Dashboard: React.FC<DashProps> = ({
   projectList,
@@ -110,8 +110,8 @@ const Dashboard: React.FC<DashProps> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <StudentsWaitingCard />
         <InactiveStudentsCard />
-        <DashCard />
         <AverageResponseTimeCard />
       </div>
       <MilestonesProgress  />
