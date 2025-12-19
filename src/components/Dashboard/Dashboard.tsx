@@ -1,22 +1,23 @@
-import React from "react";
-import Sidebar from "../Sidebar/Sidebar";
-import { DashProps } from "@/utils/types";
+import { buttonVariants } from "@/components/ui/button.variants";
 import {
   Sheet,
-  SheetTrigger,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
+  SheetTrigger,
 } from "@/components/ui/sheet";
-import { buttonVariants } from "@/components/ui/button.variants";
+import { DashProps } from "@/utils/types";
+import React from "react";
+import ActivityLog from "../ActivityLog/ActivityLog";
+import AddProjectForm from "../AddProjectForm/AddProjectForm";
 import BreadcrumbHeader from "../BreadcrumbHeader/BreadcrumbHeader";
-import EditProjectForm from "../EditProjectForm/EditProjectForm";
 import DashCard from "../DashCard/DashCard";
 import DashContent from "../DashContent/DashContent";
-import AddProjectForm from "../AddProjectForm/AddProjectForm";
-import ActivityLog from "../ActivityLog/ActivityLog";
+import EditProjectForm from "../EditProjectForm/EditProjectForm";
 import MilestonesProgress from "../MilestonesProgress/MilestonesProgress";
+import Sidebar from "../Sidebar/Sidebar";
+import AverageResponseTimeCard from "../WaitlistCard/AverageResponseTimeCard";
 import { InactiveStudentsCard } from "../WaitlistCard/InactiveStudentsCard";
 
 const Dashboard: React.FC<DashProps> = ({
@@ -47,7 +48,7 @@ const Dashboard: React.FC<DashProps> = ({
   userMenuRef,
   userEmail,
   loadingProjects,
-  projectError, 
+  projectError,
 }) => (
   <div className="flex h-screen">
     <Sidebar
@@ -89,7 +90,7 @@ const Dashboard: React.FC<DashProps> = ({
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
                 onChange={handleChange}
-                
+
                 onCancel={() => setIsSheetOpen(false)}
                 onSubmit={onSubmit}
                 onDelete={handleDeleteProject}
@@ -111,7 +112,7 @@ const Dashboard: React.FC<DashProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <InactiveStudentsCard />
         <DashCard />
-        <DashCard />
+        <AverageResponseTimeCard />
       </div>
       <MilestonesProgress  />
       <ActivityLog selectedProjectId={selectedProjectId} />
