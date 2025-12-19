@@ -18,6 +18,7 @@ import EditProjectForm from "../EditProjectForm/EditProjectForm";
 import MilestonesProgress from "../MilestonesProgress/MilestonesProgress";
 import Sidebar from "../Sidebar/Sidebar";
 import AverageResponseTimeCard from "../WaitlistCard/AverageResponseTimeCard";
+import { InactiveStudentsCard } from "../WaitlistCard/InactiveStudentsCard";
 
 const Dashboard: React.FC<DashProps> = ({
   projectList,
@@ -109,7 +110,7 @@ const Dashboard: React.FC<DashProps> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <DashCard />
+        <InactiveStudentsCard />
         <DashCard />
         <AverageResponseTimeCard />
       </div>

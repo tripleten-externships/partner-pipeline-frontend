@@ -82,6 +82,27 @@ const useWaitlistEntries = () => {
     { fetchPolicy: "cache-and-network" }
   );
 };
+
+const useStudents = () => {
+  return useQuery(
+    gql`
+      query Students {
+        users(where: { role: { equals: "Student" } }, orderBy: [{ createdAt: desc }]) {
+          id
+          name
+          email
+          role
+          status
+          reminder_count
+          isActive
+          lastLoginDate
+          createdAt
+        }
+      }
+    `,
+    { fetchPolicy: "cache-and-network" }
+  );
+};
 const useUserData = (email: string) => {
   return useQuery(
     gql`
@@ -254,6 +275,7 @@ export {
   useMe,
   importStudentsFromCsv,
   useWaitlistEntries, // Added this
+  useStudents, // Added this
   sendUserInvitation,
 };
 
