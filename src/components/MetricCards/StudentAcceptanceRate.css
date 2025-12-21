@@ -1,0 +1,28 @@
+.metric-card {
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 250px; /* adjust as needed */
+}
+
+.metric-card-title {
+  color: #4b5563; /* gray-700 */
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.metric-card-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827; /* gray-900 */
+}
+
+.metric-card-description {
+  font-size: 0.875rem;
+  color: #6b7280; /* gray-500 */
+}
