@@ -5,6 +5,7 @@ export const mockWaitlistEntries = [
         email: 'alice@example.com',
         status: 'waiting',
         createdAt: "2025-12-01T10:15:00Z",
+        program: "se",
     },
     {
         id: '2',
@@ -12,6 +13,7 @@ export const mockWaitlistEntries = [
         email: 'bob@example.com',
         status: 'pending',
         createdAt: "2025-12-02T12:15:00Z",
+        program: "qa",
     },
     {
         id: '3',
@@ -19,6 +21,7 @@ export const mockWaitlistEntries = [
         email: 'charlie@example.com',
         status: 'approved',
         createdAt: "2025-12-03T14:15:00Z",
+        program: "ai",
     },
     {
         id: '4',
@@ -26,5 +29,6 @@ export const mockWaitlistEntries = [
         email: 'david@example.com',
         status: 'rejected',
         createdAt: "2025-12-04T16:15:00Z",
+        program: "ds",
     },
 ]

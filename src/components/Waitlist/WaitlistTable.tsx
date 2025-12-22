@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Upload } from "lucide-react";
 import { ImportStudentsModal } from "@/components/CsvImportModal";
-import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
+import { Button } from "@/components/ui/button";
 import { mockWaitlistEntries } from "@/mocks/waitlist.mock";
+import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
+import { Upload } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 interface WaitlistUser {
   id: string;
@@ -11,11 +11,13 @@ interface WaitlistUser {
   email: string;
   status: string;
   createdAt: string;
+  program?: string;
 }
 
 interface Props {
   search: string;
   status: string;
+  program?: string;
 }
 
 // FLIP TO FALSE WHEN READY TO USE REAL DATA
@@ -85,8 +87,12 @@ function getStatusBadge(statusRaw: string | null | undefined) {
 
 // What I changed: table layout and the cells, which now match the StatusTimeline design
 
-export function WaitlistTable({ search, status }: Props) {
-  // This state holds only the filtered and paginated subset of 
+export function WaitlistTable({
+  search,
+  status,
+  program = "all",
+ }: Props) {
+  // This state holds only the filtered and paginated subset of
   // waitlist entries that we want to show on the current page:
   const [entries, setEntries] = useState<WaitlistUser[]>([]);
 
@@ -98,22 +104,26 @@ export function WaitlistTable({ search, status }: Props) {
   // CSV import modal UI state:
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [importSuccess, setImportSuccess] = useState<string | null>(null);
-  
+
   // Hook that fetches data from the backend GraphQL API.
   // Someone before me already implemented this in utils/api
   const { data, loading, error, refetch } = useWaitlistEntries();
 
   useEffect(() => {
-    if (!data?.waitlistEntries) return;
+    setPage(1); // Reset to first page when filters change
+  }, [search, status, program]);
+
+  useEffect(() => {
+    if (!data?.waitlistEntries && !USE_MOCK_DATA) return;
 
     // Full list returned by GraphQL
     // let filtered: WaitlistUser[] = data.waitlistEntries;
 
     // mock data toggle
-    const sourceEntries = USE_MOCK_DATA 
-    ? mockWaitlistEntries 
+    const sourceEntries: WaitlistUser[] = USE_MOCK_DATA
+    ? mockWaitlistEntries
     : data?.waitlistEntries ?? [];
-    
+
     let filtered: WaitlistUser[] = sourceEntries;
 
     // Text search filter
@@ -133,19 +143,28 @@ export function WaitlistTable({ search, status }: Props) {
       );
     }
 
+    const hasProgramData = filtered.some(
+      (u) => typeof u.program === "string" && u.program.trim() !== "");
+
+    if (program !== "all" && hasProgramData) {
+      filtered = filtered.filter(
+        (u) => u.program?.toLowerCase() === program.toLowerCase()
+      );
+    }
+
     // Pagination logic
     const total = Math.ceil(filtered.length / usersPerPage);
-    setTotalPages(total);
+    setTotalPages(total || 1);
 
     // If the current page is now out of range, clamp it back into a valid range.
-    const safePage = Math.min(page, total);
+    const safePage = Math.min(page, total || 1);
     const start = (safePage - 1) * usersPerPage;
     const end = start + usersPerPage;
     const paginated = filtered.slice(start, end);
 
     setPage(safePage);
     setEntries(paginated);
-  }, [data, search, status, page]);
+  }, [data, search, status, program, page]);
 
   // This is called when the user uploads a CSV file
   const handleImportStudents = async (file: File) => {
@@ -275,9 +294,9 @@ export function WaitlistTable({ search, status }: Props) {
                       </span>
                     </td>
 
-                    {/* Program. Not in WaitlistEntry schema yet. Placeholder */}
+                    {/* Program display (mock-only) */}
                     <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
-                      —
+                      {entry.program ? entry.program.toUpperCase() : "—"}
                     </td>
 
                     {/* Completion Date. Placeholder */}
