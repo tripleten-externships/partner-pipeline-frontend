@@ -1,5 +1,11 @@
 import React, { useState, useRef } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 interface CsvImportModalProps {
@@ -61,14 +67,12 @@ export const ImportStudentsModal: React.FC<CsvImportModalProps> = ({ open, onClo
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-center">Import Students</DialogTitle>
+          <DialogDescription className="text-center">
+            Upload a CSV file to import students to the waitlist.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          {/* Description */}
-          <p className="text-center text-gray-600 dark:text-gray-400">
-            Upload a CSV file to import students to the waitlist.
-          </p>
-
           {/* File Upload Area */}
           <div
             onClick={handleChooseFile}
