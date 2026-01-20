@@ -14,7 +14,7 @@ interface CsvImportModalProps {
   onImport: (file: File) => Promise<void>;
 }
 
-export const ImportStudentsModal: React.FC<CsvImportModalProps> = ({ open, onClose, onImport }) => {
+const ImportStudentsModal: React.FC<CsvImportModalProps> = ({ open, onClose, onImport }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -143,3 +143,4 @@ export const ImportStudentsModal: React.FC<CsvImportModalProps> = ({ open, onClo
     </Dialog>
   );
 };
+export default ImportStudentsModal;
