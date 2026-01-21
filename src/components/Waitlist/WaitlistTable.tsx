@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
-import { ImportStudentsModal } from "@/components/CsvImportModal";
+import ImportStudentsModal from "@/components/CsvImportModal/CsvImportModal";
 import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
 import { mockWaitlistEntries } from "@/mocks/waitlist.mock";
+
+import StudentStatusModal, {
+  type Student,
+} from "@/components/StudentStatusModal/StudentStatusModal";
 
 interface WaitlistUser {
   id: string;
@@ -33,111 +37,74 @@ const formatDate = (iso: string | null | undefined) => {
   });
 };
 
-// Helper: map the raw status string to a user-friendly label, use Tailwind classes for a colored "badge"
+// Helper: map the raw status string to a user-friendly label
 function getStatusBadge(statusRaw: string | null | undefined) {
   if (!statusRaw) {
     return { label: "unknown", className: "bg-zinc-100 text-zinc-700" };
-
   }
   const status = statusRaw.toLowerCase().trim();
 
   switch (status) {
     case "approved":
-      return {
-        label: "accepted",
-        className: "bg-green-100 text-green-800",
-      };
+      return { label: "accepted", className: "bg-green-100 text-green-800" };
     case "pending":
-      return {
-        label: "pending",
-        className: "bg-yellow-100 text-yellow-800",
-      };
-      case "rejected":
-      return {
-        label: "declined",
-        className: "bg-red-100 text-red-800",
-      };
+      return { label: "pending", className: "bg-yellow-100 text-yellow-800" };
+    case "rejected":
+      return { label: "declined", className: "bg-red-100 text-red-800" };
     case "waiting":
-      return {
-        label: "waiting",
-        className: "bg-blue-100 text-blue-800",
-      };
-      case "urgent":
-      return {
-        label: "urgent",
-        className: "bg-orange-100 text-orange-800",
-      };
-      default:
-        return {
-          label: status,
-          className: "bg-zinc-100 text-zinc-700",
-        };
+      return { label: "waiting", className: "bg-blue-100 text-blue-800" };
+    case "urgent":
+      return { label: "urgent", className: "bg-orange-100 text-orange-800" };
+    default:
+      return { label: status, className: "bg-zinc-100 text-zinc-700" };
   }
 }
 
-// Main WaitlistTable Component:
-
-// Compared to the old version, the "data flow" is the same:
-// we still use "useWaitlistEntries()" to talk to GraphQL
-// we still support search and status filters
-// we still paginate locally
-// we still support CSV import
-
-// What I changed: table layout and the cells, which now match the StatusTimeline design
-
 export function WaitlistTable({ search, status }: Props) {
-  // This state holds only the filtered and paginated subset of 
-  // waitlist entries that we want to show on the current page:
   const [entries, setEntries] = useState<WaitlistUser[]>([]);
 
-  // Client-side pagination state:
+  // Pagination state:
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const usersPerPage = 10;
 
-  // CSV import modal UI state:
+  // CSV import modal state:
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [importSuccess, setImportSuccess] = useState<string | null>(null);
-  
-  // Hook that fetches data from the backend GraphQL API.
-  // Someone before me already implemented this in utils/api
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+
+  // Hook that fetches waitlist entries
   const { data, loading, error, refetch } = useWaitlistEntries();
 
   useEffect(() => {
     if (!data?.waitlistEntries) return;
 
-    // Full list returned by GraphQL
-    // let filtered: WaitlistUser[] = data.waitlistEntries;
-
-    // mock data toggle
-    const sourceEntries = USE_MOCK_DATA 
-    ? mockWaitlistEntries 
-    : data?.waitlistEntries ?? [];
-    
+    const sourceEntries = USE_MOCK_DATA ? mockWaitlistEntries : (data?.waitlistEntries ?? []);
     let filtered: WaitlistUser[] = sourceEntries;
 
-    // Text search filter
+    // search filter
     if (search.trim() !== "") {
       const q = search.toLowerCase();
       filtered = filtered.filter(
         (user: WaitlistUser) =>
-          user.name?.toLowerCase().includes(q) ||
-        user.email?.toLowerCase().includes(q)
+          user.name?.toLowerCase().includes(q) || user.email?.toLowerCase().includes(q)
       );
     }
 
-    // Status filter ("all" means no filter)
-    if (status !=="all") {
+    // status filter
+    if (status !== "all") {
       filtered = filtered.filter(
         (u: WaitlistUser) => u.status?.toLowerCase() === status.toLowerCase()
       );
     }
 
-    // Pagination logic
+    // pagination
     const total = Math.ceil(filtered.length / usersPerPage);
     setTotalPages(total);
 
-    // If the current page is now out of range, clamp it back into a valid range.
     const safePage = Math.min(page, total);
     const start = (safePage - 1) * usersPerPage;
     const end = start + usersPerPage;
@@ -147,17 +114,11 @@ export function WaitlistTable({ search, status }: Props) {
     setEntries(paginated);
   }, [data, search, status, page]);
 
-  // This is called when the user uploads a CSV file
+  // CSV import handler
   const handleImportStudents = async (file: File) => {
     const result = await importStudentsFromCsv(file);
-
-    // Show success message above the table
     setImportSuccess(result.message);
-
-    // Clear success message after 5 seconds
     setTimeout(() => setImportSuccess(null), 5000);
-
-    // Refetch the waitlist data to show new entries
     await refetch();
   };
 
@@ -169,6 +130,36 @@ export function WaitlistTable({ search, status }: Props) {
     if (page < totalPages) setPage((prev) => prev + 1);
   };
 
+  function toStudent(entry: WaitlistUser): Student {
+    return {
+      id: entry.id,
+      email: entry.email,
+
+      // status in your table is like waiting/pending/approved/rejected/urgent
+      // we cast to Student["status"] to match the modal type
+      status: (entry.status?.toLowerCase() as Student["status"]) || "waiting",
+
+      // These fields are NOT in WaitlistUser yet, so we use placeholders for now.
+      // Later you will replace them with real fields from backend.
+      program: "SE",
+      invitesSent: 0,
+      completionDate: "",
+      lastContactDate: "",
+
+      // Your waitlist uses createdAt; modal expects dateAdded
+      dateAdded: entry.createdAt,
+
+      voucherIssued: "",
+      profileUrl: "",
+      notes: "",
+    };
+  }
+
+  function openEdit(entry: WaitlistUser) {
+    setSelectedStudent(toStudent(entry));
+    setIsEditOpen(true);
+  }
+
   return (
     <div className="space-y-4">
       {/* Header with Import Button */}
@@ -178,6 +169,7 @@ export function WaitlistTable({ search, status }: Props) {
             <div className="text-sm text-green-600 dark:text-green-400">✓ {importSuccess}</div>
           )}
         </div>
+
         <Button onClick={() => setIsImportModalOpen(true)} className="flex items-center gap-2">
           <Upload className="h-4 w-4" />
           Import Students
@@ -185,8 +177,6 @@ export function WaitlistTable({ search, status }: Props) {
       </div>
 
       {/* Table */}
-
-      {/* This is now the StatusTimeline layout */}
       <div className="overflow-x-auto rounded-xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-700">
         <table className="min-w-full text-sm">
           <thead>
@@ -206,7 +196,6 @@ export function WaitlistTable({ search, status }: Props) {
           </thead>
 
           <tbody>
-            {/* Loading state – single row spanning all columns */}
             {loading && (
               <tr>
                 <td
@@ -218,19 +207,14 @@ export function WaitlistTable({ search, status }: Props) {
               </tr>
             )}
 
-            {/* Error state – also inside the table body for consistent layout */}
             {!loading && error && (
               <tr>
-                <td
-                  colSpan={11}
-                  className="px-4 py-6 text-center text-sm text-red-500"
-                >
+                <td colSpan={11} className="px-4 py-6 text-center text-sm text-red-500">
                   Error loading waitlist: {error.message}
                 </td>
               </tr>
             )}
 
-            {/* Empty state – no entries after filters/pagination */}
             {!loading && !error && entries.length === 0 && (
               <tr>
                 <td
@@ -242,7 +226,6 @@ export function WaitlistTable({ search, status }: Props) {
               </tr>
             )}
 
-            {/* Actual data rows */}
             {!loading &&
               !error &&
               entries.length > 0 &&
@@ -254,7 +237,6 @@ export function WaitlistTable({ search, status }: Props) {
                     key={entry.id}
                     className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors dark:border-zinc-700 dark:hover:bg-zinc-800"
                   >
-                    {/* Name + email */}
                     <td className="px-4 py-3 align-top">
                       <div className="flex flex-col">
                         <span className="font-medium text-zinc-900 dark:text-zinc-50">
@@ -266,7 +248,6 @@ export function WaitlistTable({ search, status }: Props) {
                       </div>
                     </td>
 
-                    {/* Status pill */}
                     <td className="px-4 py-3 align-top">
                       <span
                         className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${statusBadge.className}`}
@@ -275,37 +256,19 @@ export function WaitlistTable({ search, status }: Props) {
                       </span>
                     </td>
 
-                    {/* Program. Not in WaitlistEntry schema yet. Placeholder */}
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
-                      —
-                    </td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
 
-                    {/* Completion Date. Placeholder */}
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
-                      —
-                    </td>
-
-                    {/* Date Added. createdAt */}
                     <td className="px-4 py-3 align-top text-zinc-700 dark:text-zinc-200">
                       {formatDate(entry.createdAt)}
                     </td>
 
-                    {/* Last Contact Date. Placeholder */}
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
-                      —
-                    </td>
-
-                    {/* Invitations Sent. Placeholder (could later map from another field) */}
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
                     <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400 text-center">
                       —
                     </td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
 
-                    {/* Voucher Issued. Placeholder */}
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
-                      —
-                    </td>
-
-                    {/* Profile on Hub. Placeholder external-link icon */}
                     <td className="px-4 py-3 align-top text-center">
                       <button
                         type="button"
@@ -316,17 +279,14 @@ export function WaitlistTable({ search, status }: Props) {
                       </button>
                     </td>
 
-                    {/* Notes. Simple uncontrolled text input for now */}
                     <td className="px-4 py-3 align-top">
                       <input
                         type="text"
                         className="w-full rounded-lg border border-zinc-200 px-2 py-1 text-xs text-zinc-700 outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-300 dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-100 dark:focus:border-zinc-500 dark:focus:ring-zinc-500"
                         placeholder="Add notes..."
-                        // TODO: wire this up to actual notes storage later
                       />
                     </td>
 
-                    {/* Actions. Simple emoji placeholders for now */}
                     <td className="px-4 py-3 align-top">
                       <div className="flex gap-2 text-zinc-500 dark:text-zinc-400">
                         <button
@@ -336,18 +296,17 @@ export function WaitlistTable({ search, status }: Props) {
                         >
                           ✉️
                         </button>
+
                         <button
                           type="button"
                           className="hover:text-zinc-800 dark:hover:text-zinc-100"
                           title="Edit"
+                          onClick={() => openEdit(entry)}
                         >
                           ✏️
                         </button>
-                        <button
-                          type="button"
-                          className="hover:text-red-600"
-                          title="Delete"
-                        >
+
+                        <button type="button" className="hover:text-red-600" title="Delete">
                           🗑️
                         </button>
                       </div>
@@ -377,6 +336,7 @@ export function WaitlistTable({ search, status }: Props) {
           >
             Prev
           </button>
+
           <button
             onClick={handleNext}
             disabled={page === totalPages}
@@ -390,6 +350,15 @@ export function WaitlistTable({ search, status }: Props) {
           </button>
         </div>
       </div>
+
+      {/* Only show it when we actually selected a student */}
+      {selectedStudent && (
+        <StudentStatusModal
+          isOpen={isEditOpen}
+          onClose={() => setIsEditOpen(false)}
+          student={selectedStudent}
+        />
+      )}
 
       {/* Import Modal */}
       <ImportStudentsModal
