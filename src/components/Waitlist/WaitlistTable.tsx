@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
-import { ImportStudentsModal } from "@/components/CsvImportModal";
+import ImportStudentsModal from "@/components/CsvImportModal/CsvImportModal";
 import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
 import { mockWaitlistEntries } from "@/mocks/waitlist.mock";
 
@@ -37,7 +37,6 @@ const formatDate = (iso: string | null | undefined) => {
 function getStatusBadge(statusRaw: string | null | undefined) {
   if (!statusRaw) {
     return { label: "unknown", className: "bg-zinc-100 text-zinc-700" };
-
   }
   const status = statusRaw.toLowerCase().trim();
 
@@ -52,7 +51,7 @@ function getStatusBadge(statusRaw: string | null | undefined) {
         label: "pending",
         className: "bg-yellow-100 text-yellow-800",
       };
-      case "rejected":
+    case "rejected":
       return {
         label: "declined",
         className: "bg-red-100 text-red-800",
@@ -62,16 +61,16 @@ function getStatusBadge(statusRaw: string | null | undefined) {
         label: "waiting",
         className: "bg-blue-100 text-blue-800",
       };
-      case "urgent":
+    case "urgent":
       return {
         label: "urgent",
         className: "bg-orange-100 text-orange-800",
       };
-      default:
-        return {
-          label: status,
-          className: "bg-zinc-100 text-zinc-700",
-        };
+    default:
+      return {
+        label: status,
+        className: "bg-zinc-100 text-zinc-700",
+      };
   }
 }
 
@@ -86,7 +85,7 @@ function getStatusBadge(statusRaw: string | null | undefined) {
 // What I changed: table layout and the cells, which now match the StatusTimeline design
 
 export function WaitlistTable({ search, status }: Props) {
-  // This state holds only the filtered and paginated subset of 
+  // This state holds only the filtered and paginated subset of
   // waitlist entries that we want to show on the current page:
   const [entries, setEntries] = useState<WaitlistUser[]>([]);
 
@@ -98,7 +97,7 @@ export function WaitlistTable({ search, status }: Props) {
   // CSV import modal UI state:
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [importSuccess, setImportSuccess] = useState<string | null>(null);
-  
+
   // Hook that fetches data from the backend GraphQL API.
   // Someone before me already implemented this in utils/api
   const { data, loading, error, refetch } = useWaitlistEntries();
@@ -110,10 +109,8 @@ export function WaitlistTable({ search, status }: Props) {
     // let filtered: WaitlistUser[] = data.waitlistEntries;
 
     // mock data toggle
-    const sourceEntries = USE_MOCK_DATA 
-    ? mockWaitlistEntries 
-    : data?.waitlistEntries ?? [];
-    
+    const sourceEntries = USE_MOCK_DATA ? mockWaitlistEntries : (data?.waitlistEntries ?? []);
+
     let filtered: WaitlistUser[] = sourceEntries;
 
     // Text search filter
@@ -121,13 +118,12 @@ export function WaitlistTable({ search, status }: Props) {
       const q = search.toLowerCase();
       filtered = filtered.filter(
         (user: WaitlistUser) =>
-          user.name?.toLowerCase().includes(q) ||
-        user.email?.toLowerCase().includes(q)
+          user.name?.toLowerCase().includes(q) || user.email?.toLowerCase().includes(q)
       );
     }
 
     // Status filter ("all" means no filter)
-    if (status !=="all") {
+    if (status !== "all") {
       filtered = filtered.filter(
         (u: WaitlistUser) => u.status?.toLowerCase() === status.toLowerCase()
       );
@@ -221,10 +217,7 @@ export function WaitlistTable({ search, status }: Props) {
             {/* Error state – also inside the table body for consistent layout */}
             {!loading && error && (
               <tr>
-                <td
-                  colSpan={11}
-                  className="px-4 py-6 text-center text-sm text-red-500"
-                >
+                <td colSpan={11} className="px-4 py-6 text-center text-sm text-red-500">
                   Error loading waitlist: {error.message}
                 </td>
               </tr>
@@ -276,14 +269,10 @@ export function WaitlistTable({ search, status }: Props) {
                     </td>
 
                     {/* Program. Not in WaitlistEntry schema yet. Placeholder */}
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
-                      —
-                    </td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
 
                     {/* Completion Date. Placeholder */}
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
-                      —
-                    </td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
 
                     {/* Date Added. createdAt */}
                     <td className="px-4 py-3 align-top text-zinc-700 dark:text-zinc-200">
@@ -291,9 +280,7 @@ export function WaitlistTable({ search, status }: Props) {
                     </td>
 
                     {/* Last Contact Date. Placeholder */}
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
-                      —
-                    </td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
 
                     {/* Invitations Sent. Placeholder (could later map from another field) */}
                     <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400 text-center">
@@ -301,9 +288,7 @@ export function WaitlistTable({ search, status }: Props) {
                     </td>
 
                     {/* Voucher Issued. Placeholder */}
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
-                      —
-                    </td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
 
                     {/* Profile on Hub. Placeholder external-link icon */}
                     <td className="px-4 py-3 align-top text-center">
@@ -343,11 +328,7 @@ export function WaitlistTable({ search, status }: Props) {
                         >
                           ✏️
                         </button>
-                        <button
-                          type="button"
-                          className="hover:text-red-600"
-                          title="Delete"
-                        >
+                        <button type="button" className="hover:text-red-600" title="Delete">
                           🗑️
                         </button>
                       </div>
