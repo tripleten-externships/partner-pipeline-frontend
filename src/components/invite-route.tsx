@@ -31,10 +31,21 @@ const SendInvitePage: React.FC<DashProps>
   role: AccessLevel;
 }
   const [openModal] = useState(true);
-     const handleAddAccount = (newAccount: Account) => {
+
+  const handleAddAccount = (newAccount: Account) => {
     console.log(newAccount);
-    sendUserInvitation("10", {name: newAccount.name, email: newAccount.email, roleToGrant: newAccount.role});
+
+    if (!selectedProjectId) return; // exit if no project is selected
+
+    const TEST_PROJECT_ID = "test-project-id-123";
+
+    sendUserInvitation(TEST_PROJECT_ID, { //replace TEST_PROJECT_ID with selectedProjectId for production
+      toName: newAccount.name, 
+      toEmail: newAccount.email,
+      roleToGrant: newAccount.role
+    }); 
   };
+
   return(
     <div className="flex h-screen">
     <Sidebar
