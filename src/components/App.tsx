@@ -21,7 +21,7 @@ import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
 //importing student interface for styling of modal
-import type {Student} from "./StudentStatusModal/StudentStatusModal";
+import type { Student } from "./StudentStatusModal/StudentStatusModal";
 
 import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 
@@ -60,7 +60,7 @@ function App() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-  
+
   // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
   const projectDropdownRef = useRef<HTMLDivElement>(null);
@@ -84,7 +84,8 @@ function App() {
   const mockStudent: Student = {
     id: "Mock Student",
     email: "example@student.com",
-    status: "active",
+    status: "waiting",
+
     program: "SE",
     invitesSent: 3,
     completionDate: "2025-12-01",
@@ -317,11 +318,13 @@ function App() {
               onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
-          
         />
         <Route path="/user-management" element={<UserManagement />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/invite" element={<SendInvitePage 
+        <Route
+          path="/invite"
+          element={
+            <SendInvitePage
               projectList={projectList}
               loadingProjects={loading}
               projectError={error}
@@ -353,7 +356,10 @@ function App() {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
-              onOpenInviteModal={() => setIsInviteModalOpen(true)}/>} />
+              onOpenInviteModal={() => setIsInviteModalOpen(true)}
+            />
+          }
+        />
         <Route
           path="/invitation"
           element={
@@ -370,17 +376,13 @@ function App() {
         <Route path="/waitlist" element={<WaitlistPage />} />
         <Route path="/waitlist-dashboard" element={<WaitlistDashboard />} />
       </Routes>
-      <AdminInsightsContainer stats={mockAdminStats}/>
+      <AdminInsightsContainer stats={mockAdminStats} />
       <InviteModal
         isOpen={isInviteModalOpen}
         onClose={() => setIsInviteModalOpen(false)}
         projectId={selectedProjectId}
       />
-      <StudentStatusModal
-      isOpen={isModalOpen}
-      onClose={handleClose}
-      student={mockStudent} 
-      />
+      <StudentStatusModal isOpen={isModalOpen} onClose={handleClose} student={mockStudent} />
       <Toaster position="bottom-center" />
     </main>
   );
