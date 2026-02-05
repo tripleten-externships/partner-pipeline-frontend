@@ -295,19 +295,19 @@ export function WaitlistTable({ search, status }: Props) {
                           Icon={Mail}
                           ariaLabel="Send email to student"
                           title="Send email"
-                        >
-                          ✉️
-                        </button>
-                        <button
-                          type="button"
-                          className="hover:text-zinc-800 dark:hover:text-zinc-100"
+                        />
+                        <IconButton
+                          Icon={Edit}
+                          ariaLabel="Edit student information"
                           title="Edit"
-                        >
-                          ✏️
-                        </button>
-                        <button type="button" className="hover:text-red-600" title="Delete">
-                          🗑️
-                        </button>
+                          onClick={() => openEdit(entry)}
+                        />
+                        <IconButton
+                          Icon={Trash2}
+                          ariaLabel="Delete student from waitlist"
+                          title="Delete"
+                          variant="danger"
+                        />
                       </div>
                     </td>
                   </tr>
