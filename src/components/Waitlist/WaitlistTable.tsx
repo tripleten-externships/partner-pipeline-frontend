@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Upload } from "lucide-react";
+import { Upload, Mail, Edit, Trash2 } from "lucide-react";
+import { IconButton } from "@/components/ui/icon-button";
 import ImportStudentsModal from "@/components/CsvImportModal/CsvImportModal";
 import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
 import { mockWaitlistEntries } from "@/mocks/waitlist.mock";
@@ -287,25 +288,23 @@ export function WaitlistTable({ search, status }: Props) {
                       />
                     </td>
 
+                    {/* Actions. Simple emoji placeholders for now */}
                     <td className="px-4 py-3 align-top">
-                      <div className="flex gap-2 text-zinc-500 dark:text-zinc-400">
-                        <button
-                          type="button"
-                          className="hover:text-zinc-800 dark:hover:text-zinc-100"
+                      <div className="flex gap-1">
+                        <IconButton
+                          Icon={Mail}
+                          ariaLabel="Send email to student"
                           title="Send email"
                         >
                           ✉️
                         </button>
-
                         <button
                           type="button"
                           className="hover:text-zinc-800 dark:hover:text-zinc-100"
                           title="Edit"
-                          onClick={() => openEdit(entry)}
                         >
                           ✏️
                         </button>
-
                         <button type="button" className="hover:text-red-600" title="Delete">
                           🗑️
                         </button>
