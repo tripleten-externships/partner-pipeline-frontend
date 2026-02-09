@@ -7,7 +7,7 @@ import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
 import { mockWaitlistEntries } from "@/mocks/waitlist.mock";
 
 import StudentStatusModal, {
-  type Student,
+  type WaitlistStudent,
 } from "@/components/StudentStatusModal/StudentStatusModal";
 
 interface WaitlistUser {
@@ -38,7 +38,6 @@ const formatDate = (iso: string | null | undefined) => {
   });
 };
 
-// Helper: map the raw status string to a user-friendly label
 function getStatusBadge(statusRaw: string | null | undefined) {
   if (!statusRaw) {
     return { label: "unknown", className: "bg-zinc-100 text-zinc-700" };
@@ -61,23 +60,34 @@ function getStatusBadge(statusRaw: string | null | undefined) {
   }
 }
 
+function toBackendStatus(raw: string | null | undefined): WaitlistStudent["status"] {
+  const s = (raw || "").toLowerCase().trim();
+
+  if (s === "approved") return "accepted";
+  if (s === "declined") return "rejected";
+  if (s === "waiting") return "pending";
+  if (s === "urgent") return "pending";
+
+  if (s === "pending" || s === "invited" || s === "accepted" || s === "rejected") {
+    return s;
+  }
+
+  return "pending";
+}
+
 export function WaitlistTable({ search, status }: Props) {
   const [entries, setEntries] = useState<WaitlistUser[]>([]);
 
-  // Pagination state:
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const usersPerPage = 10;
 
-  // CSV import modal state:
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [importSuccess, setImportSuccess] = useState<string | null>(null);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<WaitlistStudent | null>(null);
 
-  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-
-  // Hook that fetches waitlist entries
   const { data, loading, error, refetch } = useWaitlistEntries();
 
   useEffect(() => {
@@ -86,7 +96,6 @@ export function WaitlistTable({ search, status }: Props) {
     const sourceEntries = USE_MOCK_DATA ? mockWaitlistEntries : (data?.waitlistEntries ?? []);
     let filtered: WaitlistUser[] = sourceEntries;
 
-    // search filter
     if (search.trim() !== "") {
       const q = search.toLowerCase();
       filtered = filtered.filter(
@@ -95,14 +104,12 @@ export function WaitlistTable({ search, status }: Props) {
       );
     }
 
-    // status filter
     if (status !== "all") {
       filtered = filtered.filter(
         (u: WaitlistUser) => u.status?.toLowerCase() === status.toLowerCase()
       );
     }
 
-    // pagination
     const total = Math.ceil(filtered.length / usersPerPage);
     setTotalPages(total);
 
@@ -115,7 +122,6 @@ export function WaitlistTable({ search, status }: Props) {
     setEntries(paginated);
   }, [data, search, status, page]);
 
-  // CSV import handler
   const handleImportStudents = async (file: File) => {
     const result = await importStudentsFromCsv(file);
     setImportSuccess(result.message);
@@ -131,39 +137,27 @@ export function WaitlistTable({ search, status }: Props) {
     if (page < totalPages) setPage((prev) => prev + 1);
   };
 
-  function toStudent(entry: WaitlistUser): Student {
+  function toWaitlistStudent(entry: WaitlistUser): WaitlistStudent {
     return {
       id: entry.id,
+      name: entry.name,
       email: entry.email,
-
-      // status in your table is like waiting/pending/approved/rejected/urgent
-      // we cast to Student["status"] to match the modal type
-      status: (entry.status?.toLowerCase() as Student["status"]) || "waiting",
-
-      // These fields are NOT in WaitlistUser yet, so we use placeholders for now.
-      // Later you will replace them with real fields from backend.
-      program: "SE",
-      invitesSent: 0,
-      completionDate: "",
-      lastContactDate: "",
-
-      // Your waitlist uses createdAt; modal expects dateAdded
-      dateAdded: entry.createdAt,
-
-      voucherIssued: "",
-      profileUrl: "",
+      status: toBackendStatus(entry.status),
       notes: "",
     };
   }
 
   function openEdit(entry: WaitlistUser) {
-    setSelectedStudent(toStudent(entry));
+    setSelectedStudent(toWaitlistStudent(entry));
     setIsEditOpen(true);
+  }
+
+  async function handleSaved() {
+    await refetch();
   }
 
   return (
     <div className="space-y-4">
-      {/* Header with Import Button */}
       <div className="flex justify-between items-center">
         <div>
           {importSuccess && (
@@ -177,7 +171,6 @@ export function WaitlistTable({ search, status }: Props) {
         </Button>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto rounded-xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-700">
         <table className="min-w-full text-sm">
           <thead>
@@ -288,7 +281,6 @@ export function WaitlistTable({ search, status }: Props) {
                       />
                     </td>
 
-                    {/* Actions. Simple emoji placeholders for now */}
                     <td className="px-4 py-3 align-top">
                       <div className="flex gap-1">
                         <IconButton
@@ -317,7 +309,6 @@ export function WaitlistTable({ search, status }: Props) {
         </table>
       </div>
 
-      {/* Pagination Controls */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500 dark:text-gray-400">
           Page {page} of {totalPages}
@@ -350,16 +341,15 @@ export function WaitlistTable({ search, status }: Props) {
         </div>
       </div>
 
-      {/* Only show it when we actually selected a student */}
       {selectedStudent && (
         <StudentStatusModal
           isOpen={isEditOpen}
           onClose={() => setIsEditOpen(false)}
           student={selectedStudent}
+          onSaved={handleSaved}
         />
       )}
 
-      {/* Import Modal */}
       <ImportStudentsModal
         open={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}

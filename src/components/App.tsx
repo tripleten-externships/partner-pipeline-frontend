@@ -12,16 +12,13 @@ import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
 import InviteModal from "./InviteModal/InviteModal";
 import WaitlistDashboard from "@/routes/WaitlistDashboard";
-import StudentStatusModal from "./StudentStatusModal/StudentStatusModal";
+
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 import { baseUrl, headers, processServerRequest } from "@/utils/api";
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
 import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
-
-//importing student interface for styling of modal
-import type { Student } from "./StudentStatusModal/StudentStatusModal";
 
 import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 
@@ -76,28 +73,6 @@ function App() {
   const [userEmail] = useState("foo@foo.com");
 
   const [isLoggedIn] = useState(true);
-
-  //hardcoded to keep studentstatus modal opened for styling
-  const isModalOpen = false;
-
-  //mock student object for styling
-  const mockStudent: Student = {
-    id: "Mock Student",
-    email: "example@student.com",
-    status: "waiting",
-
-    program: "SE",
-    invitesSent: 3,
-    completionDate: "2025-12-01",
-    lastContactDate: "2025-11-10",
-    dateAdded: "2024-01-05",
-    voucherIssued: "2025-10-20",
-    profileUrl: "https://website.com/students/123",
-    notes: "This is just a test",
-  };
-
-  //temporary do nothing onClose func
-  const handleClose = () => {};
 
   //temporary admin stats object for styling
   const mockAdminStats = {
@@ -382,7 +357,7 @@ function App() {
         onClose={() => setIsInviteModalOpen(false)}
         projectId={selectedProjectId}
       />
-      <StudentStatusModal isOpen={isModalOpen} onClose={handleClose} student={mockStudent} />
+
       <Toaster position="bottom-center" />
     </main>
   );
