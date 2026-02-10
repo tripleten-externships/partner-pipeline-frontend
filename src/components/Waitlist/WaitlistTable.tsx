@@ -143,6 +143,7 @@ export function WaitlistTable({ search, status }: Props) {
       name: entry.name,
       email: entry.email,
       status: toBackendStatus(entry.status),
+      program: "SE",
       notes: "",
     };
   }

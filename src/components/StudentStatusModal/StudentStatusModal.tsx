@@ -10,7 +10,10 @@ export interface WaitlistStudent {
   email: string;
   status: WaitlistStatus;
   notes?: string;
+  program: Program;
 }
+
+export type Program = "SE" | "AI Automation" | "AI/ML" | "BI analytics" | "CS" | "QA" | "UX/UI";
 
 interface Props {
   isOpen: boolean;
@@ -31,6 +34,7 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
   const [name, setName] = useState(student.name ?? "");
   const [email, setEmail] = useState(student.email ?? "");
   const [status, setStatus] = useState<WaitlistStatus>(student.status ?? "pending");
+  const [program, setProgram] = useState<Program>(student.program ?? "SE");
   const [notes, setNotes] = useState(student.notes ?? "");
 
   const [isSaving, setIsSaving] = useState(false);
@@ -42,6 +46,7 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
     setName(student.name ?? "");
     setEmail(student.email ?? "");
     setStatus(student.status ?? "pending");
+    setProgram(student.program ?? "SE");
     setNotes(student.notes ?? "");
     setErrorMsg(null);
     setSuccessMsg(null);
@@ -78,6 +83,7 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
           name: name.trim(),
           email: email.trim(),
           status,
+          program,
           notes: notes.trim(),
         }),
       });
@@ -140,6 +146,23 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
               onChange={(e) => setEmail(e.target.value)}
               placeholder="student@email.com"
             />
+          </div>
+
+          <div className="student-status__field">
+            <label className="student-status__label">Program</label>
+            <select
+              className="student-status__select"
+              value={program}
+              onChange={(e) => setProgram(e.target.value as Program)}
+            >
+              <option value="SE">SE</option>
+              <option value="AI Automation">AI Automation</option>
+              <option value="AI/ML">AI/ML</option>
+              <option value="BI analytics">BI analytics</option>
+              <option value="CS">CS</option>
+              <option value="QA">QA</option>
+              <option value="UX/UI">UX/UI</option>
+            </select>
           </div>
 
           <div className="student-status__field">
