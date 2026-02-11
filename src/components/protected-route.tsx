@@ -1,8 +1,8 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
-import { useProjectStore } from '../components/Store/project-store';
-
+import { useProjectStore } from "../components/Store/project-store";
+import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -13,17 +13,15 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { currentProject } = useProjectStore();
   // TODO: Add a loading spinner
   if (loading) {
-    return null;
+    //return null;
+    return <LoadingSpinner />;
   }
 
   if (!currentUser) {
     return <Navigate to="/welcome" replace />;
   }
 
-    if (
-    currentUser.role === "student" &&
-    currentProject?.id !== currentUser.assignedProjectId
-  ) {
+  if (currentUser.role === "student" && currentProject?.id !== currentUser.assignedProjectId) {
     return <Navigate to={`/projects/${currentUser.assignedProjectId}`} replace />;
   }
 
@@ -31,3 +29,21 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 };
 
 export default ProtectedRoute;
+
+//import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
+// if (loading) {
+//   //return <LoadingSpinner />;
+// }
+
+// if (!currentUser) {
+//   return <Navigate to="/welcome" replace />;
+// }
+
+// Original
+// if (loading) {
+//   return null;
+// }
+
+// if (!currentUser) {
+//   return <Navigate to="/welcome" replace />;
+// }

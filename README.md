@@ -107,3 +107,5 @@ This project uses the following key libraries
 ## Deployment
 
 The project is configured to deploy automatically using GitHub Actions whenever a commit is made to `main`. This workflow is triggered by merging a Pull Request.
+
+<!-- Add a lightweight loading spinner to the protected route wrapper so the UI shows a clear loading state while the app is checking authentication/session status rather than rendering nothing or a layout flash. When the app verifies the current user/session for protected routes, users may see empty content or a sudden layout shift. Implement a minimal, reusable loading component and show it while auth status is being resolved. Keep it inline, accessible, and visually consistent with existing design tokens. -->

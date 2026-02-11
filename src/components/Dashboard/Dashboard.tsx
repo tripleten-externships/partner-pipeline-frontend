@@ -90,7 +90,6 @@ const Dashboard: React.FC<DashProps> = ({
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
                 onChange={handleChange}
-
                 onCancel={() => setIsSheetOpen(false)}
                 onSubmit={onSubmit}
                 onDelete={handleDeleteProject}
@@ -114,7 +113,7 @@ const Dashboard: React.FC<DashProps> = ({
         <InactiveStudentsCard />
         <AverageResponseTimeCard />
       </div>
-      <MilestonesProgress  />
+      <MilestonesProgress />
       <ActivityLog selectedProjectId={selectedProjectId} />
       <DashContent />
     </main>
