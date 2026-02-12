@@ -29,21 +29,3 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 };
 
 export default ProtectedRoute;
-
-//import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
-// if (loading) {
-//   //return <LoadingSpinner />;
-// }
-
-// if (!currentUser) {
-//   return <Navigate to="/welcome" replace />;
-// }
-
-// Original
-// if (loading) {
-//   return null;
-// }
-
-// if (!currentUser) {
-//   return <Navigate to="/welcome" replace />;
-// }

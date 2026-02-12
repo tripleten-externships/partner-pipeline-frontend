@@ -92,8 +92,3 @@ export const useAuth = ({ onLoginSuccess, onLogoutSuccess }: UseAuthProps) => {
     loading: currentUserLoading || loginLoading || logoutLoading,
   };
 };
-
-//currentUser -> Null means no session But in this case, theres info there is a session
-//loading -> true what we see in the code means an user is loading
-//In useAuth
-//loading: currentUserLoading means there is a user
