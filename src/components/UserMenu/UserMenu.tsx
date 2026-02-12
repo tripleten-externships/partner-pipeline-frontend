@@ -6,12 +6,7 @@ import { logout } from "@/utils/auth";
 import { useApolloClient } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 
-const UserMenu: React.FC<UserMenuProps> = ({
-  isOpen,
-  toggleMenu,
-  menuRef,
-  userEmail, 
-}) => {
+const UserMenu: React.FC<UserMenuProps> = ({ isOpen, toggleMenu, menuRef, userEmail }) => {
   const avatarSrc = "https://github.com/shadcn.png";
   const { data, loading, error } = useMe();
   const apollo = useApolloClient();
@@ -23,9 +18,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
   const handleLogout = async () => {
     try {
-      await logout();           // end Keystone session cookie
+      await logout(); // end Keystone session cookie
       await apollo.clearStore(); // drop cached data
-      navigate("/login");        // go to sign-in
+      navigate("/login"); // go to sign-in
     } catch (e) {
       console.error("Logout failed", e);
     }

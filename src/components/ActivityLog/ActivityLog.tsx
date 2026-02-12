@@ -64,7 +64,9 @@ const ActivityLog: React.FC<Props> = ({ selectedProjectId }) => {
       {loading && <p className="ml-2 text-sm text-gray-400">Loading…</p>}
 
       {!loading && error && (
-        <p className="ml-2 text-sm text-red-400">Couldn’t load activity. Check console for details.</p>
+        <p className="ml-2 text-sm text-red-400">
+          Couldn’t load activity. Check console for details.
+        </p>
       )}
 
       {!loading && !error && activities.length === 0 && (
@@ -85,7 +87,11 @@ const ActivityLog: React.FC<Props> = ({ selectedProjectId }) => {
                     <div className="flex items-center justify-center">
                       <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-900 overflow-hidden">
                         {activity.avatarUrl ? (
-                          <img src={activity.avatarUrl} alt={activity.updatedBy} className="w-10 h-10 object-cover" />
+                          <img
+                            src={activity.avatarUrl}
+                            alt={activity.updatedBy}
+                            className="w-10 h-10 object-cover"
+                          />
                         ) : (
                           <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-800 dark:text-blue-300">
                             {initials}
@@ -101,7 +107,8 @@ const ActivityLog: React.FC<Props> = ({ selectedProjectId }) => {
                           <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
                             {activity.milestoneName}
                           </a>{" "}
-                          from <span>{activity.oldStatus}</span> to <span>{activity.newStatus}</span>
+                          from <span>{activity.oldStatus}</span> to{" "}
+                          <span>{activity.newStatus}</span>
                         </div>
                         <time className="text-xs text-gray-400">{ts}</time>
                       </div>
