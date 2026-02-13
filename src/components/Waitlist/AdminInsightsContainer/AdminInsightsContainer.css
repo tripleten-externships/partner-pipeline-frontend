@@ -1,28 +1,28 @@
-.admin-insight__container {
+/* .admin-insight__container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: white;
   color: black;
-}
+} */
 
-.admin-container__title {
+/* .admin-container__title {
   font-size: larger;
   font-weight: 600;
   margin-right: 930px;
-}
+} */
 
-.admin-container__subtitle {
-  color: grey;
+/* .admin-container__subtitle {
+  color: #808080;
   margin-right: 755px;
-}
+} */
 
-.admin-metrics__container {
+/* .admin-metrics__container {
   padding: 20px 50px;
-}
+} */
 
-.admin-metrics__top-row {
+/* .admin-metrics__top-row {
   display: flex;
   border-style: solid;
   border-color: grey;
@@ -39,9 +39,9 @@
   margin: 0;
   gap: 10px;
   padding: 0;
-}
+} */
 
-.admin-metrics__top-row-card {
+/* .admin-metrics__top-row-card {
   border: 1px solid grey;
   border-radius: 8px;
   width: 525px;
@@ -51,15 +51,15 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-}
+} */
 
-.admin-metrics__wait-count {
+/* .admin-metrics__wait-count {
   font-weight: 700;
   font-size: 48px;
   color: black;
-}
+} */
 
-.admin-metrics__bottom-row {
+/* .admin-metrics__bottom-row {
   padding-top: 10px;
   margin: 0;
   justify-content: space-between;
@@ -79,14 +79,14 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-}
+} */
 
-.admin-metrics__inactive-count {
+/* .admin-metrics__inactive-count {
   font-size: 36px;
   font-weight: 700;
-}
+} */
 
-.admin-metrics__invite-acceptance-rate {
+/* .admin-metrics__invite-acceptance-rate {
   font-size: 36px;
   font-weight: 700;
 }
@@ -94,8 +94,8 @@
 .admin-metrics__avg-response-time {
   font-size: 36px;
   font-weight: 700;
-}
+} */
 
-.admin-metrics__subtext {
+/* .admin-metrics__subtext {
   color: grey;
-}
+} */

@@ -32,7 +32,7 @@ const renderCustomizedLabel = (props: PieLabelRenderProps) => {
     const y = cy + radius * Math.sin(angle * RADIAN);
 
     return (
-        <text x={x} y={y} fill="white" textAnchor="middle"  dominantBaseline="central" className="piechart-text" >
+        <text x={x} y={y} fill="white" textAnchor="middle"  dominantBaseline="central" className="text-sm" >
             {payload.name}
         </text>
     )
