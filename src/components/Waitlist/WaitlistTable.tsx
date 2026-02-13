@@ -24,7 +24,7 @@ interface Props {
 }
 
 // FLIP TO FALSE WHEN READY TO USE REAL DATA
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 
 // Helper: format ISO date string to more readable format
 const formatDate = (iso: string | null | undefined) => {
@@ -91,9 +91,10 @@ export function WaitlistTable({ search, status }: Props) {
   const { data, loading, error, refetch } = useWaitlistEntries();
 
   useEffect(() => {
-    if (!data?.waitlistEntries) return;
+    const sourceEntries: WaitlistUser[] = USE_MOCK_DATA
+      ? mockWaitlistEntries
+      : (data?.waitListStudents ?? []);
 
-    const sourceEntries = USE_MOCK_DATA ? mockWaitlistEntries : (data?.waitlistEntries ?? []);
     let filtered: WaitlistUser[] = sourceEntries;
 
     if (search.trim() !== "") {
@@ -110,10 +111,11 @@ export function WaitlistTable({ search, status }: Props) {
       );
     }
 
-    const total = Math.ceil(filtered.length / usersPerPage);
+    const total = Math.max(1, Math.ceil(filtered.length / usersPerPage));
     setTotalPages(total);
 
     const safePage = Math.min(page, total);
+
     const start = (safePage - 1) * usersPerPage;
     const end = start + usersPerPage;
     const paginated = filtered.slice(start, end);

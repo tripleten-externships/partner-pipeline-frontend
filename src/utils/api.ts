@@ -69,12 +69,13 @@ export const useProjectInvitations = (projectId?: string) => {
 const useWaitlistEntries = () => {
   return useQuery(
     gql`
-      query WaitlistEntries {
-        waitlistEntries(orderBy: [{ createdAt: desc }]) {
+      query WaitListStudents {
+        waitListStudents(orderBy: [{ createdAt: desc }]) {
           id
           name
           email
           status
+          notes
           createdAt
         }
       }
@@ -248,7 +249,10 @@ const useMe = () => {
   );
 };
 
-async function sendUserInvitation(projectId: string, data: {name: string; email: string; roleToGrant: string}) {
+async function sendUserInvitation(
+  projectId: string,
+  data: { name: string; email: string; roleToGrant: string }
+) {
   try {
     const response = await fetch(`${baseUrl}/api/projects/${projectId}/invitations`, {
       method: "POST",
@@ -278,5 +282,3 @@ export {
   useStudents, // Added this
   sendUserInvitation,
 };
-
-
