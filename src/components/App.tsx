@@ -78,7 +78,7 @@ function App() {
   const [isLoggedIn] = useState(true);
 
   //hardcoded to keep studentstatus modal opened for styling
-  const isModalOpen = false;
+  const isModalOpen = true;
 
   //mock student object for styling
   const mockStudent: Student = {
