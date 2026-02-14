@@ -154,14 +154,14 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({
           </div>
 
           <div className="space-y-4">
-            {/* Project Selection Warning */}
+            {/* Project Warning */}
             {!projectId && (
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-md p-3 text-sm text-yellow-400">
                 Please select a project from the sidebar before sending an invitation.
               </div>
             )}
 
-            {/* Waitlist Student Selection */}
+            {/* Waitlst Student Selection */}
             {waitlistStudents.length > 0 && (
               <div>
                 <label className="block text-sm font-medium text-zinc-300 mb-2">
