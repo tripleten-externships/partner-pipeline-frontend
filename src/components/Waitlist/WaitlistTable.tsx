@@ -17,6 +17,7 @@ interface WaitlistUser {
 interface Props {
   search: string;
   status: string;
+  sendInviteButton?: React.ReactNode;
 }
 
 // FLIP TO FALSE WHEN READY TO USE REAL DATA
@@ -85,7 +86,7 @@ function getStatusBadge(statusRaw: string | null | undefined) {
 
 // What I changed: table layout and the cells, which now match the StatusTimeline design
 
-export function WaitlistTable({ search, status }: Props) {
+export function WaitlistTable({ search, status, sendInviteButton }: Props) {
   // This state holds only the filtered and paginated subset of
   // waitlist entries that we want to show on the current page:
   const [entries, setEntries] = useState<WaitlistUser[]>([]);
@@ -104,13 +105,13 @@ export function WaitlistTable({ search, status }: Props) {
   const { data, loading, error, refetch } = useWaitlistEntries();
 
   useEffect(() => {
-    if (!data?.waitlistEntries) return;
+    if (!data?.waitListStudents) return;
 
     // Full list returned by GraphQL
-    // let filtered: WaitlistUser[] = data.waitlistEntries;
+    // let filtered: WaitlistUser[] = data.waitListStudents;
 
     // mock data toggle
-    const sourceEntries = USE_MOCK_DATA ? mockWaitlistEntries : (data?.waitlistEntries ?? []);
+    const sourceEntries = USE_MOCK_DATA ? mockWaitlistEntries : (data?.waitListStudents ?? []);
 
     let filtered: WaitlistUser[] = sourceEntries;
 
@@ -175,10 +176,13 @@ export function WaitlistTable({ search, status }: Props) {
             <div className="text-sm text-green-600 dark:text-green-400">✓ {importSuccess}</div>
           )}
         </div>
-        <Button onClick={() => setIsImportModalOpen(true)} className="flex items-center gap-2">
-          <Upload className="h-4 w-4" />
-          Import Students
-        </Button>
+        <div className="flex items-center">
+          {sendInviteButton}
+          <Button onClick={() => setIsImportModalOpen(true)} className="flex items-center gap-2">
+            <Upload className="h-4 w-4" />
+            Import Students
+          </Button>
+        </div>
       </div>
 
       {/* Table */}
