@@ -8,8 +8,8 @@ export type Project = {
   name: string;
   imgUrl: string;
   fallBackIcon: React.ReactNode;
-  project: string;     // slug string (required by backend)
-  isActive: boolean;   // replaces "status"
+  project: string; // slug string (required by backend)
+  isActive: boolean; // replaces "status"
   lastUpdate?: string;
   membersCount?: number;
   milestonesCount?: number;
@@ -77,7 +77,6 @@ export type DashProps = {
   isAddProjectSheetOpen: boolean;
   setIsAddProjectSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onProjectSubmit: (values: ProjectFormValues) => void;
-  onOpenInviteModal: () => void;
 };
 
 export type DashCardProps = {
