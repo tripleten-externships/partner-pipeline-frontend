@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { SearchFilter } from "@/components/Waitlist/SearchFilter";
 import { WaitlistTable } from "@/components/Waitlist/WaitlistTable";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Mail } from "lucide-react";
 
 export default function WaitlistPage() {
   const [search, setSearch] = useState("");
@@ -14,7 +17,18 @@ export default function WaitlistPage() {
 
       <SearchFilter search={search} setSearch={setSearch} status={status} setStatus={setStatus} />
 
-      <WaitlistTable search={search} status={status} />
+      <WaitlistTable
+        search={search}
+        status={status}
+        sendInviteButton={
+          <Link to="/invite">
+            <Button className="flex items-center gap-2 mr-2.5">
+              <Mail className="h-4 w-4" />
+              Send Invite
+            </Button>
+          </Link>
+        }
+      />
     </section>
   );
 }

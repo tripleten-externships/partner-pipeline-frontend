@@ -21,6 +21,7 @@ interface WaitlistUser {
 interface Props {
   search: string;
   status: string;
+  sendInviteButton?: React.ReactNode;
 }
 
 // FLIP TO FALSE WHEN READY TO USE REAL DATA
@@ -75,7 +76,9 @@ function toBackendStatus(raw: string | null | undefined): WaitlistStudent["statu
   return "pending";
 }
 
-export function WaitlistTable({ search, status }: Props) {
+export function WaitlistTable({ search, status, sendInviteButton }: Props) {
+  // This state holds only the filtered and paginated subset of
+  // waitlist entries that we want to show on the current page:
   const [entries, setEntries] = useState<WaitlistUser[]>([]);
 
   const [page, setPage] = useState(1);
@@ -91,9 +94,13 @@ export function WaitlistTable({ search, status }: Props) {
   const { data, loading, error, refetch } = useWaitlistEntries();
 
   useEffect(() => {
-    const sourceEntries: WaitlistUser[] = USE_MOCK_DATA
-      ? mockWaitlistEntries
-      : (data?.waitListStudents ?? []);
+    if (!data?.waitListStudents) return;
+
+    // Full list returned by GraphQL
+    // let filtered: WaitlistUser[] = data.waitListStudents;
+
+    // mock data toggle
+    const sourceEntries = USE_MOCK_DATA ? mockWaitlistEntries : (data?.waitListStudents ?? []);
 
     let filtered: WaitlistUser[] = sourceEntries;
 
@@ -167,11 +174,13 @@ export function WaitlistTable({ search, status }: Props) {
             <div className="text-sm text-green-600 dark:text-green-400">✓ {importSuccess}</div>
           )}
         </div>
-
-        <Button onClick={() => setIsImportModalOpen(true)} className="flex items-center gap-2">
-          <Upload className="h-4 w-4" />
-          Import Students
-        </Button>
+        <div className="flex items-center">
+          {sendInviteButton}
+          <Button onClick={() => setIsImportModalOpen(true)} className="flex items-center gap-2">
+            <Upload className="h-4 w-4" />
+            Import Students
+          </Button>
+        </div>
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-700">
