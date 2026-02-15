@@ -11,7 +11,7 @@ import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
 import WaitlistDashboard from "@/routes/WaitlistDashboard";
-
+import StudentStatusModal from "./StudentStatusModal/StudentStatusModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 import { baseUrl, headers, processServerRequest } from "@/utils/api";
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
@@ -20,7 +20,7 @@ import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
 //importing student interface for styling of modal
-import type { Student } from "./StudentStatusModal/StudentStatusModal";
+import type { WaitlistStudent } from "./StudentStatusModal/StudentStatusModal";
 
 import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 import ProtectedRoute from "./protected-route";
@@ -75,6 +75,22 @@ function App() {
   const [userEmail] = useState("foo@foo.com");
 
   const [isLoggedIn] = useState(true);
+
+  //hardcoded to keep studentstatus modal opened for styling
+  const isModalOpen = false;
+
+  //mock student object for styling
+  const mockStudent: WaitlistStudent = {
+    id: "Mock Student",
+    name: "Mock Student",
+    email: "example@student.com",
+    status: "pending",
+    program: "SE",
+    notes: "This is just a test",
+  };
+
+  //temporary do nothing onClose func
+  const handleClose = () => {};
 
   //temporary admin stats object for styling
   const mockAdminStats = {
