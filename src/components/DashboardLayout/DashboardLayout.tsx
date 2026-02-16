@@ -17,6 +17,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   projectDropdownRef,
   handleProjectSelect,
   openMenus,
+  setOpenMenus,
   isUserMenuOpen,
   toggleUserMenu,
   userMenuRef,
@@ -40,6 +41,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         projectDropdownRef={projectDropdownRef}
         handleProjectSelect={handleProjectSelect}
         openMenus={openMenus}
+        setOpenMenus={setOpenMenus}
         isUserMenuOpen={isUserMenuOpen}
         toggleUserMenu={toggleUserMenu}
         userMenuRef={userMenuRef}
@@ -50,9 +52,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 overflow-y-auto bg-zinc-950">
-        {children}
-      </main>
+      <main className="flex-1 p-6 overflow-y-auto bg-zinc-950">{children}</main>
     </div>
   );
 };
