@@ -13,7 +13,7 @@ export interface WaitlistStudent {
   program: Program;
 }
 
-export type Program = "SE" | "AI Automation" | "AI/ML" | "BI analytics" | "CS" | "QA" | "UX/UI";
+export type Program = "AI SE" | "AI Automation" | "AI/ML" | "BI Analytics" | "CS" | "QA" | "UX/UI";
 
 interface Props {
   isOpen: boolean;
@@ -36,7 +36,6 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
   const [status, setStatus] = useState<WaitlistStatus>(student.status ?? "pending");
   const [program, setProgram] = useState<Program>(student.program ?? "SE");
   const [notes, setNotes] = useState(student.notes ?? "");
-
   const [isSaving, setIsSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -155,10 +154,10 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
               value={program}
               onChange={(e) => setProgram(e.target.value as Program)}
             >
-              <option value="SE">SE</option>
+              <option value="AI SE">AI SE</option>
               <option value="AI Automation">AI Automation</option>
               <option value="AI/ML">AI/ML</option>
-              <option value="BI analytics">BI analytics</option>
+              <option value="BI Analytics">BI Analytics</option>
               <option value="CS">CS</option>
               <option value="QA">QA</option>
               <option value="UX/UI">UX/UI</option>

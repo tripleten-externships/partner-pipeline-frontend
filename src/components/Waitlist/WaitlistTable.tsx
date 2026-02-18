@@ -5,23 +5,30 @@ import { IconButton } from "@/components/ui/icon-button";
 import ImportStudentsModal from "@/components/CsvImportModal/CsvImportModal";
 import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
 import { mockWaitlistEntries } from "@/mocks/waitlist.mock";
-
 import StudentStatusModal, {
   type WaitlistStudent,
 } from "@/components/StudentStatusModal/StudentStatusModal";
-
-interface WaitlistUser {
-  id: string;
-  name: string;
-  email: string;
-  status: string;
-  createdAt: string;
-}
+import { getProgramLabel, Program } from "@/utils/program";
 
 interface Props {
   search: string;
   status: string;
   sendInviteButton?: React.ReactNode;
+}
+
+// Added fields from new schema
+interface WaitlistUser {
+  id: string;
+  name: string;
+  email: string;
+  status: string;
+  program: Program;
+  completedOn: string;
+  createdAt: string;
+  lastContactedOn: string;
+  inviteSentAt: string;
+  hasVoucher: boolean;
+  notes: string;
 }
 
 // FLIP TO FALSE WHEN READY TO USE REAL DATA
@@ -46,7 +53,7 @@ function getStatusBadge(statusRaw: string | null | undefined) {
   const status = statusRaw.toLowerCase().trim();
 
   switch (status) {
-    case "approved":
+    case "accepted":
       return { label: "accepted", className: "bg-green-100 text-green-800" };
     case "pending":
       return { label: "pending", className: "bg-yellow-100 text-yellow-800" };
@@ -152,8 +159,8 @@ export function WaitlistTable({ search, status, sendInviteButton }: Props) {
       name: entry.name,
       email: entry.email,
       status: toBackendStatus(entry.status),
-      program: "SE",
-      notes: "",
+      program: getProgramLabel(entry.program),
+      notes: entry.notes || "",
     };
   }
 
@@ -262,18 +269,26 @@ export function WaitlistTable({ search, status, sendInviteButton }: Props) {
                       </span>
                     </td>
 
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
+                      {getProgramLabel(entry.program)}
+                    </td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
+                      {formatDate(entry.completedOn)}
+                    </td>
 
-                    <td className="px-4 py-3 align-top text-zinc-700 dark:text-zinc-200">
+                    <td className="px-4 py-3 align-top text-zinc-700 dark:text-zinc-400">
                       {formatDate(entry.createdAt)}
                     </td>
 
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400 text-center">
-                      —
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
+                      {formatDate(entry.lastContactedOn)}
                     </td>
-                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">—</td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400 text-center">
+                      {formatDate(entry.inviteSentAt)}
+                    </td>
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
+                      {entry.hasVoucher ? "Yes" : "No"}
+                    </td>
 
                     <td className="px-4 py-3 align-top text-center">
                       <button
@@ -284,13 +299,10 @@ export function WaitlistTable({ search, status, sendInviteButton }: Props) {
                         ↗
                       </button>
                     </td>
-
-                    <td className="px-4 py-3 align-top">
-                      <input
-                        type="text"
-                        className="w-full rounded-lg border border-zinc-200 px-2 py-1 text-xs text-zinc-700 outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-300 dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-100 dark:focus:border-zinc-500 dark:focus:ring-zinc-500"
-                        placeholder="Add notes..."
-                      />
+                    <td className="px-4 py-3 align-top text-zinc-500 dark:text-zinc-400">
+                      <span className="line-clamp-2 break-words max-w-[220px]">
+                        {entry.notes || "—"}
+                      </span>
                     </td>
 
                     <td className="px-4 py-3 align-top">

@@ -19,9 +19,6 @@ import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
-//importing student interface for styling of modal
-import type { Student } from "./StudentStatusModal/StudentStatusModal";
-
 import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
 import ProtectedRoute from "./protected-route";
 
@@ -359,7 +356,6 @@ function App() {
         <Route path="/waitlist-dashboard" element={<WaitlistDashboard />} />
       </Routes>
       <AdminInsightsContainer stats={mockAdminStats} />
-      <StudentStatusModal isOpen={isModalOpen} onClose={handleClose} student={mockStudent} />
       <Toaster position="bottom-center" />
     </main>
   );
