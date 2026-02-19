@@ -24,6 +24,7 @@ import type { Student } from "./StudentStatusModal/StudentStatusModal";
 
 import WaitlistPageWithLayout from "@/routes/admin/waitlist/WaitlistPageWithLayout";
 import WaitlistDashboardWithLayout from "@/routes/WaitlistDashboardWithLayout";
+import ProtectedRoute from "./protected-route";
 
 // import { useProjectIDs } from "@/utils/api";
 
@@ -76,27 +77,6 @@ function App() {
   const [userEmail] = useState("foo@foo.com");
 
   const [isLoggedIn] = useState(true);
-
-  //hardcoded to keep studentstatus modal opened for styling
-  const isModalOpen = false;
-
-  //mock student object for styling
-  const mockStudent: Student = {
-    id: "Mock Student",
-    email: "example@student.com",
-    status: "active",
-    program: "SE",
-    invitesSent: 3,
-    completionDate: "2025-12-01",
-    lastContactDate: "2025-11-10",
-    dateAdded: "2024-01-05",
-    voucherIssued: "2025-10-20",
-    profileUrl: "https://website.com/students/123",
-    notes: "This is just a test",
-  };
-
-  //temporary do nothing onClose func
-  const handleClose = () => {};
 
   //temporary admin stats object for styling
   const mockAdminStats = {
@@ -314,7 +294,6 @@ function App() {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
-              onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
         />
@@ -375,25 +354,27 @@ function App() {
         <Route
           path="/waitlist"
           element={
-            <WaitlistPageWithLayout
-              projectList={projectList}
-              loadingProjects={loading}
-              projectError={error}
-              selectedProjectId={selectedProjectId}
-              openMenus={openMenus}
-              setOpenMenus={setOpenMenus}
-              isProjectDropdownOpen={isProjectDropdownOpen}
-              toggleProjectDropdown={toggleProjectDropdown}
-              projectDropdownRef={projectDropdownRef}
-              handleProjectSelect={handleProjectSelect}
-              isUserMenuOpen={isUserMenuOpen}
-              toggleUserMenu={toggleUserMenu}
-              userMenuRef={userMenuRef}
-              userEmail={userEmail}
-              toggleMenu={toggleMenu}
-              isAddProjectSheetOpen={isAddProjectSheetOpen}
-              setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
-            />
+                       <ProtectedRoute>
+              <WaitlistPageWithLayout
+                projectList={projectList}
+                loadingProjects={loading}
+                projectError={error}
+                selectedProjectId={selectedProjectId}
+                openMenus={openMenus}
+                setOpenMenus={setOpenMenus}
+                isProjectDropdownOpen={isProjectDropdownOpen}
+                toggleProjectDropdown={toggleProjectDropdown}
+                projectDropdownRef={projectDropdownRef}
+                handleProjectSelect={handleProjectSelect}
+                isUserMenuOpen={isUserMenuOpen}
+                toggleUserMenu={toggleUserMenu}
+                userMenuRef={userMenuRef}
+                userEmail={userEmail}
+                toggleMenu={toggleMenu}
+                isAddProjectSheetOpen={isAddProjectSheetOpen}
+                setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+              />
+            </ProtectedRoute>
           }
         />
         <Route
