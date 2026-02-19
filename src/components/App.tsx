@@ -10,17 +10,12 @@ import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
-import InviteModal from "./InviteModal/InviteModal";
-import StudentStatusModal from "./StudentStatusModal/StudentStatusModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 import { baseUrl, headers, processServerRequest } from "@/utils/api";
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
 import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
-
-//importing student interface for styling of modal
-import type { Student } from "./StudentStatusModal/StudentStatusModal";
 
 import WaitlistPageWithLayout from "@/routes/admin/waitlist/WaitlistPageWithLayout";
 import WaitlistDashboardWithLayout from "@/routes/WaitlistDashboardWithLayout";
@@ -60,7 +55,6 @@ function App() {
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
-  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
   // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
@@ -334,7 +328,6 @@ function App() {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
-              onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
         />
@@ -354,7 +347,7 @@ function App() {
         <Route
           path="/waitlist"
           element={
-                       <ProtectedRoute>
+            <ProtectedRoute>
               <WaitlistPageWithLayout
                 projectList={projectList}
                 loadingProjects={loading}
@@ -403,12 +396,6 @@ function App() {
         />
       </Routes>
       <AdminInsightsContainer stats={mockAdminStats} />
-      <InviteModal
-        isOpen={isInviteModalOpen}
-        onClose={() => setIsInviteModalOpen(false)}
-        projectId={selectedProjectId}
-      />
-      <StudentStatusModal isOpen={isModalOpen} onClose={handleClose} student={mockStudent} />
       <Toaster position="bottom-center" />
     </main>
   );
