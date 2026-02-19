@@ -66,6 +66,7 @@ export const useProjectInvitations = (projectId?: string) => {
     { variables: { projectId: projectId as string }, skip, fetchPolicy: "cache-and-network" }
   );
 };
+
 const useWaitlistEntries = () => {
   return useQuery(
     gql`
@@ -75,8 +76,17 @@ const useWaitlistEntries = () => {
           name
           email
           status
-          notes
+          inviteSentAt
           createdAt
+          notes
+          program
+          completedOn
+          contactedBy {
+            id
+            name
+          }
+          lastContactedOn
+          hasVoucher
         }
       }
     `,
