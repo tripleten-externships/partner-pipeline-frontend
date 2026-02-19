@@ -1,6 +1,5 @@
 import React from "react";
 // import {Timeline as FlowBiteTimeLine} from 'flowbite-react';
-import BreadcrumbHeader from "../BreadcrumbHeader/BreadcrumbHeader";
 
 // interface  to place temporary data
 export interface TimelineItem {
@@ -76,8 +75,7 @@ const timelineItems: TimelineItem[] = [
 const Timeline: React.FC = () => {
   //the code below was provided from the flowbite website, It was tested temporarilty by importing it to the dashboard component and passing it as a child to <dashconent/>
   return (
-    <div className="flex-1 p-6 overflow-y-auto bg-zinc-950">
-      <BreadcrumbHeader section="Milestones" page="Timeline" />
+    <div>
       <ol className="relative border-s border-gray-200 dark:border-gray-700">
         {timelineItems.map((item, index) => (
           <li key={index} className={`ms-6 ${index < timelineItems.length - 1 ? "mb-10" : ""}`}>

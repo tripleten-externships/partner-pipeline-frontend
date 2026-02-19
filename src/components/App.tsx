@@ -11,7 +11,7 @@ import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
 import WaitlistDashboard from "@/routes/WaitlistDashboard";
-import Timeline from "./Timeline/Timeline";
+import TimelinePage from "@/routes/TimelinePage";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 import { baseUrl, headers, processServerRequest } from "@/utils/api";
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
@@ -354,7 +354,30 @@ function App() {
           }
         />
         <Route path="/waitlist-dashboard" element={<WaitlistDashboard />} />
-        <Route path="/timeline" element={<Timeline />} />
+        <Route
+          path="/timeline"
+          element={
+            <TimelinePage
+              selectedProjectId={selectedProjectId}
+              projectList={projectList}
+              loadingProjects={loading}
+              projectError={error}
+              isProjectDropdownOpen={isProjectDropdownOpen}
+              toggleProjectDropdown={toggleProjectDropdown}
+              projectDropdownRef={projectDropdownRef}
+              handleProjectSelect={handleProjectSelect}
+              openMenus={openMenus}
+              setOpenMenus={setOpenMenus}
+              isUserMenuOpen={isUserMenuOpen}
+              toggleUserMenu={toggleUserMenu}
+              userMenuRef={userMenuRef}
+              userEmail={userEmail}
+              toggleMenu={toggleMenu}
+              isAddProjectSheetOpen={isAddProjectSheetOpen}
+              setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+            />
+          }
+        />
       </Routes>
       <AdminInsightsContainer stats={mockAdminStats} />
       <Toaster position="bottom-center" />
