@@ -4,6 +4,7 @@
  * This mapping ensures consistency between UI and API.
  **/
 export const programOptions = [
+  { label: "SE", value: "software_engineering" },
   { label: "AI/ML", value: "ai_machine_learning" },
   { label: "AI Automation", value: "ai_automation" },
   { label: "BI Analytics", value: "business_intelligence_analytics" },
@@ -16,4 +17,4 @@ export const programOptions = [
 export type Program = (typeof programOptions)[number]["value"];
 
 export const getProgramLabel = (value?: Program | null) =>
-  programOptions.find((p) => p.value === value)?.label || "AI SE";
+  programOptions.find((p) => p.value === value)?.label || "SE";

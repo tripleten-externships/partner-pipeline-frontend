@@ -13,7 +13,15 @@ export interface WaitlistStudent {
   program: Program;
 }
 
-export type Program = "AI SE" | "AI Automation" | "AI/ML" | "BI Analytics" | "CS" | "QA" | "UX/UI";
+export type Program =
+  | "SE"
+  | "AI/ML"
+  | "AI Automation"
+  | "BI Analytics"
+  | "CS"
+  | "QA"
+  | "AI SE"
+  | "UX/UI";
 
 interface Props {
   isOpen: boolean;
@@ -154,6 +162,7 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
               value={program}
               onChange={(e) => setProgram(e.target.value as Program)}
             >
+              <option value="SE">SE</option>
               <option value="AI SE">AI SE</option>
               <option value="AI Automation">AI Automation</option>
               <option value="AI/ML">AI/ML</option>
