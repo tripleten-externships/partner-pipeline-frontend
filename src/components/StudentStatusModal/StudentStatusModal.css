@@ -1,7 +1,7 @@
-.student-status__modal {
+/* .student-status__modal {
   display: flex;
   background-color: rgba(0, 0, 0, 0.5);
-  /* opacity: 50%; */
+   opacity: 50%; 
   height: 100%;
   width: 100%;
   inset: 0;
@@ -103,4 +103,4 @@
   position: relative;
   top: 0px;
   left: 550px;
-}
+} */
