@@ -248,9 +248,12 @@ const useMe = () => {
   );
 };
 
-async function sendUserInvitation(projectId: string, data: {name: string; email: string; roleToGrant: string}) {
+async function sendUserInvitation(
+  projectId: string,
+  data: { name: string; email: string; roleToGrant: string }
+) {
   try {
-    const response = await fetch(`${baseUrl}/api/projects/${projectId}/invitations`, {
+    const response = await fetch(`/api/projects/${projectId}/invitations`, {
       method: "POST",
       headers,
       body: JSON.stringify(data),
@@ -278,5 +281,3 @@ export {
   useStudents, // Added this
   sendUserInvitation,
 };
-
-
