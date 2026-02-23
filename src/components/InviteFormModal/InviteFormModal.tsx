@@ -2,14 +2,29 @@
 // Modal to send users invitations
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
-type AccessLevel = "admin" | "student";
+// Map role values to BE values
+type BackendRole = "Student" | "Project Mentor" | "Lead Mentor" | "External Partner"; //BE
+type AccessLevel = "student" | "projectMentor" | "leadMentor" | "externalPartner"; //FE
+
+const roleMap: Record<AccessLevel, BackendRole> = {
+  student: "Student",
+  projectMentor: "Project Mentor",
+  leadMentor: "Lead Mentor",
+  externalPartner: "External Partner",
+};
 
 interface InviteFormModalProps {
   open: boolean;
-  onCreate: (Account: { name: string; email: string; role: AccessLevel }) => void;
+  onCreate: (Account: { name: string; email: string; role: BackendRole }) => void;
 }
 
 export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate }) => {
@@ -18,10 +33,10 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
   const [role, setRole] = useState<AccessLevel | "">("");
   const [validEmail, setIsValidEmail] = useState<boolean | null>(null); //Flag to set when email field is valid or invalid
 
-
   //Validate Email by comparing regex to email input
   const validateEmail = (email: string): boolean => {
-    const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const regex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return regex.test(email);
   };
 
@@ -44,10 +59,22 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
     }
   }, [open]);
 
-  //When created 
+  //When created
   const handleCreate = () => {
     if (!isValid) return;
-    onCreate({ name, email, role: role as AccessLevel });
+
+    // Set role to backend value when creating invite
+    const selectedRole = role as AccessLevel;
+
+    // Map selected role to BE role value
+    const mappedRole = roleMap[selectedRole];
+
+    if (!mappedRole) {
+      console.error("Role mapping failed", { role, selectedRole });
+      return;
+    }
+    // Send permitted BE role value upwards to be used in invite creation
+    onCreate({ name, email, role: mappedRole });
     setName("");
     setEmail("");
     setRole("");
@@ -96,7 +123,9 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
             placeholder="Enter email of Invitee"
             required
           />
-          {validEmail === false && <p className="text-red-500">Please enter a valid email address.</p>}
+          {validEmail === false && (
+            <p className="text-red-500">Please enter a valid email address.</p>
+          )}
         </div>
 
         {/* Role */}
@@ -109,8 +138,10 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
               <SelectValue placeholder="Select Role for Invitee" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="admin">Admin</SelectItem>
               <SelectItem value="student">Student</SelectItem>
+              <SelectItem value="projectMentor">Project Mentor</SelectItem>
+              <SelectItem value="leadMentor">Lead Mentor</SelectItem>
+              <SelectItem value="externalPartner">External Partner</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -125,5 +156,3 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({ open, onCreate
     </div>
   );
 };
-
-

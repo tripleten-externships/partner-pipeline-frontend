@@ -256,6 +256,7 @@ async function sendUserInvitation(
     const response = await fetch(`/api/projects/${projectId}/invitations`, {
       method: "POST",
       headers,
+      credentials: "include",
       body: JSON.stringify(data),
     });
     return processServerRequest(response);

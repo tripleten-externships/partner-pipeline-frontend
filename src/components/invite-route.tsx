@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import { DashProps } from "@/utils/types"; //Give all the props their specfied types to implement Sidebar correctly
-import Sidebar from './Sidebar/Sidebar';
-import { InviteFormModal} from "../components/InviteFormModal/InviteFormModal";
-import {sendUserInvitation} from "@/utils/api"
+import Sidebar from "./Sidebar/Sidebar";
+import { InviteFormModal } from "../components/InviteFormModal/InviteFormModal";
+import { sendUserInvitation } from "@/utils/api";
 
-const SendInvitePage: React.FC<DashProps> 
-= ({
+const SendInvitePage: React.FC<DashProps> = ({
   projectList,
   selectedProjectId,
   openMenus,
@@ -22,48 +21,53 @@ const SendInvitePage: React.FC<DashProps>
   userMenuRef,
   userEmail,
   loadingProjects,
-  projectError, 
+  projectError,
 }) => {
-  type AccessLevel = "admin" | "student";
+  type BackendRole = "Student" | "Project Mentor" | "Lead Mentor" | "External Partner";
   type Account = {
-  name: string;
-  email: string;
-  role: AccessLevel;
-}
-  const [openModal] = useState(true);
-     const handleAddAccount = (newAccount: Account) => {
-    console.log(newAccount);
-    sendUserInvitation("10", {name: newAccount.name, email: newAccount.email, roleToGrant: newAccount.role});
+    name: string;
+    email: string;
+    role: BackendRole;
   };
-  return(
+  const [openModal] = useState(true);
+  const handleAddAccount = (newAccount: Account) => {
+    console.log(newAccount);
+    // Ensure a project is selected before sending the invitation
+    if (!selectedProjectId) {
+      console.error("No project selected");
+      return;
+    }
+
+    sendUserInvitation(selectedProjectId, {
+      name: newAccount.name,
+      email: newAccount.email,
+      roleToGrant: newAccount.role,
+    });
+  };
+  return (
     <div className="flex h-screen">
-    <Sidebar
-      projectList={projectList}
-      loadingProjects={loadingProjects}
-      projectError={projectError}
-      selectedProjectId={selectedProjectId}
-      isProjectDropdownOpen={isProjectDropdownOpen}
-      toggleProjectDropdown={toggleProjectDropdown}
-      projectDropdownRef={projectDropdownRef}
-      handleProjectSelect={handleProjectSelect}
-      openMenus={openMenus}
-      setOpenMenus={setOpenMenus}
-      isUserMenuOpen={isUserMenuOpen}
-      toggleUserMenu={toggleUserMenu}
-      userMenuRef={userMenuRef}
-      userEmail={userEmail}
-      toggleMenu={toggleMenu}
-      isAddProjectSheetOpen={isAddProjectSheetOpen}
-      setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
-    />
-         <InviteFormModal
-            open={openModal}
-            onCreate={handleAddAccount}
-        />
-      </div>
-
-);
-
+      <Sidebar
+        projectList={projectList}
+        loadingProjects={loadingProjects}
+        projectError={projectError}
+        selectedProjectId={selectedProjectId}
+        isProjectDropdownOpen={isProjectDropdownOpen}
+        toggleProjectDropdown={toggleProjectDropdown}
+        projectDropdownRef={projectDropdownRef}
+        handleProjectSelect={handleProjectSelect}
+        openMenus={openMenus}
+        setOpenMenus={setOpenMenus}
+        isUserMenuOpen={isUserMenuOpen}
+        toggleUserMenu={toggleUserMenu}
+        userMenuRef={userMenuRef}
+        userEmail={userEmail}
+        toggleMenu={toggleMenu}
+        isAddProjectSheetOpen={isAddProjectSheetOpen}
+        setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+      />
+      <InviteFormModal open={openModal} onCreate={handleAddAccount} />
+    </div>
+  );
 };
 
 export default SendInvitePage;
