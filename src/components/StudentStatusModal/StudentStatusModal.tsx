@@ -2,7 +2,7 @@
 //Modal to display current student info/status
 
 import React, {useState} from "react";
-import "./StudentStatusModal.css";
+
 import modalCloseButton from "./mwfclosebtn.svg"
 
 type Program = "SE" | "AI Automation" | "AI/ML" | "BI analytics" | "CS" | "QA" | "UX/UI";

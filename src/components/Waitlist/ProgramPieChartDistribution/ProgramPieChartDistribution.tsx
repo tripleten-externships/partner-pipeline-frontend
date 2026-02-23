@@ -1,6 +1,6 @@
 import { Pie, PieChart, Tooltip, Cell, PieLabelRenderProps } from "recharts";
 import React from "react";
-import "./ProgramPieChartDistribution.css";
+
 
 type ChartDataInput = {
     name: string;

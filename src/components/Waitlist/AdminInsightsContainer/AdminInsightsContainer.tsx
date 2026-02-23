@@ -1,5 +1,5 @@
 import React from "react";
-import "./AdminInsightsContainer.css";
+
 import ProgramDistributionPieChart from "../ProgramPieChartDistribution/ProgramPieChartDistribution";
 
 interface AdminStats {
