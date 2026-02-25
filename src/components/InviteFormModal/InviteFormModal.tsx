@@ -221,8 +221,10 @@ export const InviteFormModal: React.FC<InviteFormModalProps> = ({
                   <SelectValue placeholder="Select Role for Invitee" />
                 </SelectTrigger>
                 <SelectContent className="z-[60]">
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="student">Student</SelectItem>
+                  <SelectItem value="Student">Student</SelectItem>
+                  <SelectItem value="Project Mentor">Project Mentor</SelectItem>
+                  <SelectItem value="Lead Mentor">Lead Mentor</SelectItem>
+                  <SelectItem value="External Partner">External Partner</SelectItem>
                 </SelectContent>
               </Select>
             </div>
