@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useWaitlistEntries, sendUserInvitation } from "@/utils/api";
 
-type AccessLevel = "admin" | "student";
+type AccessLevel = "Student" | "Project Mentor" | "Lead Mentor" | "External Partner";
 
 interface WaitlistStudent {
   id: string;
