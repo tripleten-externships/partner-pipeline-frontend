@@ -10,7 +10,6 @@ import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
-import WaitlistDashboard from "@/routes/WaitlistDashboard";
 import TimelinePage from "@/routes/TimelinePage";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 import { baseUrl, headers, processServerRequest } from "@/utils/api";
@@ -19,7 +18,8 @@ import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
-import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
+import WaitlistPageWithLayout from "@/routes/admin/waitlist/WaitlistPageWithLayout";
+import WaitlistDashboardWithLayout from "@/routes/WaitlistDashboardWithLayout";
 import ProtectedRoute from "./protected-route";
 
 // import { useProjectIDs } from "@/utils/api";
@@ -349,11 +349,52 @@ function App() {
           path="/waitlist"
           element={
             <ProtectedRoute>
-              <WaitlistPage />
+              <WaitlistPageWithLayout
+                projectList={projectList}
+                loadingProjects={loading}
+                projectError={error}
+                selectedProjectId={selectedProjectId}
+                openMenus={openMenus}
+                setOpenMenus={setOpenMenus}
+                isProjectDropdownOpen={isProjectDropdownOpen}
+                toggleProjectDropdown={toggleProjectDropdown}
+                projectDropdownRef={projectDropdownRef}
+                handleProjectSelect={handleProjectSelect}
+                isUserMenuOpen={isUserMenuOpen}
+                toggleUserMenu={toggleUserMenu}
+                userMenuRef={userMenuRef}
+                userEmail={userEmail}
+                toggleMenu={toggleMenu}
+                isAddProjectSheetOpen={isAddProjectSheetOpen}
+                setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+              />
             </ProtectedRoute>
           }
         />
-        <Route path="/waitlist-dashboard" element={<WaitlistDashboard />} />
+        <Route
+          path="/waitlist-dashboard"
+          element={
+            <WaitlistDashboardWithLayout
+              projectList={projectList}
+              loadingProjects={loading}
+              projectError={error}
+              selectedProjectId={selectedProjectId}
+              openMenus={openMenus}
+              setOpenMenus={setOpenMenus}
+              isProjectDropdownOpen={isProjectDropdownOpen}
+              toggleProjectDropdown={toggleProjectDropdown}
+              projectDropdownRef={projectDropdownRef}
+              handleProjectSelect={handleProjectSelect}
+              isUserMenuOpen={isUserMenuOpen}
+              toggleUserMenu={toggleUserMenu}
+              userMenuRef={userMenuRef}
+              userEmail={userEmail}
+              toggleMenu={toggleMenu}
+              isAddProjectSheetOpen={isAddProjectSheetOpen}
+              setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+            />
+          }
+        />
         <Route
           path="/timeline"
           element={
