@@ -1,6 +1,6 @@
 import React from "react";
 
-import Sidebar from "@/components/Sidebar/Sidebar";
+import { DashboardLayout } from "@/components/DashboardLayout";
 import { SidebarProps } from "@/utils/types";
 import Timeline from "@/components/Timeline/Timeline";
 import BreadcrumbHeader from "@/components/BreadcrumbHeader/BreadcrumbHeader";
@@ -79,48 +79,43 @@ const TimelinePage: React.FC<TimelinePageProps> = ({
   }));
 
   return (
-    <div className="flex h-screen">
-      {/* This will become Dashboard Layout component */}
-      <Sidebar
-        projectList={projectList}
-        loadingProjects={loadingProjects}
-        projectError={projectError}
-        selectedProjectId={selectedProjectId}
-        isProjectDropdownOpen={isProjectDropdownOpen}
-        toggleProjectDropdown={toggleProjectDropdown}
-        projectDropdownRef={projectDropdownRef}
-        handleProjectSelect={handleProjectSelect}
-        openMenus={openMenus}
-        setOpenMenus={setOpenMenus}
-        isUserMenuOpen={isUserMenuOpen}
-        toggleUserMenu={toggleUserMenu}
-        userMenuRef={userMenuRef}
-        userEmail={userEmail}
-        toggleMenu={toggleMenu}
-        isAddProjectSheetOpen={isAddProjectSheetOpen}
-        setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
-      />
+    <DashboardLayout
+      projectList={projectList}
+      loadingProjects={loadingProjects}
+      projectError={projectError}
+      selectedProjectId={selectedProjectId}
+      isProjectDropdownOpen={isProjectDropdownOpen}
+      toggleProjectDropdown={toggleProjectDropdown}
+      projectDropdownRef={projectDropdownRef}
+      handleProjectSelect={handleProjectSelect}
+      openMenus={openMenus}
+      setOpenMenus={setOpenMenus}
+      isUserMenuOpen={isUserMenuOpen}
+      toggleUserMenu={toggleUserMenu}
+      userMenuRef={userMenuRef}
+      userEmail={userEmail}
+      toggleMenu={toggleMenu}
+      isAddProjectSheetOpen={isAddProjectSheetOpen}
+      setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+    >
+      <BreadcrumbHeader section="Milestones" page="Timeline" />
 
-      <section className="flex-1 p-6 overflow-y-auto bg-zinc-950">
-        <BreadcrumbHeader section="Milestones" page="Timeline" />
-
-        {!selectedProjectId && (
-          <p className="ml-2 text-sm text-gray-400">Select a project to view its timeline.</p>
-        )}
-        {selectedProjectId && loading && <p className="ml-2 text-sm text-gray-400">Loading…</p>}
-        {selectedProjectId && !loading && error && (
-          <p className="ml-2 text-sm text-red-400">
-            Couldn’t load activity. Check console for details.
-          </p>
-        )}
-        {selectedProjectId && !loading && !error && activities.length === 0 && (
-          <p className="ml-2 text-sm text-gray-400">No activity yet for this project.</p>
-        )}
-        {selectedProjectId && !loading && !error && activities.length > 0 && (
-          <Timeline activities={activities} />
-        )}
-      </section>
-    </div>
+      {!selectedProjectId && (
+        <p className="ml-2 text-sm text-gray-400">Select a project to view its timeline.</p>
+      )}
+      {selectedProjectId && loading && <p className="ml-2 text-sm text-gray-400">Loading…</p>}
+      {selectedProjectId && !loading && error && (
+        <p className="ml-2 text-sm text-red-400">
+          Couldn’t load activity. Check console for details.
+        </p>
+      )}
+      {selectedProjectId && !loading && !error && activities.length === 0 && (
+        <p className="ml-2 text-sm text-gray-400">No activity yet for this project.</p>
+      )}
+      {selectedProjectId && !loading && !error && activities.length > 0 && (
+        <Timeline activities={activities} />
+      )}
+    </DashboardLayout>
   );
 };
 
