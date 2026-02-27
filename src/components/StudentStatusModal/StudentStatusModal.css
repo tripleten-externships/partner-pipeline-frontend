@@ -1,0 +1,132 @@
+.student-status__modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  z-index: 9999;
+}
+
+.student-status__modal_container {
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  box-sizing: border-box;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.studen-status__modal__close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.student-status__modal_header {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+}
+
+.student-status__modal_subtitle {
+  margin: 0 0 18px;
+  color: #777;
+}
+
+/* ✅ Grid layout fills modal */
+.student-status__form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.student-status__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.student-status__field--full {
+  grid-column: 1 / -1;
+}
+
+.student-status__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+}
+
+/* ✅ Inputs are visible and type-able */
+.student-status__input,
+.student-status__select,
+.student-status__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #111; /* IMPORTANT: not light gray */
+  background: #fff; /* IMPORTANT: visible */
+  outline: none;
+}
+
+.student-status__input:focus,
+.student-status__select:focus,
+.student-status__textarea:focus {
+  border-color: #111;
+}
+
+.student-status__textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.student-status__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.student-status__save {
+  border: none;
+  border-radius: 10px;
+  background: #000;
+  color: #fff;
+  height: 40px;
+  padding: 0 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.student-status__save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.student-status__error {
+  color: #b00020;
+  font-size: 13px;
+}
+
+.student-status__success {
+  color: #0a7a2f;
+  font-size: 13px;
+}
+
+@media (max-width: 740px) {
+  .student-status__form {
+    grid-template-columns: 1fr;
+  }
+}
