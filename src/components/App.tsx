@@ -10,6 +10,7 @@ import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
+import TimelinePage from "@/routes/TimelinePage";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 import { baseUrl, headers, processServerRequest } from "@/utils/api";
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
@@ -384,6 +385,30 @@ function App() {
               toggleProjectDropdown={toggleProjectDropdown}
               projectDropdownRef={projectDropdownRef}
               handleProjectSelect={handleProjectSelect}
+              isUserMenuOpen={isUserMenuOpen}
+              toggleUserMenu={toggleUserMenu}
+              userMenuRef={userMenuRef}
+              userEmail={userEmail}
+              toggleMenu={toggleMenu}
+              isAddProjectSheetOpen={isAddProjectSheetOpen}
+              setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+            />
+          }
+        />
+        <Route
+          path="/timeline"
+          element={
+            <TimelinePage
+              selectedProjectId={selectedProjectId}
+              projectList={projectList}
+              loadingProjects={loading}
+              projectError={error}
+              isProjectDropdownOpen={isProjectDropdownOpen}
+              toggleProjectDropdown={toggleProjectDropdown}
+              projectDropdownRef={projectDropdownRef}
+              handleProjectSelect={handleProjectSelect}
+              openMenus={openMenus}
+              setOpenMenus={setOpenMenus}
               isUserMenuOpen={isUserMenuOpen}
               toggleUserMenu={toggleUserMenu}
               userMenuRef={userMenuRef}

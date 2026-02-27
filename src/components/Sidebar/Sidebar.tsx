@@ -91,7 +91,9 @@ const Sidebar: React.FC<SidebarProps> = ({
           </button>
           {isOpen("milestones") && (
             <ul className="ml-2 text-sm pl-3 border-l border-zinc-800 space-y-3">
-              <li>Timeline</li>
+              <li>
+                <Link to="/timeline">Timeline</Link>
+              </li>
               <li>Explorer</li>
               <li>Notifications</li>
             </ul>
