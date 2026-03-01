@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DashProps } from "@/utils/types"; //Give all the props their specfied types to implement Sidebar correctly
 import Sidebar from "./Sidebar/Sidebar";
 import { InviteFormModal } from "../components/InviteFormModal/InviteFormModal";
-import { sendUserInvitation } from "@/utils/api";
+//import { sendUserInvitation } from "@/utils/api";
 
 const SendInvitePage: React.FC<DashProps> = ({
   projectList,
@@ -23,21 +23,8 @@ const SendInvitePage: React.FC<DashProps> = ({
   loadingProjects,
   projectError,
 }) => {
-  type AccessLevel = "admin" | "student";
-  type Account = {
-    name: string;
-    email: string;
-    role: AccessLevel;
-  };
   const [openModal] = useState(true);
-  const handleAddAccount = (newAccount: Account) => {
-    console.log(newAccount);
-    sendUserInvitation("10", {
-      name: newAccount.name,
-      email: newAccount.email,
-      roleToGrant: newAccount.role,
-    });
-  };
+
   return (
     <div className="flex h-screen">
       <Sidebar
@@ -59,7 +46,7 @@ const SendInvitePage: React.FC<DashProps> = ({
         isAddProjectSheetOpen={isAddProjectSheetOpen}
         setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
       />
-      <InviteFormModal open={openModal} onCreate={handleAddAccount} />
+      <InviteFormModal open={openModal} onClose={() => {}} projectId={selectedProjectId} />
     </div>
   );
 };

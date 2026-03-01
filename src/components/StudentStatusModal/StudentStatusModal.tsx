@@ -1,116 +1,206 @@
-//StudentStatusModal.tsx
-//Modal to display current student info/status
-
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./StudentStatusModal.css";
-import modalCloseButton from "./mwfclosebtn.svg"
+import modalCloseButton from "./mwfclosebtn.svg";
 
-type Program = "SE" | "AI Automation" | "AI/ML" | "BI analytics" | "CS" | "QA" | "UX/UI";
+export type WaitlistStatus = "pending" | "invited" | "accepted" | "rejected";
 
-type StudentStatus = "active" | "inactive" | "urgent" | "paused" | "graduated";
-
-export interface Student{
-    id: string;
-    email: string;
-    status: StudentStatus;
-    program: Program;
-    invitesSent: number;
-    completionDate?: string;
-    lastContactDate?: string;
-    dateAdded: string;
-    voucherIssued?: string;
-    profileUrl: string;
-    notes?: string; 
+export interface WaitlistStudent {
+  id: string;
+  name: string;
+  email: string;
+  status: WaitlistStatus;
+  notes?: string;
+  program: Program;
 }
 
-interface StudentStatusModalProps{
-    isOpen: boolean;
-    onClose: () => void;
-    student: Student;
+export type Program = "AI SE" | "AI Automation" | "AI/ML" | "BI Analytics" | "CS" | "QA" | "UX/UI";
+
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  student: WaitlistStudent;
+
+  onSaved?: () => void;
 }
 
-const StudentStatusModal: React.FC<StudentStatusModalProps> = ({isOpen, onClose, student}) => {
-    const [notes, setNotes] = useState<string>(student.notes ?? "");
-    const [isSaving, setIsSaving] = useState(false);
+const STATUS_OPTIONS: { label: string; value: WaitlistStatus }[] = [
+  { label: "pending", value: "pending" },
+  { label: "invited", value: "invited" },
+  { label: "accepted", value: "accepted" },
+  { label: "rejected", value: "rejected" },
+];
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        console.log("Submit button has been pressed", notes);
-        e.preventDefault();
+export default function StudentStatusModal({ isOpen, onClose, student, onSaved }: Props) {
+  const [name, setName] = useState(student.name ?? "");
+  const [email, setEmail] = useState(student.email ?? "");
+  const [status, setStatus] = useState<WaitlistStatus>(student.status ?? "pending");
+  const [program, setProgram] = useState<Program>(student.program ?? "SE");
+  const [notes, setNotes] = useState(student.notes ?? "");
+  const [isSaving, setIsSaving] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-        setIsSaving(true);
-        onClose();
+  useEffect(() => {
+    if (!isOpen) return;
+    setName(student.name ?? "");
+    setEmail(student.email ?? "");
+    setStatus(student.status ?? "pending");
+    setProgram(student.program ?? "SE");
+    setNotes(student.notes ?? "");
+    setErrorMsg(null);
+    setSuccessMsg(null);
+  }, [isOpen, student]);
+
+  function validate() {
+    if (!name.trim()) return "Name is required.";
+    if (!email.trim()) return "Email is required.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) return "Email must look like an email.";
+    if (!STATUS_OPTIONS.some((o) => o.value === status)) return "Status is invalid.";
+    if (notes.length > 1000) return "Notes too long (max 1000).";
+    return null;
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setErrorMsg(null);
+    setSuccessMsg(null);
+
+    const err = validate();
+    if (err) {
+      setErrorMsg(err);
+      return;
     }
 
-    //Function to go to students profile page when clicked
-    const handleProfileLinkClick =  ()  =>  {
-        function goToLink(url: string) {
-            window.location.href = url;
-        }
+    try {
+      setIsSaving(true);
 
-        const destinationUrl: string = `${student.profileUrl}`;
-        if (window.confirm("Are you sure you want to leave this page?")){
-            goToLink(destinationUrl);
+      const res = await fetch(`/api/waitlist/${student.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          status,
+          program,
+          notes: notes.trim(),
+        }),
+      });
+
+      if (!res.ok) {
+        let msg = `Save failed (${res.status})`;
+        try {
+          const data = await res.json();
+          msg = data?.error?.message || data?.message || msg;
+        } catch {
+          // response body is not JSON; fall back to generic error message
         }
-        
+        throw new Error(msg);
+      }
+
+      setSuccessMsg("Saved!");
+      onSaved?.();
+
+      setTimeout(() => onClose(), 600);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg("Could not save. Try again.");
+      }
+    } finally {
+      setIsSaving(false);
     }
+  }
 
-    if (!isOpen) return null;
+  if (!isOpen) return null;
 
-    return(
-        <div className="student-status__modal">
-            <div className="student-status__modal_container" >
-                <button onClick={onClose} className="studen-status__modal__close-btn">
-                    <img src={modalCloseButton} alt="close button" />
-                </button>
-                <h2 className="student-status__modal_header">{student.id}</h2>
-                <p className="student-status__modal_text">View and edit student information</p>
-                <form onSubmit={handleSubmit}><div className="student-status__info">
-                    <div className="student-status__column">
-                    <label className="student-status__modal_label"> Email</label>
-                    <p className="student-status__modal_text">{student.email}</p>
+  return (
+    <div className="student-status__modal" role="dialog" aria-modal="true">
+      <div className="student-status__modal_container">
+        <button type="button" onClick={onClose} className="studen-status__modal__close-btn">
+          <img src={modalCloseButton} alt="close" />
+        </button>
 
-                    <label className="student-status__modal_label">Program</label>
-                    <p className="student-status__modal_program-text"> {student.program}
-                        {/* <option value="SE" className="student-status__modal_text">SE</option>
-                        <option value="AI automation" className="student-status__modal_text">AI automation</option>
-                        <option value="AI/ML" className="student-status__modal_text">AI/ML</option>
-                        <option value="BI analytics" className="student-status__modal_text">BI analytics</option>
-                        <option value="CS" className="student-status__modal_text">CS</option>
-                        <option value="QA" className="student-status__modal_text">QA</option>
-                        <option value="UX/UI" className="student-status__modal_text">UX/UI</option> */}
-                    </p>
-                    <label className="student-status__modal_label">Completion Date</label>
-                    <p className="student-status__modal_text">{student.completionDate}</p>
-                    <label className="student-status__modal_label">Last Contact</label>
-                    <p className="student-status__modal_text">{student.lastContactDate}</p>
-                    <label className="student-status__modal_label"> Hub Profile</label>
-                    <button onClick={handleProfileLinkClick} className="student-status__profile-link"> View Profile </button>
-                    </div>
-                    <div className="student-status__column">
-                    <label className="student-status__modal_label__status">Status</label>
-                    <p className="student-status__modal_status-text">{student.status}</p>
-                    <label className="student-status__modal_label">Sent Invites</label>
-                    <p className="student-status__modal_text">{student.invitesSent}</p>
-                    <label className="student-status__modal_label">Date Added</label>
-                    <p className="student-status__modal_text">{student.dateAdded}</p>
-                    <label className="student-status__modal_label">Voucher Issued</label>
-                    <p className="student-status__modal_text"> -- </p>
-                    </div>
-                    </div>
-                    <label className="student-status__modal_label">Notes</label>
-                    <input 
-                        type="text" 
-                        value={notes} 
-                        onChange={(e) => setNotes(e.target.value)} 
-                        placeholder="Add notes about this student..." 
-                        max="100" className="student-status__modal_notes"
-                    />
-                    <button type="submit" className="student-status__modal_save-button" disabled={isSaving}>{isSaving ? "Saving..." : "Save" }</button>
-                </form>
+        <h2 className="student-status__modal_header">Edit Student</h2>
+        <p className="student-status__modal_subtitle">Update waitlist student info and save</p>
 
-            </div>
-        </div>
-    )
+        <form className="student-status__form" onSubmit={handleSubmit}>
+          <div className="student-status__field">
+            <label className="student-status__label">Name</label>
+            <input
+              className="student-status__input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Student name"
+              autoFocus
+            />
+          </div>
+
+          <div className="student-status__field">
+            <label className="student-status__label">Email</label>
+            <input
+              className="student-status__input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="student@email.com"
+            />
+          </div>
+
+          <div className="student-status__field">
+            <label className="student-status__label">Program</label>
+            <select
+              className="student-status__select"
+              value={program}
+              onChange={(e) => setProgram(e.target.value as Program)}
+            >
+              <option value="AI SE">AI SE</option>
+              <option value="AI Automation">AI Automation</option>
+              <option value="AI/ML">AI/ML</option>
+              <option value="BI Analytics">BI Analytics</option>
+              <option value="CS">CS</option>
+              <option value="QA">QA</option>
+              <option value="UX/UI">UX/UI</option>
+            </select>
+          </div>
+
+          <div className="student-status__field">
+            <label className="student-status__label">Status</label>
+            <select
+              className="student-status__select"
+              value={status}
+              onChange={(e) => setStatus(e.target.value as WaitlistStatus)}
+            >
+              {STATUS_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="student-status__field student-status__field--full">
+            <label className="student-status__label">Notes</label>
+            <textarea
+              className="student-status__textarea"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Add notes about this student..."
+            />
+          </div>
+
+          <div className="student-status__field student-status__field--full">
+            {errorMsg && <div className="student-status__error">{errorMsg}</div>}
+            {successMsg && <div className="student-status__success">{successMsg}</div>}
+          </div>
+
+          <div className="student-status__actions">
+            <button className="student-status__save" type="submit" disabled={isSaving}>
+              {isSaving ? "Saving..." : "Save"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
-
-export default StudentStatusModal;

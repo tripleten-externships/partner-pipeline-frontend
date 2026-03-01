@@ -6,11 +6,11 @@ const TotalStudentsCard: React.FC = () => {
   const { data, loading, error } = useWaitlistEntries();
 
   // Calculate total students
-  const totalStudents = data?.waitlistEntries?.length || 0;
+  const totalStudents = data?.waitListStudents?.length || 0;
 
   // Calculate breakdown by status
   const statusBreakdown =
-    data?.waitlistEntries?.reduce(
+    data?.waitListStudents?.reduce(
       (acc: Record<string, number>, entry: { status: string }) => {
         acc[entry.status] = (acc[entry.status] || 0) + 1;
         return acc;
