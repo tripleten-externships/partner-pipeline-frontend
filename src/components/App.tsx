@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Routes, Route, useNavigate } from "react-router";
 import { useQuery, useMutation } from "@apollo/client";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import useClickOutside from "@/hooks/useClickOutside";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./login-route";
@@ -58,7 +58,7 @@ function App() {
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
-  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  //const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
   // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
@@ -332,7 +332,7 @@ function App() {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
-              onOpenInviteModal={() => setIsInviteModalOpen(true)}
+              // onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
         />
@@ -361,13 +361,13 @@ function App() {
         <Route path="/waitlist-dashboard" element={<WaitlistDashboard />} />
       </Routes>
       <AdminInsightsContainer stats={mockAdminStats} />
-      <InviteModal
+      {/* <InviteModal
         isOpen={isInviteModalOpen}
         onClose={() => setIsInviteModalOpen(false)}
         projectId={selectedProjectId}
       />
       <StudentStatusModal isOpen={isModalOpen} onClose={handleClose} student={mockStudent} />
-      <Toaster position="bottom-center" />
+      <Toaster position="bottom-center" /> */}
     </main>
   );
 }
