@@ -1,7 +1,7 @@
-import React from 'react';
-import { AlertTriangle, Users, Clock } from 'lucide-react';
-import DashCard from '@/components/DashCard/DashCard';
-import { useStudents } from '@/utils/api';
+import React from "react";
+import { AlertTriangle, Users, Clock } from "lucide-react";
+import DashCard from "@/components/DashCard/DashCard";
+import { useStudents } from "@/utils/api";
 interface Student {
   id: string;
   name: string;
@@ -18,23 +18,24 @@ export const InactiveStudentsCard: React.FC = () => {
 
   // Calculate inactive students metrics
   const calculateMetrics = () => {
-    if (!data?.users) return { 
-      totalInactive: 0, 
-      unresponsive: 0, 
-      longInactive: 0 
-    };
+    if (!data?.users)
+      return {
+        totalInactive: 0,
+        unresponsive: 0,
+        longInactive: 0,
+      };
 
     const students: Student[] = data.users;
-    
+
     // Students with "Unresponsive" status (reminder_count > 2)
-    const unresponsive = students.filter((student: Student) => 
-      student.status === "Unresponsive"
+    const unresponsive = students.filter(
+      (student: Student) => student.status === "Unresponsive"
     ).length;
 
     // Students who haven't logged in for 30+ days
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    
+
     const longInactive = students.filter((student: Student) => {
       if (!student.lastLoginDate) return true; // Never logged in
       const lastLogin = new Date(student.lastLoginDate);
@@ -42,8 +43,8 @@ export const InactiveStudentsCard: React.FC = () => {
     }).length;
 
     // Students marked as inactive OR unresponsive
-    const totalInactive = students.filter((student: Student) => 
-      !student.isActive || student.status === "Unresponsive"
+    const totalInactive = students.filter(
+      (student: Student) => !student.isActive || student.status === "Unresponsive"
     ).length;
 
     return { totalInactive, unresponsive, longInactive };
@@ -62,12 +63,8 @@ export const InactiveStudentsCard: React.FC = () => {
             <h3 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
               Inactive Students
             </h3>
-            <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-              Loading...
-            </p>
-            <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">
-              Calculating metrics
-            </p>
+            <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Loading...</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">Calculating metrics</p>
           </div>
         </div>
       </DashCard>
@@ -85,12 +82,8 @@ export const InactiveStudentsCard: React.FC = () => {
             <h3 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
               Inactive Students
             </h3>
-            <p className="text-2xl font-bold text-red-600 dark:text-red-400">
-              Error
-            </p>
-            <p className="text-xs text-red-500 dark:text-red-500 mt-1">
-              Failed to load data
-            </p>
+            <p className="text-2xl font-bold text-red-600 dark:text-red-400">Error</p>
+            <p className="text-xs text-red-500 dark:text-red-500 mt-1">Failed to load data</p>
           </div>
         </div>
       </DashCard>
@@ -107,9 +100,7 @@ export const InactiveStudentsCard: React.FC = () => {
           <h3 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
             Inactive Students
           </h3>
-          <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-            {totalInactive}
-          </p>
+          <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{totalInactive}</p>
           <div className="flex items-center gap-4 mt-2">
             <div className="flex items-center gap-1">
               <Users className="w-3 h-3 text-red-500" />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Routes, Route, useNavigate } from "react-router";
 import { useQuery, useMutation } from "@apollo/client";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import useClickOutside from "@/hooks/useClickOutside";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./login-route";
@@ -16,6 +16,9 @@ import { GET_PROJECTS } from "@/graphql/queries/getProjects";
 import { CREATE_PROJECT } from "@/graphql/mutations/createProject";
 import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
+
+//importing student interface for styling of modal
+//import type { Student } from "./StudentStatusModal/StudentStatusModal";
 
 import WaitlistPageWithLayout from "@/routes/admin/waitlist/WaitlistPageWithLayout";
 import WaitlistDashboardWithLayout from "@/routes/WaitlistDashboardWithLayout";
@@ -55,6 +58,7 @@ function App() {
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
+  //const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
   // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
@@ -328,6 +332,7 @@ function App() {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
+              // onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
         />
@@ -396,7 +401,13 @@ function App() {
         />
       </Routes>
       <AdminInsightsContainer stats={mockAdminStats} />
-      <Toaster position="bottom-center" />
+      {/* <InviteModal
+        isOpen={isInviteModalOpen}
+        onClose={() => setIsInviteModalOpen(false)}
+        projectId={selectedProjectId}
+      />
+      <StudentStatusModal isOpen={isModalOpen} onClose={handleClose} student={mockStudent} />
+      <Toaster position="bottom-center" /> */}
     </main>
   );
 }

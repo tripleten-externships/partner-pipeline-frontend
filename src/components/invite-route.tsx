@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { DashProps } from "@/utils/types";
+import { DashProps } from "@/utils/types"; //Give all the props their specfied types to implement Sidebar correctly
 import Sidebar from "./Sidebar/Sidebar";
 import { InviteFormModal } from "../components/InviteFormModal/InviteFormModal";
+//import { sendUserInvitation } from "@/utils/api";
 
 const SendInvitePage: React.FC<DashProps> = ({
   projectList,
