@@ -66,16 +66,27 @@ export const useProjectInvitations = (projectId?: string) => {
     { variables: { projectId: projectId as string }, skip, fetchPolicy: "cache-and-network" }
   );
 };
+
 const useWaitlistEntries = () => {
   return useQuery(
     gql`
-      query WaitlistEntries {
-        waitlistEntries(orderBy: [{ createdAt: desc }]) {
+      query WaitListStudents {
+        waitListStudents(orderBy: [{ createdAt: desc }]) {
           id
           name
           email
           status
+          inviteSentAt
           createdAt
+          notes
+          program
+          completedOn
+          contactedBy {
+            id
+            name
+          }
+          lastContactedOn
+          hasVoucher
         }
       }
     `,
@@ -248,12 +259,19 @@ const useMe = () => {
   );
 };
 
-async function sendUserInvitation(projectId: string, data: {name: string; email: string; roleToGrant: string}) {
+async function sendUserInvitation(
+  projectId: string,
+  data: { name: string; email: string; roleToGrant: string }
+) {
   try {
+    // Define expiration date for 30 days from now
+    const thirtyDaysFromNow = new Date();
+    thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
+
     const response = await fetch(`${baseUrl}/api/projects/${projectId}/invitations`, {
       method: "POST",
       headers,
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, expiresAt: thirtyDaysFromNow.toISOString() }),
     });
     return processServerRequest(response);
   } catch (error) {
@@ -278,5 +296,3 @@ export {
   useStudents, // Added this
   sendUserInvitation,
 };
-
-

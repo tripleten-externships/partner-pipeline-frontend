@@ -1,5 +1,5 @@
-import React from 'react';
-import { ChevronsUpDown, Plus, FolderClosed } from 'lucide-react';
+import React from "react";
+import { ChevronsUpDown, Plus, FolderClosed } from "lucide-react";
 import { ProjectSwitcherProps } from "@/utils/types";
 import {
   DropdownMenu,
@@ -10,22 +10,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import { Button } from '../ui/button';
-
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 
 const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
   projectList,
   selectedProjectId,
   handleProjectSelect,
   setIsAddProjectSheetOpen,
-  loading
+  loading,
 }) => {
   const selectedProject = projectList.find((p) => p.id === selectedProjectId);
 
   const renderIcon = selectedProject?.fallBackIcon || <FolderClosed size={16} />;
   const renderName = selectedProject?.name || "No project selected";
- 
 
   if (loading) {
     return (
@@ -51,15 +49,12 @@ const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent side="right" className="min-w-60">
-        <DropdownMenuLabel className='text-xs text-neutral-400'>Projects</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-xs text-neutral-400">Projects</DropdownMenuLabel>
 
         <DropdownMenuGroup>
           {projectList.length > 0 ? (
             projectList.map((project, index) => (
-              <DropdownMenuItem
-                key={project.id}
-                onSelect={() => handleProjectSelect(project.id)}
-              >
+              <DropdownMenuItem key={project.id} onSelect={() => handleProjectSelect(project.id)}>
                 <div className="flex items-center justify-center rounded size-6 border border-neutral-700">
                   {project.fallBackIcon}
                 </div>
@@ -79,12 +74,11 @@ const ProjectSwitcher: React.FC<ProjectSwitcherProps> = ({
           <div className="flex items-center justify-center rounded size-6 border border-neutral-700">
             <Plus color="#fff" />
           </div>
-          <p className='text-neutral-400'>Add Project</p>
+          <p className="text-neutral-400">Add Project</p>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
-
 
 export default ProjectSwitcher;

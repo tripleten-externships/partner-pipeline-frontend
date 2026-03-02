@@ -22,7 +22,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { projectFormSchema, ProjectFormValues, AddProjectFormProps } from "@/utils/types";
 import { Loader2 } from "lucide-react";
 
-const AddProjectForm: React.FC<AddProjectFormProps> = ({  isLoading, onProjectSubmit, onSubmit }) => {
+const AddProjectForm: React.FC<AddProjectFormProps> = ({
+  isLoading,
+  onProjectSubmit,
+  onSubmit,
+}) => {
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
     defaultValues: {
@@ -39,14 +43,20 @@ const AddProjectForm: React.FC<AddProjectFormProps> = ({  isLoading, onProjectSu
   }
 
   return (
-    <div className="space-y-6 p-3"> {/* match EditProjectForm outer container */}
+    <div className="space-y-6 p-3">
+      {" "}
+      {/* match EditProjectForm outer container */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3 py-2"> {/* space-y-3 to match */}
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3 py-2">
+          {" "}
+          {/* space-y-3 to match */}
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="space-y-2"> {/* add spacing for each field */}
+              <FormItem className="space-y-2">
+                {" "}
+                {/* add spacing for each field */}
                 <FormLabel>Project Name *</FormLabel>
                 <FormControl>
                   <Input placeholder="Project Name" {...field} />
@@ -55,7 +65,6 @@ const AddProjectForm: React.FC<AddProjectFormProps> = ({  isLoading, onProjectSu
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="subtitle"
@@ -68,7 +77,6 @@ const AddProjectForm: React.FC<AddProjectFormProps> = ({  isLoading, onProjectSu
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="description"
@@ -81,7 +89,6 @@ const AddProjectForm: React.FC<AddProjectFormProps> = ({  isLoading, onProjectSu
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="status"
@@ -103,7 +110,6 @@ const AddProjectForm: React.FC<AddProjectFormProps> = ({  isLoading, onProjectSu
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="img"
@@ -124,9 +130,13 @@ const AddProjectForm: React.FC<AddProjectFormProps> = ({  isLoading, onProjectSu
               </FormItem>
             )}
           />
-
           <div className="flex justify-end space-x-2 pt-6">
-            <Button type="button" variant="outline" onClick={() => form.reset()} disabled={isLoading}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => form.reset()}
+              disabled={isLoading}
+            >
               Cancel
             </Button>
             <Button

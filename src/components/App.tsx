@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Routes, Route, useNavigate } from "react-router";
 import { useQuery, useMutation } from "@apollo/client";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import useClickOutside from "@/hooks/useClickOutside";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./login-route";
@@ -10,9 +10,6 @@ import UserManagement from "../routes/user-management/user-management";
 import { SquareStack } from "lucide-react";
 import AcceptInvitationPage from "./AcceptInvitationPage/AcceptInvitationPage";
 import AdminInsightsContainer from "./Waitlist/AdminInsightsContainer/AdminInsightsContainer";
-import InviteModal from "./InviteModal/InviteModal";
-import WaitlistDashboard from "@/routes/WaitlistDashboard";
-import StudentStatusModal from "./StudentStatusModal/StudentStatusModal";
 import { FormFields, Invitation, Project, ProjectFormValues } from "@/utils/types";
 import { baseUrl, headers, processServerRequest } from "@/utils/api";
 import { GET_PROJECTS } from "@/graphql/queries/getProjects";
@@ -21,9 +18,11 @@ import { UPDATE_PROJECT } from "@/graphql/mutations/updateProject";
 import { DELETE_PROJECT } from "@/graphql/mutations/deleteProject";
 
 //importing student interface for styling of modal
-import type {Student} from "./StudentStatusModal/StudentStatusModal";
+//import type { Student } from "./StudentStatusModal/StudentStatusModal";
 
-import WaitlistPage from "@/routes/admin/waitlist"; // Added import for WaitlistPage
+import WaitlistPageWithLayout from "@/routes/admin/waitlist/WaitlistPageWithLayout";
+import WaitlistDashboardWithLayout from "@/routes/WaitlistDashboardWithLayout";
+import ProtectedRoute from "./protected-route";
 
 // import { useProjectIDs } from "@/utils/api";
 
@@ -59,8 +58,8 @@ function App() {
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAddProjectSheetOpen, setIsAddProjectSheetOpen] = useState(false);
-  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-  
+  //const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
   // const { data: invData } = useProjectInvitations(selectedProjectId ?? projectList[0]?.id);
 
   const projectDropdownRef = useRef<HTMLDivElement>(null);
@@ -74,29 +73,8 @@ function App() {
   const [invitation, setInvitation] = useState<Invitation | null>(null);
 
   const [userEmail] = useState("foo@foo.com");
-
+  
   const [isLoggedIn] = useState(true);
-
-  //hardcoded to keep studentstatus modal opened for styling
-  const isModalOpen = false;
-
-  //mock student object for styling
-  const mockStudent: Student = {
-    id: "Mock Student",
-    email: "example@student.com",
-    status: "active",
-    program: "SE",
-    invitesSent: 3,
-    completionDate: "2025-12-01",
-    lastContactDate: "2025-11-10",
-    dateAdded: "2024-01-05",
-    voucherIssued: "2025-10-20",
-    profileUrl: "https://website.com/students/123",
-    notes: "This is just a test",
-  };
-
-  //temporary do nothing onClose func
-  const handleClose = () => {};
 
   //temporary admin stats object for styling
   const mockAdminStats = {
@@ -314,14 +292,15 @@ function App() {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
-              onOpenInviteModal={() => setIsInviteModalOpen(true)}
             />
           }
-          
         />
         <Route path="/user-management" element={<UserManagement />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/invite" element={<SendInvitePage 
+        <Route
+          path="/invite"
+          element={
+            <SendInvitePage
               projectList={projectList}
               loadingProjects={loading}
               projectError={error}
@@ -353,7 +332,10 @@ function App() {
               isAddProjectSheetOpen={isAddProjectSheetOpen}
               setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
               handleAddProject={handleAddProject}
-              onOpenInviteModal={() => setIsInviteModalOpen(true)}/>} />
+              // onOpenInviteModal={() => setIsInviteModalOpen(true)}
+            />
+          }
+        />
         <Route
           path="/invitation"
           element={
@@ -367,21 +349,65 @@ function App() {
             />
           }
         />
-        <Route path="/waitlist" element={<WaitlistPage />} />
-        <Route path="/waitlist-dashboard" element={<WaitlistDashboard />} />
+        <Route
+          path="/waitlist"
+          element={
+            <ProtectedRoute>
+              <WaitlistPageWithLayout
+                projectList={projectList}
+                loadingProjects={loading}
+                projectError={error}
+                selectedProjectId={selectedProjectId}
+                openMenus={openMenus}
+                setOpenMenus={setOpenMenus}
+                isProjectDropdownOpen={isProjectDropdownOpen}
+                toggleProjectDropdown={toggleProjectDropdown}
+                projectDropdownRef={projectDropdownRef}
+                handleProjectSelect={handleProjectSelect}
+                isUserMenuOpen={isUserMenuOpen}
+                toggleUserMenu={toggleUserMenu}
+                userMenuRef={userMenuRef}
+                userEmail={userEmail}
+                toggleMenu={toggleMenu}
+                isAddProjectSheetOpen={isAddProjectSheetOpen}
+                setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/waitlist-dashboard"
+          element={
+            <WaitlistDashboardWithLayout
+              projectList={projectList}
+              loadingProjects={loading}
+              projectError={error}
+              selectedProjectId={selectedProjectId}
+              openMenus={openMenus}
+              setOpenMenus={setOpenMenus}
+              isProjectDropdownOpen={isProjectDropdownOpen}
+              toggleProjectDropdown={toggleProjectDropdown}
+              projectDropdownRef={projectDropdownRef}
+              handleProjectSelect={handleProjectSelect}
+              isUserMenuOpen={isUserMenuOpen}
+              toggleUserMenu={toggleUserMenu}
+              userMenuRef={userMenuRef}
+              userEmail={userEmail}
+              toggleMenu={toggleMenu}
+              isAddProjectSheetOpen={isAddProjectSheetOpen}
+              setIsAddProjectSheetOpen={setIsAddProjectSheetOpen}
+            />
+          }
+        />
       </Routes>
-      <AdminInsightsContainer stats={mockAdminStats}/>
-      <InviteModal
+      <AdminInsightsContainer stats={mockAdminStats} />
+      {/* <InviteModal
         isOpen={isInviteModalOpen}
         onClose={() => setIsInviteModalOpen(false)}
         projectId={selectedProjectId}
       />
-      <StudentStatusModal
-      isOpen={isModalOpen}
-      onClose={handleClose}
-      student={mockStudent} 
-      />
-      <Toaster position="bottom-center" />
+      <StudentStatusModal isOpen={isModalOpen} onClose={handleClose} student={mockStudent} />
+      <Toaster position="bottom-center" /> */}
     </main>
   );
 }

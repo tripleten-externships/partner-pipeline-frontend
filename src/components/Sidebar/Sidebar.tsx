@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               <li>Settings</li>
               {/* Temporary testing */}
               <li>
-                <a href="/admin/waitlist">Waitlist</a>
+                <a href="/waitlist">Waitlist</a>
               </li>{" "}
               {/* Temporary testing */}
             </ul>
@@ -113,14 +113,12 @@ const Sidebar: React.FC<SidebarProps> = ({
               <li>Tutorials</li>
               <li>Changelog</li>
               <li>
-                <Link  to="/invite" className="flex items-center gap-2">
-                <MailPlus size={14} /> Invitations
+                <Link to="/invite" className="flex items-center gap-2">
+                  <MailPlus size={14} /> Invitations
                 </Link>
               </li>
             </ul>
           )}
-
-     
 
           <button
             className="w-full flex items-center justify-between text-sm font-sm mt-4 mb-2"
@@ -162,7 +160,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* User Context */}
       <div className="pt-4">
         <UserMenu
-          isOpen={isUserMenuOpen} 
+          isOpen={isUserMenuOpen}
           toggleMenu={toggleUserMenu}
           menuRef={userMenuRef}
           userEmail={userEmail}

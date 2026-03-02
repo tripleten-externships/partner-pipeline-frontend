@@ -7,14 +7,12 @@ import { client } from "./store";
 import { ThemeProvider } from "./components/theme-provider";
 import App from "./components/App";
 
-
 (async function boot() {
-
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <ApolloProvider client={client}>
-          <BrowserRouter>
+          <BrowserRouter future={{ v7_relativeSplatPath: true }}>
             <App />
           </BrowserRouter>
         </ApolloProvider>
