@@ -74,7 +74,7 @@ function App() {
   const [invitation, setInvitation] = useState<Invitation | null>(null);
 
   const [userEmail] = useState("foo@foo.com");
-
+  
   const [isLoggedIn] = useState(true);
 
   //temporary admin stats object for styling

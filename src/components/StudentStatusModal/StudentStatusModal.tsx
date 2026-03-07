@@ -124,20 +124,20 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
   if (!isOpen) return null;
 
   return (
-    <div className="student-status__modal" role="dialog" aria-modal="true">
-      <div className="student-status__modal_container">
-        <button type="button" onClick={onClose} className="studen-status__modal__close-btn">
+    <div className="fixed inset-0 opacity-55 flex justify-center items-center p-[24px] z-[9999]" role="dialog" aria-modal="true">
+      <div className="relative w-full max-w-[820px] bg-white rounded-[12px] p-[28px] box-border max-h-[90vh] overflow-auto">
+        <button type="button" onClick={onClose} className="absolute top-[16px] right-[16px] border-none bg-transparent cursor-pointer">
           <img src={modalCloseButton} alt="close" />
         </button>
 
-        <h2 className="student-status__modal_header">Edit Student</h2>
-        <p className="student-status__modal_subtitle">Update waitlist student info and save</p>
+        <h2 className="mt-0 mx-0 mb-[6px] text-[22px] font-bold text-[#111]">Edit Student</h2>
+        <p className="mt-0 mx-0 mb-[18px] text-[#777]">Update waitlist student info and save</p>
 
-        <form className="student-status__form" onSubmit={handleSubmit}>
-          <div className="student-status__field">
-            <label className="student-status__label">Name</label>
+        <form className="grid-cols-[1fr 1fr 1fr] gap-[18px] items-start md:grid-cols-[1fr]" onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-[6px]">
+            <label className="text-[13px] font-semibold text-[#111]">Name</label>
             <input
-              className="student-status__input"
+              className=" w-full box-border border-[1px] border-solid border-[#d9d9d9] rounded-[10px] py-[10px] px-[12px] text-[14px] text-[#111] bg-[#fff] outlile-none focus:border-[#111]"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Student name"
@@ -145,20 +145,20 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
             />
           </div>
 
-          <div className="student-status__field">
-            <label className="student-status__label">Email</label>
+          <div className="flex flex-col gap-[6px]">
+            <label className="text-[13px] font-semibold text-[#111]">Email</label>
             <input
-              className="student-status__input"
+              className=" w-full box-border border-[1px] border-solid border-[#d9d9d9] rounded-[10px] py-[10px] px-[12px] text-[14px] text-[#111] bg-[#fff] outlile-none focus:border-[#111]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="student@email.com"
             />
           </div>
 
-          <div className="student-status__field">
-            <label className="student-status__label">Program</label>
+          <div className="flex flex-col gap-[6px]">
+            <label className="text-[13px] font-semibold text-[#111]">Program</label>
             <select
-              className="student-status__select"
+              className=" w-full box-border border-[1px] border-solid border-[#d9d9d9] rounded-[10px] py-[10px] px-[12px] text-[14px] text-[#111] bg-[#fff] outlile-none focus:border-[#111]"
               value={program}
               onChange={(e) => setProgram(e.target.value as Program)}
             >
@@ -173,10 +173,10 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
             </select>
           </div>
 
-          <div className="student-status__field">
-            <label className="student-status__label">Status</label>
+          <div className="flex flex-col gap-[6px]">
+            <label className="text-[13px] font-semibold text-[#111]">Status</label>
             <select
-              className="student-status__select"
+              className=" w-full box-border border-[1px] border-solid border-[#d9d9d9] rounded-[10px] py-[10px] px-[12px] text-[14px] text-[#111] bg-[#fff] outlile-none focus:border-[#111]"
               value={status}
               onChange={(e) => setStatus(e.target.value as WaitlistStatus)}
             >
@@ -188,23 +188,23 @@ export default function StudentStatusModal({ isOpen, onClose, student, onSaved }
             </select>
           </div>
 
-          <div className="student-status__field student-status__field--full">
-            <label className="student-status__label">Notes</label>
+          <div className="flex flex-col gap-[6px] grid-cols-[1/-1]">
+            <label className="text-[13px] font-semibold text-[#111]">Notes</label>
             <textarea
-              className="student-status__textarea"
+              className="min-h-[120px] w-full box-border border-[1px] border-solid border-[#d9d9d9] rounded-[10px] py-[10px] px-[12px] text-[14px] text-[#111] bg-[#fff] outlile-none focus:border-[#111]"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Add notes about this student..."
             />
           </div>
 
-          <div className="student-status__field student-status__field--full">
-            {errorMsg && <div className="student-status__error">{errorMsg}</div>}
-            {successMsg && <div className="student-status__success">{successMsg}</div>}
+          <div className="flex flex-col gap-[6px] grid-cols-[1/-1]">
+            {errorMsg && <div className="text-[#b00020] text-[13px]">{errorMsg}</div>}
+            {successMsg && <div className="text-[#0a7a2f] text-[13px]">{successMsg}</div>}
           </div>
 
-          <div className="student-status__actions">
-            <button className="student-status__save" type="submit" disabled={isSaving}>
+          <div className="grid-col-[1/-1] flex justify-end mt-[4px]">
+            <button className="border-none rounded-[10px] !bg-black text-white h-[40px] py-0 px-[16px] font-semibold cursor-pointer disabled: opacity-60 cursor-not-allowed" type="submit" disabled={isSaving}>
               {isSaving ? "Saving..." : "Save"}
             </button>
           </div>
