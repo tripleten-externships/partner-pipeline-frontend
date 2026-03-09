@@ -19,10 +19,21 @@ export default defineConfig(({ mode }) => {
   },
   server: {
     port: 3000,
+    proxy: {
+      "/api": {
+        target: "http://localhost:8083",
+        changeOrigin: true,
+      },
+    },
   },
   define: {
     //this is for testing purposes, needs to be refined for security!!!!
     'process.env': env,
-  }
+  },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: ["./setup-tests.js"],
+  },
 };
 });

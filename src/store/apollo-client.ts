@@ -7,7 +7,7 @@ export const AUTH_TOKEN = "__drops_token";
 
 // http link (keystone GraphQL endpoint)
 const httpLink = new HttpLink({
-  uri: "http://localhost:8080/api/graphql",
+  uri: import.meta.env.VITE_API_URL ?? "/api/graphql",
   credentials: "include", // keep cookies for keystone sessions
 });
 

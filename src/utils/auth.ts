@@ -1,4 +1,4 @@
-const ENDPOINT = "http://localhost:8080/api/graphql";
+const ENDPOINT = import.meta.env.VITE_API_URL ?? "/api/graphql";
 
 type GraphQLErrorShape = { message: string };
 

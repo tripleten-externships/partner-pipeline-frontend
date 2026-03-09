@@ -4,6 +4,7 @@ import { Upload } from "lucide-react";
 import ImportStudentsModal from "@/components/CsvImportModal/CsvImportModal";
 import { importStudentsFromCsv, useWaitlistEntries } from "@/utils/api";
 import { mockWaitlistEntries } from "@/mocks/waitlist.mock";
+import { DeleteStudentModal } from "@/components/DeleteStudentModal/DeleteStudentModal";
 
 interface WaitlistUser {
   id: string;
@@ -19,7 +20,7 @@ interface Props {
 }
 
 // FLIP TO FALSE WHEN READY TO USE REAL DATA
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 
 // Helper: format ISO date string to more readable format
 const formatDate = (iso: string | null | undefined) => {
@@ -97,6 +98,8 @@ export function WaitlistTable({ search, status }: Props) {
   // CSV import modal UI state:
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [importSuccess, setImportSuccess] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<WaitlistUser | null>(null);
 
   // Hook that fetches data from the backend GraphQL API.
   // Someone before me already implemented this in utils/api
@@ -163,6 +166,16 @@ export function WaitlistTable({ search, status }: Props) {
 
   const handleNext = () => {
     if (page < totalPages) setPage((prev) => prev + 1);
+  };
+
+  const handleOpenDelete = (entry: WaitlistUser) => {
+    setSelectedStudent(entry);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteSuccess = async (deletedId: string) => {
+    setEntries((prev) => prev.filter((entry) => entry.id !== deletedId));
+    await refetch();
   };
 
   return (
@@ -328,7 +341,12 @@ export function WaitlistTable({ search, status }: Props) {
                         >
                           ✏️
                         </button>
-                        <button type="button" className="hover:text-red-600" title="Delete">
+                        <button
+                          type="button"
+                          className="hover:text-red-600"
+                          title="Delete"
+                          onClick={() => handleOpenDelete(entry)}
+                        >
                           🗑️
                         </button>
                       </div>
@@ -378,6 +396,15 @@ export function WaitlistTable({ search, status }: Props) {
         onClose={() => setIsImportModalOpen(false)}
         onImport={handleImportStudents}
       />
+
+      {selectedStudent && (
+        <DeleteStudentModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          student={selectedStudent}
+          onDeleteSuccess={handleDeleteSuccess}
+        />
+      )}
     </div>
   );
 }

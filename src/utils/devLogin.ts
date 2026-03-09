@@ -1,6 +1,8 @@
 export async function ensureDevSession() {
+  const endpoint = import.meta.env.VITE_API_URL ?? "/api/graphql";
+
   // 1) Check if already authenticated
-  const res = await fetch("http://localhost:8080/api/graphql", {
+  const res = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -16,7 +18,7 @@ export async function ensureDevSession() {
   const email = "kate@example.com";
   const password = "password123";
 
-  const loginRes = await fetch("http://localhost:8080/api/graphql", {
+  const loginRes = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include", // <— store Set-Cookie from server
